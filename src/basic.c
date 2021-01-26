@@ -27,7 +27,7 @@
 
 #include "sqt-private.h"
 
-/*basic integration routine used for testing*/
+/*basic integration routine used for testing and well-separated elements*/
 
 gint SQT_FUNCTION_NAME(sqt_basic_quad_tri)(SQT_REAL *xe, gint xstr, gint ne,
 					   SQT_REAL *q, gint nq,

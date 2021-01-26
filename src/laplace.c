@@ -57,8 +57,46 @@ static gint SQT_FUNCTION_NAME(laplace_quad_weights)(SQT_REAL s, SQT_REAL t,
   wt = w*dG ;
   blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1, &(quad[nc/2]), i1) ;
 #else /*SQT_SINGLE_PRECISION*/
+  /*this is to keep the compiler quiet about unused variables*/
+  wt = 0.0 ; Kq[0] = sin(wt*d1*i1*dG) ;
   g_assert_not_reached() ;
 #endif
+  
+  return 0 ;
+}
+
+gint SQT_FUNCTION_NAME(sqt_laplace_weights_tri_basic)(SQT_REAL *xe,
+						      gint xstr, gint ne,
+						      SQT_REAL *q, gint nq,
+						      SQT_REAL *Kq,
+						      gint nqk,
+						      gint nK,
+						      SQT_REAL *x,
+						      SQT_REAL *w)
+
+{
+  SQT_REAL Knm[2048] ;
+  gpointer data[SQT_DATA_WIDTH] ;
+  
+  data[SQT_DATA_ELEMENT]   = xe ; 
+  data[SQT_DATA_STRIDE]    = &xstr ;
+  data[SQT_DATA_NUMBER]    = &(ne) ;
+  data[SQT_DATA_TARGET]    = x ; 
+  data[SQT_DATA_MATRIX]    = Kq ;
+  data[SQT_DATA_KNM]       = Knm ;
+  data[SQT_DATA_NKNM]      = &nqk ;
+  data[SQT_DATA_ORDER_K]   = &nK ;
+  
+#ifdef SQT_SINGLE_PRECISION
+  sqt_quadrature_func_f_t func =
+    (sqt_quadrature_func_f_t)laplace_quad_weights_f ;
+#else /*SQT_SINGLE_PRECISION*/
+  sqt_quadrature_func_t func =
+    (sqt_quadrature_func_t)laplace_quad_weights ;
+#endif /*SQT_SINGLE_PRECISION*/
+
+  SQT_FUNCTION_NAME(sqt_basic_quad_tri)(xe, xstr, ne, q, nq, func,
+					w, 2*nqk, data) ;
   
   return 0 ;
 }
@@ -141,6 +179,37 @@ gint SQT_FUNCTION_NAME(sqt_laplace_weights_tri_singular)(SQT_REAL *xe,
 }
 
 gint
+SQT_FUNCTION_NAME(sqt_laplace_source_target_tri_basic)(SQT_REAL *xse,
+						       gint xsstr, gint nse,
+						       SQT_REAL *q, gint nq,
+						       SQT_REAL *Kq,
+						       gint nqk, gint nK,
+						       SQT_REAL *xte,
+						       gint xtstr, gint nte,
+						       SQT_REAL *s,
+						       gint sstr,
+						       SQT_REAL *t,
+						       gint tstr,
+						       gint nt,
+						       SQT_REAL *Ast)
+{
+  gint i ;
+  SQT_REAL x[3], n[3], J ;
+
+  memset(Ast, 0, 2*nqk*nt*sizeof(SQT_REAL)) ;
+  for ( i = 0 ; i < nt ; i ++ ) {
+    SQT_FUNCTION_NAME(sqt_element_point_3d)(xte, xtstr, nte,
+					    s[i*sstr], t[i*tstr], x, n, &J) ;
+    SQT_FUNCTION_NAME(sqt_laplace_weights_tri_basic)(xse, xsstr, nse,
+						     q, nq, Kq, nqk, nK,
+						     x,	&(Ast[i*2*nqk])) ;
+  }
+  
+  return 0 ;
+}
+
+
+gint
 SQT_FUNCTION_NAME(sqt_laplace_source_target_tri_adaptive)(SQT_REAL *xse,
 							  gint xsstr, gint nse,
 							  SQT_REAL *q, gint nq,
@@ -189,8 +258,6 @@ SQT_FUNCTION_NAME(sqt_laplace_source_target_tri_self)(SQT_REAL *xe,
 
   memset(Ast, 0, 2*nqk*nqk*sizeof(SQT_REAL)) ;
   for ( i = 0 ; i < nqk ; i ++ ) {
-    /* fprintf(stderr, "%d %lg %lg %lg\n", */
-    /* 	    i, s[i*sstr], t[i*tstr], s[i*sstr] + t[i*tstr] - 1.0) ; */
     SQT_FUNCTION_NAME(sqt_laplace_weights_tri_singular)(xe, xstr, ne,
 							Kq, nqk, nK, N,
 							s[i*sstr],

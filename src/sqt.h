@@ -110,6 +110,15 @@ gint sqt_basic_quad_tri_f(gfloat *xe, gint xstr, gint ne,
 			  gfloat *quad, gint nc,
 			  gpointer data) ;
 
+gint sqt_laplace_weights_tri_basic(gdouble *xe, gint xstr, gint ne,
+				   gdouble *q, gint nq,
+				   gdouble *Kq, gint nqk, gint nK,
+				   gdouble *x, gdouble *w) ;
+gint sqt_laplace_weights_tri_basic_f(gfloat *xe, gint xstr, gint ne,
+				     gfloat *q, gint nq,
+				     gfloat *Kq, gint nqk, gint nK,
+				     gfloat *x, gfloat *w) ;
+
 gint sqt_laplace_weights_tri_adaptive(gdouble *xe, gint xstr, gint ne,
 				      gdouble *q, gint nq,
 				      gdouble *Kq, gint nkq, gint nK,
@@ -132,6 +141,22 @@ gint sqt_laplace_weights_tri_singular_f(gfloat *xe, gint xstr, gint ne,
 					gint N,
 					gfloat s0, gfloat t0,
 					gfloat *gint) ;
+
+gint sqt_laplace_source_target_tri_basic(gdouble *xse, gint xsstr, gint nse,
+					 gdouble *q, gint nq,
+					 gdouble *Kq, gint nqk, gint nK,
+					 gdouble *xte, gint xtstr, gint nte,
+					 gdouble *s, gint sstr,
+					 gdouble *t, gint tstr, gint nt,
+					 gdouble *Ast) ;
+gint sqt_laplace_source_target_tri_basic_f(gfloat *xse, gint xsstr, gint nse,
+					   gfloat *q, gint nq,
+					   gfloat *Kq, gint nqk, gint nK,
+					   gfloat *xte, gint xtstr, gint nte,
+					   gfloat *s, gint sstr,
+					   gfloat *t, gint tstr, gint nt,
+					   gfloat *Ast) ;
+
 gint sqt_laplace_source_target_tri_adaptive(gdouble *xse,
 					    gint xsstr, gint nse,
 					    gdouble *q, gint nq,

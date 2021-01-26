@@ -496,7 +496,7 @@ static gint quad_weight_test(gdouble *xe, gint xstr, gint ne,
 {
   gdouble *q, J, n[3], g[512], s, t ;
   gdouble x0[3], x[3], u, Kq[453*453], w[453*2], src[453] ;
-  gdouble fs, fd ;
+  gdouble fs, fd, wb[453*2], err ;
   gint oq, nc, i, j, nK, nqk ;
   gpointer data[4] ;
   sqt_quadrature_func_t func = (sqt_quadrature_func_t)laplace_quad_func ;
@@ -541,7 +541,9 @@ static gint quad_weight_test(gdouble *xe, gint xstr, gint ne,
     fs += w[i]*src[i] ; fd += w[nqk+i]*src[i] ;
   }
   
-  fprintf(stdout, "%e %e %e %e %e\n", u, fs, g[0], fd, g[1]) ;
+  fprintf(stdout, "%e %e %e %e %e\n", u, fs, fd,
+	  fabs(fs-g[0]), fabs(fd-g[1])) ;
+  /* fprintf(stdout, "%e %e %e %e %e\n", u, fs, g[0], fd, g[1]) ; */
   
   data[0] = x ;
   
@@ -564,9 +566,24 @@ static gint quad_weight_test(gdouble *xe, gint xstr, gint ne,
       fs += w[i]*src[i] ; fd += w[nqk+i]*src[i] ;
     }
 
-    fprintf(stdout, "%e %e %e %e %e\n", u, fs, g[0], fd, g[1]) ;
+    fprintf(stdout, "%e %e %e %e %e\n", u, fs, fd,
+	    fabs(fs-g[0]), fabs(fd-g[1])) ;
   }
 
+  /*use last set of adaptively-integrated weights to check basic*/
+  memset(wb, 0, 2*nqk*sizeof(gdouble)) ;
+  nq = 175 ;
+  
+  sqt_quadrature_select(nq, &q, &oq) ;  
+  sqt_laplace_weights_tri_basic(xe, xstr, ne, q, nq, Kq, nqk, nK, x, wb) ;
+
+  err = 0.0 ;
+  for ( i = 0 ; i < 2*nqk ; i ++ )
+    err = MAX(err, fabs(wb[i] - w[i])) ;
+
+  fprintf(stderr, "weights using %d point quadrature at u = %lg\n", nq, u) ;
+  fprintf(stderr, "maximum error: %lg\n", err) ;
+  
   return 0 ;
 }
 
@@ -576,9 +593,9 @@ static gint matrix_adaptive_test(gdouble *xse, gint xsstr, gint nse,
   
 
 {
-  gdouble *q, J, n[3], s, t ;
-  gdouble x0[3], x[3], Kq[453*453], src[453], al, bt, *st ;
-  gdouble f[32], Ast[453*453*2], *qs, fts[453], ftd[453] ;
+  gdouble *q, J, n[3], s, t, err ;
+  gdouble x[3], Kq[453*453], src[453], al, bt, *st ;
+  gdouble f[32], Ast[453*453*2], Astb[453*453*2], *qs, fts[453], ftd[453] ;
   gint oq, nc, i, nK, nqk, one = 1, nqt, nqs, lda ;
   gpointer data[4] ;
   sqt_quadrature_func_t func = (sqt_quadrature_func_t)laplace_quad_func ;
@@ -628,6 +645,21 @@ static gint matrix_adaptive_test(gdouble *xse, gint xsstr, gint nse,
 			  tol, depth, data) ;
     fprintf(stderr, "%lg %lg %lg %lg\n", fts[i], f[0], ftd[i], f[1]) ;
   }
+  
+  /*use last set of adaptively-integrated weights to check basic
+   quadrature method for well-separated elements*/  
+  sqt_quadrature_select(nq, &q, &oq) ;  
+  sqt_laplace_source_target_tri_basic(xse, xsstr, nse, q, nq,
+				      Kq, nqk, nK, xte, xtstr, nte,
+				      &(st[0]), 3, &(st[1]), 3, nqt,
+				      Astb) ;
+
+  err = 0.0 ;
+  for ( i = 0 ; i < 2*nqk*nqt ; i ++ )
+    err = MAX(err, fabs(Ast[i] - Astb[i])) ;
+
+  fprintf(stderr, "weights using %d point quadrature\n", nq) ;
+  fprintf(stderr, "maximum error: %lg\n", err) ;
   
   return 0 ;
 }
