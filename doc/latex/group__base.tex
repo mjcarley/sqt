@@ -1,0 +1,442 @@
+\section{Basic functions}
+\label{group__base}\index{Basic functions@{Basic functions}}
+
+
+Basic functions for geometric handling and element manipulation.  
+
+
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+gint {\bf sqt\+\_\+element\+\_\+shape\+\_\+3d} (gint ne, gdouble s, gdouble t, gdouble $\ast$L, gdouble $\ast$d\+Lds, gdouble $\ast$d\+Ldt, gdouble $\ast$d\+Ldss, gdouble $\ast$d\+Ldst, gdouble $\ast$d\+Ldtt)
+\begin{DoxyCompactList}\small\item\em Shape function evaluations for three-\/dimensional elements. \end{DoxyCompactList}\item 
+gint {\bf sqt\+\_\+element\+\_\+point\+\_\+interp\+\_\+3d} (gdouble $\ast$xe, gint xstr, gint ne, gdouble $\ast$L, gdouble $\ast$d\+Lds, gdouble $\ast$d\+Ldt, gdouble $\ast$y, gdouble $\ast$n, gdouble $\ast$J, gdouble $\ast$c)
+\begin{DoxyCompactList}\small\item\em Interpolation of point on element using shape functions. \end{DoxyCompactList}\item 
+gint {\bf sqt\+\_\+element\+\_\+point\+\_\+3d} (gdouble $\ast$xe, gint xstr, gint ne, gdouble s, gdouble t, gdouble $\ast$y, gdouble $\ast$n, gdouble $\ast$J, gdouble $\ast$c)
+\begin{DoxyCompactList}\small\item\em Convenience function for direct evaluation of point position on element. \end{DoxyCompactList}\item 
+gdouble {\bf sqt\+\_\+element\+\_\+area} (gdouble $\ast$xe, gint xstr, gint ne, gdouble $\ast$qrule, gint nq)
+\begin{DoxyCompactList}\small\item\em Estimate surface area of element. \end{DoxyCompactList}\item 
+gint {\bf sqt\+\_\+triangle\+\_\+curvature} (gdouble $\ast$xe, gint xstr, gint ne, gdouble s, gdouble t, gdouble $\ast$kg, gdouble $\ast$km)
+\begin{DoxyCompactList}\small\item\em Curvatures on a triangular element. \end{DoxyCompactList}\item 
+gint {\bf sqt\+\_\+element\+\_\+shape\+\_\+3d\+\_\+f} (gint ne, gfloat s, gfloat t, gfloat $\ast$L, gfloat $\ast$d\+Lds, gfloat $\ast$d\+Ldt, gfloat $\ast$d\+Ldss, gfloat $\ast$d\+Ldst, gfloat $\ast$d\+Ldtt)
+\begin{DoxyCompactList}\small\item\em Shape function evaluations for three-\/dimensional elements. \end{DoxyCompactList}\item 
+gint {\bf sqt\+\_\+element\+\_\+point\+\_\+interp\+\_\+3d\+\_\+f} (gfloat $\ast$xe, gint xstr, gint ne, gfloat $\ast$L, gfloat $\ast$d\+Lds, gfloat $\ast$d\+Ldt, gfloat $\ast$y, gfloat $\ast$n, gfloat $\ast$J, gfloat $\ast$c)
+\begin{DoxyCompactList}\small\item\em Interpolation of point on element using shape functions. \end{DoxyCompactList}\item 
+gint {\bf sqt\+\_\+element\+\_\+point\+\_\+3d\+\_\+f} (gfloat $\ast$xe, gint xstr, gint ne, gfloat s, gfloat t, gfloat $\ast$y, gfloat $\ast$n, gfloat $\ast$J, gfloat $\ast$c)
+\begin{DoxyCompactList}\small\item\em Convenience function for direct evaluation of point position on element. \end{DoxyCompactList}\item 
+gfloat {\bf sqt\+\_\+element\+\_\+area\+\_\+f} (gfloat $\ast$xe, gint xstr, gint ne, gfloat $\ast$qrule, gint nq)
+\begin{DoxyCompactList}\small\item\em Estimate surface area of element. \end{DoxyCompactList}\item 
+gint {\bf sqt\+\_\+triangle\+\_\+curvature\+\_\+f} (gfloat $\ast$xe, gint xstr, gint ne, gfloat s, gfloat t, gfloat $\ast$kg, gfloat $\ast$km)
+\begin{DoxyCompactList}\small\item\em Curvatures on a triangular element. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Basic functions for geometric handling and element manipulation. 
+
+
+
+\subsection{Function Documentation}
+\index{Basic functions@{Basic functions}!sqt\+\_\+element\+\_\+area@{sqt\+\_\+element\+\_\+area}}
+\index{sqt\+\_\+element\+\_\+area@{sqt\+\_\+element\+\_\+area}!Basic functions@{Basic functions}}
+\subsubsection[{sqt\+\_\+element\+\_\+area}]{\setlength{\rightskip}{0pt plus 5cm}gdouble sqt\+\_\+element\+\_\+area (
+\begin{DoxyParamCaption}
+\item[{gdouble $\ast$}]{xe, }
+\item[{gint}]{xstr, }
+\item[{gint}]{ne, }
+\item[{gdouble $\ast$}]{qrule, }
+\item[{gint}]{nq}
+\end{DoxyParamCaption}
+)}\label{group__base_ga9352e19554870f445d7ba22c1c64b69c}
+
+
+Estimate surface area of element. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em xe} & element node coordinates; \\
+\hline
+{\em xstr} & stride between $x$ coordinates of element nodes; \\
+\hline
+{\em ne} & number of element nodes; \\
+\hline
+{\em qrule} & nodes and weights of quadrature rule; \\
+\hline
+{\em nq} & number of nodes in {\itshape qrule}.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+estimate of area of element. 
+\end{DoxyReturn}
+\index{Basic functions@{Basic functions}!sqt\+\_\+element\+\_\+area\+\_\+f@{sqt\+\_\+element\+\_\+area\+\_\+f}}
+\index{sqt\+\_\+element\+\_\+area\+\_\+f@{sqt\+\_\+element\+\_\+area\+\_\+f}!Basic functions@{Basic functions}}
+\subsubsection[{sqt\+\_\+element\+\_\+area\+\_\+f}]{\setlength{\rightskip}{0pt plus 5cm}gfloat sqt\+\_\+element\+\_\+area\+\_\+f (
+\begin{DoxyParamCaption}
+\item[{gfloat $\ast$}]{xe, }
+\item[{gint}]{xstr, }
+\item[{gint}]{ne, }
+\item[{gfloat $\ast$}]{qrule, }
+\item[{gint}]{nq}
+\end{DoxyParamCaption}
+)}\label{group__base_ga096c0ce5eebed9de4fdd6aa253d6dc9a}
+
+
+Estimate surface area of element. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em xe} & element node coordinates; \\
+\hline
+{\em xstr} & stride between $x$ coordinates of element nodes; \\
+\hline
+{\em ne} & number of element nodes; \\
+\hline
+{\em qrule} & nodes and weights of quadrature rule; \\
+\hline
+{\em nq} & number of nodes in {\itshape qrule}.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+estimate of area of element. 
+\end{DoxyReturn}
+\index{Basic functions@{Basic functions}!sqt\+\_\+element\+\_\+point\+\_\+3d@{sqt\+\_\+element\+\_\+point\+\_\+3d}}
+\index{sqt\+\_\+element\+\_\+point\+\_\+3d@{sqt\+\_\+element\+\_\+point\+\_\+3d}!Basic functions@{Basic functions}}
+\subsubsection[{sqt\+\_\+element\+\_\+point\+\_\+3d}]{\setlength{\rightskip}{0pt plus 5cm}gint sqt\+\_\+element\+\_\+point\+\_\+3d (
+\begin{DoxyParamCaption}
+\item[{gdouble $\ast$}]{xe, }
+\item[{gint}]{xstr, }
+\item[{gint}]{ne, }
+\item[{gdouble}]{s, }
+\item[{gdouble}]{t, }
+\item[{gdouble $\ast$}]{y, }
+\item[{gdouble $\ast$}]{n, }
+\item[{gdouble $\ast$}]{J, }
+\item[{gdouble $\ast$}]{c}
+\end{DoxyParamCaption}
+)}\label{group__base_ga1478b37030a94fcb1a8169b03bd4df8b}
+
+
+Convenience function for direct evaluation of point position on element. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em xe} & element node coordinates; \\
+\hline
+{\em xstr} & stride between $x$ coordinates of element nodes; \\
+\hline
+{\em ne} & number of element nodes; \\
+\hline
+{\em s} & coordinate on element; \\
+\hline
+{\em t} & coordinate on element; \\
+\hline
+{\em y} & on exit interpolated point on element; \\
+\hline
+{\em n} & on exit normal at {\itshape y}; \\
+\hline
+{\em J} & on exit Jacobian at {\itshape y}; \\
+\hline
+{\em c} & reserved for future use (can be N\+U\+L\+L).\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\index{Basic functions@{Basic functions}!sqt\+\_\+element\+\_\+point\+\_\+3d\+\_\+f@{sqt\+\_\+element\+\_\+point\+\_\+3d\+\_\+f}}
+\index{sqt\+\_\+element\+\_\+point\+\_\+3d\+\_\+f@{sqt\+\_\+element\+\_\+point\+\_\+3d\+\_\+f}!Basic functions@{Basic functions}}
+\subsubsection[{sqt\+\_\+element\+\_\+point\+\_\+3d\+\_\+f}]{\setlength{\rightskip}{0pt plus 5cm}gint sqt\+\_\+element\+\_\+point\+\_\+3d\+\_\+f (
+\begin{DoxyParamCaption}
+\item[{gfloat $\ast$}]{xe, }
+\item[{gint}]{xstr, }
+\item[{gint}]{ne, }
+\item[{gfloat}]{s, }
+\item[{gfloat}]{t, }
+\item[{gfloat $\ast$}]{y, }
+\item[{gfloat $\ast$}]{n, }
+\item[{gfloat $\ast$}]{J, }
+\item[{gfloat $\ast$}]{c}
+\end{DoxyParamCaption}
+)}\label{group__base_ga403716cd4f06e9ad8b9d8b5ab60c5d3d}
+
+
+Convenience function for direct evaluation of point position on element. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em xe} & element node coordinates; \\
+\hline
+{\em xstr} & stride between $x$ coordinates of element nodes; \\
+\hline
+{\em ne} & number of element nodes; \\
+\hline
+{\em s} & coordinate on element; \\
+\hline
+{\em t} & coordinate on element; \\
+\hline
+{\em y} & on exit interpolated point on element; \\
+\hline
+{\em n} & on exit normal at {\itshape y}; \\
+\hline
+{\em J} & on exit Jacobian at {\itshape y}; \\
+\hline
+{\em c} & reserved for future use (can be N\+U\+L\+L).\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\index{Basic functions@{Basic functions}!sqt\+\_\+element\+\_\+point\+\_\+interp\+\_\+3d@{sqt\+\_\+element\+\_\+point\+\_\+interp\+\_\+3d}}
+\index{sqt\+\_\+element\+\_\+point\+\_\+interp\+\_\+3d@{sqt\+\_\+element\+\_\+point\+\_\+interp\+\_\+3d}!Basic functions@{Basic functions}}
+\subsubsection[{sqt\+\_\+element\+\_\+point\+\_\+interp\+\_\+3d}]{\setlength{\rightskip}{0pt plus 5cm}gint sqt\+\_\+element\+\_\+point\+\_\+interp\+\_\+3d (
+\begin{DoxyParamCaption}
+\item[{gdouble $\ast$}]{xe, }
+\item[{gint}]{xstr, }
+\item[{gint}]{ne, }
+\item[{gdouble $\ast$}]{L, }
+\item[{gdouble $\ast$}]{d\+Lds, }
+\item[{gdouble $\ast$}]{d\+Ldt, }
+\item[{gdouble $\ast$}]{y, }
+\item[{gdouble $\ast$}]{n, }
+\item[{gdouble $\ast$}]{J, }
+\item[{gdouble $\ast$}]{c}
+\end{DoxyParamCaption}
+)}\label{group__base_gabb0474a759623a588d525440e339ca7c}
+
+
+Interpolation of point on element using shape functions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em xe} & element node coordinates; \\
+\hline
+{\em xstr} & stride between $x$ coordinates of element nodes; \\
+\hline
+{\em ne} & number of element nodes; \\
+\hline
+{\em L} & shape function from \doxyref{sqt\+\_\+element\+\_\+shape\+\_\+3d}{p.}{group__base_ga01603b4c753e5be3aaaadf1e3fd63f0a}(...); \\
+\hline
+{\em d\+Lds} & derivative of shape function; \\
+\hline
+{\em d\+Ldt} & derivative of shape function; \\
+\hline
+{\em y} & on exit interpolated point on element; \\
+\hline
+{\em n} & on exit normal at {\itshape y}; \\
+\hline
+{\em J} & on exit Jacobian at {\itshape y}; \\
+\hline
+{\em c} & reserved for future use (can be N\+U\+L\+L).\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\index{Basic functions@{Basic functions}!sqt\+\_\+element\+\_\+point\+\_\+interp\+\_\+3d\+\_\+f@{sqt\+\_\+element\+\_\+point\+\_\+interp\+\_\+3d\+\_\+f}}
+\index{sqt\+\_\+element\+\_\+point\+\_\+interp\+\_\+3d\+\_\+f@{sqt\+\_\+element\+\_\+point\+\_\+interp\+\_\+3d\+\_\+f}!Basic functions@{Basic functions}}
+\subsubsection[{sqt\+\_\+element\+\_\+point\+\_\+interp\+\_\+3d\+\_\+f}]{\setlength{\rightskip}{0pt plus 5cm}gint sqt\+\_\+element\+\_\+point\+\_\+interp\+\_\+3d\+\_\+f (
+\begin{DoxyParamCaption}
+\item[{gfloat $\ast$}]{xe, }
+\item[{gint}]{xstr, }
+\item[{gint}]{ne, }
+\item[{gfloat $\ast$}]{L, }
+\item[{gfloat $\ast$}]{d\+Lds, }
+\item[{gfloat $\ast$}]{d\+Ldt, }
+\item[{gfloat $\ast$}]{y, }
+\item[{gfloat $\ast$}]{n, }
+\item[{gfloat $\ast$}]{J, }
+\item[{gfloat $\ast$}]{c}
+\end{DoxyParamCaption}
+)}\label{group__base_ga23beff191d9d3ba6fe682d2c787f9c89}
+
+
+Interpolation of point on element using shape functions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em xe} & element node coordinates; \\
+\hline
+{\em xstr} & stride between $x$ coordinates of element nodes; \\
+\hline
+{\em ne} & number of element nodes; \\
+\hline
+{\em L} & shape function from \doxyref{sqt\+\_\+element\+\_\+shape\+\_\+3d\+\_\+f}{p.}{group__base_ga6b268f195ea143ab345716013f614164}(...); \\
+\hline
+{\em d\+Lds} & derivative of shape function; \\
+\hline
+{\em d\+Ldt} & derivative of shape function; \\
+\hline
+{\em y} & on exit interpolated point on element; \\
+\hline
+{\em n} & on exit normal at {\itshape y}; \\
+\hline
+{\em J} & on exit Jacobian at {\itshape y}; \\
+\hline
+{\em c} & reserved for future use (can be N\+U\+L\+L).\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\index{Basic functions@{Basic functions}!sqt\+\_\+element\+\_\+shape\+\_\+3d@{sqt\+\_\+element\+\_\+shape\+\_\+3d}}
+\index{sqt\+\_\+element\+\_\+shape\+\_\+3d@{sqt\+\_\+element\+\_\+shape\+\_\+3d}!Basic functions@{Basic functions}}
+\subsubsection[{sqt\+\_\+element\+\_\+shape\+\_\+3d}]{\setlength{\rightskip}{0pt plus 5cm}gint sqt\+\_\+element\+\_\+shape\+\_\+3d (
+\begin{DoxyParamCaption}
+\item[{gint}]{ne, }
+\item[{gdouble}]{s, }
+\item[{gdouble}]{t, }
+\item[{gdouble $\ast$}]{L, }
+\item[{gdouble $\ast$}]{d\+Lds, }
+\item[{gdouble $\ast$}]{d\+Ldt, }
+\item[{gdouble $\ast$}]{d\+Ldss, }
+\item[{gdouble $\ast$}]{d\+Ldst, }
+\item[{gdouble $\ast$}]{d\+Ldtt}
+\end{DoxyParamCaption}
+)}\label{group__base_ga01603b4c753e5be3aaaadf1e3fd63f0a}
+
+
+Shape function evaluations for three-\/dimensional elements. 
+
+On entry {\itshape L} may not be N\+U\+L\+L, but if {\itshape d\+Lds} is N\+U\+L\+L, first and second derivatives are not evaluated. If {\itshape d\+Ldss} is N\+U\+L\+L, first derivatives are evaluated, but not second.
+
+
+\begin{DoxyParams}{Parameters}
+{\em ne} & number of nodes on element (currently 3 or 6); \\
+\hline
+{\em s} & coordinate on element; \\
+\hline
+{\em t} & coordinate on element; \\
+\hline
+{\em L} & on exit shape function evaluated at each node; \\
+\hline
+{\em d\+Lds} & on exit $\partial L_{i}/\partial s$ at each node; \\
+\hline
+{\em d\+Ldt} & on exit $\partial L_{i}/\partial t$ at each node; \\
+\hline
+{\em d\+Ldss} & on exit $\partial^{2} L_{i}/\partial s^{2}$ at each node; \\
+\hline
+{\em d\+Ldst} & on exit $\partial^{2} L_{i}/\partial s\partial t$ at each node; \\
+\hline
+{\em d\+Ldtt} & on exit $\partial^{2} L_{i}/\partial t^{2}$ at each node;\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\index{Basic functions@{Basic functions}!sqt\+\_\+element\+\_\+shape\+\_\+3d\+\_\+f@{sqt\+\_\+element\+\_\+shape\+\_\+3d\+\_\+f}}
+\index{sqt\+\_\+element\+\_\+shape\+\_\+3d\+\_\+f@{sqt\+\_\+element\+\_\+shape\+\_\+3d\+\_\+f}!Basic functions@{Basic functions}}
+\subsubsection[{sqt\+\_\+element\+\_\+shape\+\_\+3d\+\_\+f}]{\setlength{\rightskip}{0pt plus 5cm}gint sqt\+\_\+element\+\_\+shape\+\_\+3d\+\_\+f (
+\begin{DoxyParamCaption}
+\item[{gint}]{ne, }
+\item[{gfloat}]{s, }
+\item[{gfloat}]{t, }
+\item[{gfloat $\ast$}]{L, }
+\item[{gfloat $\ast$}]{d\+Lds, }
+\item[{gfloat $\ast$}]{d\+Ldt, }
+\item[{gfloat $\ast$}]{d\+Ldss, }
+\item[{gfloat $\ast$}]{d\+Ldst, }
+\item[{gfloat $\ast$}]{d\+Ldtt}
+\end{DoxyParamCaption}
+)}\label{group__base_ga6b268f195ea143ab345716013f614164}
+
+
+Shape function evaluations for three-\/dimensional elements. 
+
+On entry {\itshape L} may not be N\+U\+L\+L, but if {\itshape d\+Lds} is N\+U\+L\+L, first and second derivatives are not evaluated. If {\itshape d\+Ldss} is N\+U\+L\+L, first derivatives are evaluated, but not second.
+
+
+\begin{DoxyParams}{Parameters}
+{\em ne} & number of nodes on element (currently 3 or 6); \\
+\hline
+{\em s} & coordinate on element; \\
+\hline
+{\em t} & coordinate on element; \\
+\hline
+{\em L} & on exit shape function evaluated at each node; \\
+\hline
+{\em d\+Lds} & on exit $\partial L_{i}/\partial s$ at each node; \\
+\hline
+{\em d\+Ldt} & on exit $\partial L_{i}/\partial t$ at each node; \\
+\hline
+{\em d\+Ldss} & on exit $\partial^{2} L_{i}/\partial s^{2}$ at each node; \\
+\hline
+{\em d\+Ldst} & on exit $\partial^{2} L_{i}/\partial s\partial t$ at each node; \\
+\hline
+{\em d\+Ldtt} & on exit $\partial^{2} L_{i}/\partial t^{2}$ at each node;\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\index{Basic functions@{Basic functions}!sqt\+\_\+triangle\+\_\+curvature@{sqt\+\_\+triangle\+\_\+curvature}}
+\index{sqt\+\_\+triangle\+\_\+curvature@{sqt\+\_\+triangle\+\_\+curvature}!Basic functions@{Basic functions}}
+\subsubsection[{sqt\+\_\+triangle\+\_\+curvature}]{\setlength{\rightskip}{0pt plus 5cm}gint sqt\+\_\+triangle\+\_\+curvature (
+\begin{DoxyParamCaption}
+\item[{gdouble $\ast$}]{xe, }
+\item[{gint}]{xstr, }
+\item[{gint}]{ne, }
+\item[{gdouble}]{s, }
+\item[{gdouble}]{t, }
+\item[{gdouble $\ast$}]{kg, }
+\item[{gdouble $\ast$}]{km}
+\end{DoxyParamCaption}
+)}\label{group__base_ga863b6c5e2585343280ae6680292e4a40}
+
+
+Curvatures on a triangular element. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em xe} & element node coordinates; \\
+\hline
+{\em xstr} & stride between $x$ coordinates of element nodes; \\
+\hline
+{\em ne} & number of element nodes; \\
+\hline
+{\em s} & coordinate on reference element; \\
+\hline
+{\em t} & coordinate on reference element; \\
+\hline
+{\em kg} & on exit Gaussian curvature on element in physical space at $(s,t)$; \\
+\hline
+{\em km} & on exit mean curvature on element in physical space at $(s,t)$.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\index{Basic functions@{Basic functions}!sqt\+\_\+triangle\+\_\+curvature\+\_\+f@{sqt\+\_\+triangle\+\_\+curvature\+\_\+f}}
+\index{sqt\+\_\+triangle\+\_\+curvature\+\_\+f@{sqt\+\_\+triangle\+\_\+curvature\+\_\+f}!Basic functions@{Basic functions}}
+\subsubsection[{sqt\+\_\+triangle\+\_\+curvature\+\_\+f}]{\setlength{\rightskip}{0pt plus 5cm}gint sqt\+\_\+triangle\+\_\+curvature\+\_\+f (
+\begin{DoxyParamCaption}
+\item[{gfloat $\ast$}]{xe, }
+\item[{gint}]{xstr, }
+\item[{gint}]{ne, }
+\item[{gfloat}]{s, }
+\item[{gfloat}]{t, }
+\item[{gfloat $\ast$}]{kg, }
+\item[{gfloat $\ast$}]{km}
+\end{DoxyParamCaption}
+)}\label{group__base_ga330e03b6c0199612a4322175408239b7}
+
+
+Curvatures on a triangular element. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em xe} & element node coordinates; \\
+\hline
+{\em xstr} & stride between $x$ coordinates of element nodes; \\
+\hline
+{\em ne} & number of element nodes; \\
+\hline
+{\em s} & coordinate on reference element; \\
+\hline
+{\em t} & coordinate on reference element; \\
+\hline
+{\em kg} & on exit Gaussian curvature on element in physical space at $(s,t)$; \\
+\hline
+{\em km} & on exit mean curvature on element in physical space at $(s,t)$.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}

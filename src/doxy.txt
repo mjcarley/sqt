@@ -1,0 +1,45 @@
+/**
+ * @mainpage SQT: a library for Singular Quadrature on Triangles
+ * 
+ * SQT is a library for performing quadrature on triangular elements,
+ * in particular for singular functions, intended for use in Boundary
+ * Element Method (BEM) calculations. 
+ */
+
+/**
+ * @defgroup location Location operations
+ *
+ * @brief Locating points on elements, including nearest points on
+ curved elements
+ *
+ */
+
+/**
+ * @defgroup quadrature Quadrature routines
+ *
+ * @brief Functions for performing integration on elements for various
+ *  potentials (Laplace, Helmholtz, etc)
+ *
+ */
+
+/**
+ * @defgroup laplace Laplace potentials
+ *
+ * @brief Specialized functions for Laplace evaluation
+ *
+ */
+
+/**
+ * @defgroup base Basic functions
+ *
+ * @brief Basic functions for geometric handling and element manipulation
+ *
+ */
+
+/**
+ * @defgroup util Utility functions
+ *
+ * @brief Utility functions for common tasks
+ *
+ */
+

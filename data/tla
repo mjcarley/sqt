@@ -1,0 +1,10 @@
+#!/bin/bash
+
+file=$1
+
+echo $file
+
+sed -e s/qbx/sqt/ -e s/QBX/SQT/ ${file} > tmp
+
+mv tmp ${file}
+

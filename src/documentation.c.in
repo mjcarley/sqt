@@ -1,0 +1,188 @@
+/**
+ * @ingroup location
+ *
+ * @brief Locate nearest point on an element
+ *
+ * Locate the nearest point on an element using the iterative
+ * algorithm of Li X, Wu Z, Pan F et al. A geometric strategy
+ * algorithm for orthogonal projection onto a parametric
+ * surface. https://dx.doi.org/10.1007/s11390-019-1967-z
+ *
+ * @param xe element node coordinates;
+ * @param xstr stride between \f$x\f$ coordinates of element nodes;
+ * @param ne number of element nodes;
+ * @param xf field point;
+ * @param sn on exit reference element coordinate of nearest point;
+ * @param tn on exit reference element coordinate of nearest point;
+ * @param p1 physical location of nearest point;
+ * @param tol tolerance for iteration;
+ * @param nimax maximum number of iterations;
+ * @param kn curvature at nearest point.
+ *
+ * @return number of iterations
+ **/
+
+gint SQT_FUNCTION_NAME(sqt_element_nearest_point)(SQT_REAL *xe, gint xstr,
+						  gint ne,
+						  SQT_REAL *xf, 
+						  SQT_REAL *sn, SQT_REAL *tn, 
+						  SQT_REAL *p1, SQT_REAL tol,
+						  gint nimax, SQT_REAL *kn) ;
+
+/**
+ * @ingroup base
+ *
+ * @brief Shape function evaluations for three-dimensional elements
+ * 
+ * On entry \a L may not be NULL, but if \a dLds is NULL, first and
+ * second derivatives are not evaluated. If \a dLdss is NULL, first
+ * derivatives are evaluated, but not second.
+ * 
+ * @param ne number of nodes on element (currently 3 or 6);
+ * @param s coordinate on element;
+ * @param t coordinate on element;
+ * @param L on exit shape function evaluated at each node;
+ * @param dLds on exit \f$\partial L_{i}/\partial s\f$ at each node;
+ * @param dLdt on exit \f$\partial L_{i}/\partial t\f$ at each node;
+ * @param dLdss on exit \f$\partial^{2} L_{i}/\partial s^{2}\f$ at each node;
+ * @param dLdst on exit \f$\partial^{2} L_{i}/\partial s\partial t\f$ 
+ * at each node;
+ * @param dLdtt on exit \f$\partial^{2} L_{i}/\partial t^{2}\f$ at each node;
+ *
+ * @return 0 on success.
+ * 
+ **/
+
+gint SQT_FUNCTION_NAME(sqt_element_shape_3d)(gint ne, SQT_REAL s, SQT_REAL t,
+					     SQT_REAL *L,
+					     SQT_REAL *dLds, SQT_REAL *dLdt,
+					     SQT_REAL *dLdss, SQT_REAL *dLdst,
+					     SQT_REAL *dLdtt) ;
+
+/**
+ * @ingroup base
+ *
+ * @brief Interpolation of point on element using shape functions
+ * 
+ * @param xe element node coordinates;
+ * @param xstr stride between \f$x\f$ coordinates of element nodes;
+ * @param ne number of element nodes;
+ * @param L shape function from ::SQT_FUNCTION_NAME(sqt_element_shape_3d)(...);
+ * @param dLds derivative of shape function;
+ * @param dLdt derivative of shape function;
+ * @param y on exit interpolated point on element;
+ * @param n on exit normal at \a y;
+ * @param J on exit Jacobian at \a y;
+ * 
+ * @return 0 on success.
+ *
+ **/
+
+gint SQT_FUNCTION_NAME(sqt_element_point_interp_3d)(SQT_REAL *xe,
+						    gint xstr, gint ne,
+						    SQT_REAL *L,
+						    SQT_REAL *dLds,
+						    SQT_REAL *dLdt,
+						    SQT_REAL *y,
+						    SQT_REAL *n,
+						    SQT_REAL *J)
+
+/**
+ * @ingroup base
+ *
+ * @brief Convenience function for direct evaluation of point position
+ * on element
+ * 
+ * @param xe element node coordinates;
+ * @param xstr stride between \f$x\f$ coordinates of element nodes;
+ * @param ne number of element nodes;
+ * @param s coordinate on element;
+ * @param t coordinate on element;
+ * @param y on exit interpolated point on element;
+ * @param n on exit normal at \a y;
+ * @param J on exit Jacobian at \a y;
+ * 
+ * @return 0 on success.
+ * 
+ **/
+
+gint SQT_FUNCTION_NAME(sqt_element_point_3d)(SQT_REAL *xe, gint xstr, gint ne,
+					     SQT_REAL s, SQT_REAL t,
+					     SQT_REAL *y, SQT_REAL *n,
+					     SQT_REAL *J) ;
+
+/**
+ * @ingroup base
+ *
+ * @brief Estimate surface area of element
+ * 
+ * @param xe element node coordinates;
+ * @param xstr stride between \f$x\f$ coordinates of element nodes;
+ * @param ne number of element nodes;
+ * @param qrule nodes and weights of quadrature rule;
+ * @param nq number of nodes in \a qrule.
+ * 
+ * @return estimate of area of element.
+ * 
+ **/
+
+SQT_REAL SQT_FUNCTION_NAME(sqt_element_area)(SQT_REAL *xe, gint xstr, gint ne,
+					     SQT_REAL *qrule, gint nq) ;
+
+
+
+
+/**
+ * @ingroup base
+ *
+ * @brief Curvatures on a triangular element
+ * 
+ * @param xe element node coordinates;
+ * @param xstr stride between \f$x\f$ coordinates of element nodes;
+ * @param ne number of element nodes;
+ * @param s coordinate on reference element;
+ * @param t coordinate on reference element;
+ * @param kg on exit Gaussian curvature on element in physical space at 
+ * \f$(s,t)\f$;
+ * @param km on exit mean curvature on element in physical space at
+ * \f$(s,t)\f$.
+ * 
+ * @return 0 on success.
+ * 
+ **/
+
+gint SQT_FUNCTION_NAME(sqt_triangle_curvature)(SQT_REAL *xe, gint xstr, gint ne,
+					       SQT_REAL s, SQT_REAL t,
+					       SQT_REAL *kg, SQT_REAL *km) ;
+
+/**
+ * @ingroup util
+ *
+ * @brief Convert Cartesian to spherical coordinates
+ * 
+ * @param x0 centre of coordinate system;
+ * @param x point;
+ * @param r radius of \a x in spherical system centred on \a x0;
+ * @param th azimuth of \a x in spherical system centred on \a x0;
+ * @param ph elevation of \a x in spherical system centred on \a x0.
+ * 
+ * @return 0 on success.
+ * 
+ **/
+
+gint SQT_FUNCTION_NAME(sqt_cartesian_to_spherical)(SQT_REAL *x0,
+						   SQT_REAL *x,
+						   SQT_REAL *r,
+						   SQT_REAL *th,
+						   SQT_REAL *ph) ;
+
+/**
+ * @ingroup
+ *
+ * @brief
+ * 
+ * @param 
+ * 
+ * @return 0 on success.
+ * 
+ **/

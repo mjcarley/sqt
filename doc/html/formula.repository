@@ -1,0 +1,7 @@
+\form#0:$x$
+\form#1:$\partial L_{i}/\partial s$
+\form#2:$\partial L_{i}/\partial t$
+\form#3:$\partial^{2} L_{i}/\partial s^{2}$
+\form#4:$\partial^{2} L_{i}/\partial s\partial t$
+\form#5:$\partial^{2} L_{i}/\partial t^{2}$
+\form#6:$(s,t)$
