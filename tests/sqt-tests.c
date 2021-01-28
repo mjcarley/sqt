@@ -38,6 +38,7 @@ gchar *tests[] = {"closest_point",
 		  "weights",
 		  "matrix_adaptive",
 		  "matrix_self",
+		  "element_interpolation",
 		  ""} ;
 
 GTimer *timer ;
@@ -71,6 +72,7 @@ static gint read_element(FILE *f, gdouble *xe, gint *ne, gint *xstr)
   
   return 0 ;
 }
+
 
 static gint element_closest_point_test(gdouble *xe, gint xstr, gint ne,
 				       gdouble s0,  gdouble t0,
@@ -208,14 +210,15 @@ static gint koornwinder_interpolation_test(gint N, gint nq)
 
 {
   gint order, i, i1 = 1 ;
-  gdouble s, t, Knm[32768], A[4*65536], *q, f, fr, fi[512], al, bt, c[512] ;
+  gdouble s, t, Knm[32768], K[4*65536], *q, f, fr, fi[512], al, bt, c[512] ;
   
   fprintf(stderr, "koornwinder interpolation test\n") ;
   fprintf(stderr, "==============================\n") ;
+  fprintf(stderr, "nq = %d\n", nq) ;
   
   sqt_quadrature_select(nq, &q, &order) ;
 
-  N = sqt_koornwinder_interp_matrix(q, nq, A) ;
+  N = sqt_koornwinder_interp_matrix(q, nq, K) ;
 
   fprintf(stderr, "Knm N max: %d\n", N) ;
   
@@ -226,7 +229,7 @@ static gint koornwinder_interpolation_test(gint N, gint nq)
   }
 
   al = 1.0 ; bt = 0.0 ;
-  blaswrap_dgemv(FALSE, nq, nq, al, A, nq, fi, i1, bt, c, i1) ;
+  blaswrap_dgemv(FALSE, nq, nq, al, K, nq, fi, i1, bt, c, i1) ;
 
   for ( s = 0 ; s <= 1.0 ; s += 0.1 ) {
     for ( t = 0 ; t <= 1.0-s ; t += 0.1 ) {
@@ -240,6 +243,96 @@ static gint koornwinder_interpolation_test(gint N, gint nq)
     }
   }
 
+  return 0 ;
+}
+
+static gint stellarator(gdouble u, gdouble v, gdouble *x)
+
+/*
+  stellarator geometry from Greengard et al.
+*/
+  
+{
+  gdouble d[] = {-1, -1,  0.17,
+		 -1,  0,  0.11,
+		 +0,  0,  1.00,
+		 1, 0, 4.5,
+		 2, 0, -0.25,
+		 0, 1, 0.07,
+		 2, 1, -0.45} ;
+  gdouble i, j, dij ;
+  gint k ;
+
+  x[0] = x[1] = x[2] = 0.0 ;
+
+  for ( k = 0 ; k < 7 ; k ++ ) {
+    i = d[3*k+0] ; j = d[3*k+1] ; dij = d[3*k+2] ;
+    x[0] += dij*cos(v)*cos((1.0-i)*u + j*v) ;
+    x[1] += dij*sin(v)*cos((1.0-i)*u + j*v) ;
+    x[2] += dij*       sin((1.0-i)*u + j*v) ;
+  }
+  
+  return 0 ;
+}
+
+static gint element_interpolation_test(gint N, gint nq)
+
+{
+  gint order, i, i1 = 1, i2 = 2, i3 = 3, xstr ;
+  gdouble s, t, Knm[32768], K[4*65536], *q, f, fr, fi[512], al, bt, c[512] ;
+  gdouble ui[3], vi[3], xi[453*4], ci[453*3], u, v, x[3], y[3] ;
+  gdouble emax ;
+  
+  fprintf(stderr, "element interpolation test\n") ;
+  fprintf(stderr, "==========================\n") ;
+  fprintf(stderr, "nq = %d\n", nq) ;
+  
+  sqt_quadrature_select(nq, &q, &order) ;
+
+  N = sqt_koornwinder_interp_matrix(q, nq, K) ;
+
+  fprintf(stderr, "Knm N max: %d\n", N) ;
+
+  ui[0] = 0.5 ; ui[1] = 0.7  ; ui[2] = 0.6 ;
+  vi[0] = 0.1 ; vi[1] = 0.12 ; vi[2] = 0.4 ;
+
+  xstr = 4 ;
+  for ( i = 0 ; i < nq ; i ++ ) {
+    s = q[i*3+0] ; t = q[i*3+1] ;
+
+    u = ui[0]*(1.0 - s - t) + ui[1]*s + ui[2]*t ;
+    v = vi[0]*(1.0 - s - t) + vi[1]*s + vi[2]*t ;
+
+    stellarator(u, v, &(xi[i*xstr])) ;
+  }
+
+  /*compute the interpolation coefficients*/
+  al = 1.0 ; bt = 0.0 ;
+  blaswrap_dgemm(FALSE, FALSE, nq, i3, nq, al, K, nq, xi, xstr, bt, ci, i3) ;
+
+  emax = 0.0 ;
+  for ( s = 0.0 ; s <= 1.0 ; s += 0.05 ) {
+    for ( t = 0.0 ; t <= 1.0 - s ; t += 0.05 ) {
+      u = ui[0]*(1.0 - s - t) + ui[1]*s + ui[2]*t ;
+      v = vi[0]*(1.0 - s - t) + vi[1]*s + vi[2]*t ;
+  
+      stellarator(u, v, x) ;
+      fprintf(stdout, "%lg %lg %lg ", x[0], x[1], x[2]) ;
+
+      /*interpolate using K*/
+      sqt_koornwinder_nm(N, s, t, 1, nq, Knm) ;
+      blaswrap_dgemv(TRUE, nq, i3, al, ci, i3, Knm, i1, bt, y, i1) ;
+      
+      fprintf(stdout, "%lg %lg %lg\n", y[0], y[1], y[2]) ;
+      emax = MAX(emax,
+		 (x[0]-y[0])*(x[0]-y[0]) +
+		 (x[1]-y[1])*(x[1]-y[1]) +
+		 (x[2]-y[2])*(x[2]-y[2])) ;
+    }
+  }
+
+  fprintf(stderr, "maximum interpolation error: %lg\n", sqrt(emax)) ;
+  
   return 0 ;
 }
 
@@ -694,7 +787,7 @@ static gint matrix_self_test(gdouble *xe, gint xstr, gint ne, gint N)
   /*interaction matrix*/
   data[0] = x ;
   sqt_laplace_source_target_tri_self(xe, xstr, ne, Kq, nqk, nK, N,
-				     &(st[0]), 3, &(st[1]), 3,
+				     &(st[0]), 3, &(st[1]), 3, nqk,
 				     Ast) ;
   /*calculate single and double layer potentials on element*/
   al = 1.0 ; bt = 0.0 ; lda = 2*nqk ;
@@ -780,6 +873,12 @@ gint main(gint argc, gchar **argv)
   
   if ( test == 4 ) {
     koornwinder_interpolation_test(N, nq) ;
+
+    return 0 ;
+  }
+
+  if ( test == 10 ) {
+    element_interpolation_test(N, nq) ;
 
     return 0 ;
   }

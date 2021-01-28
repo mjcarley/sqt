@@ -99,16 +99,16 @@ if test "$echo_cflags" = "yes"; then
     glib_cflags="$glib_cflags -I${prefix}/include"
     glib_cflags=`uniquify "$glib_cflags"`
 
-    sqt_cflags="$qbx_cflags $openmp_cflags -I${prefix}/include"
-    sqt_cflags=`uniquify "$qbx_cflags"`
-    echo $sqt_cppflags $qbx_cflags $glib_cflags
+    sqt_cflags="$sqt_cflags $openmp_cflags -I${prefix}/include"
+    sqt_cflags=`uniquify "$sqt_cflags"`
+    echo $sqt_cppflags $sqt_cflags $glib_cflags
 fi
 if test "$echo_libs" = "yes"; then
     glib_libs="-L${exec_prefix}/lib $lib_wmpi @LDFLAGS@  $glib_libs -lm"
     glib_libs=`uniquify "$glib_libs"`
 
-    #sqt_libs="-L${exec_prefix}/lib -lqbx @LDFLAGS@ -lm $qbx_libs"
-    sqt_libs="-L${exec_prefix}/lib -lqbx @LIBS@"
-    sqt_libs=`uniquify "$qbx_libs"`
+    #sqt_libs="-L${exec_prefix}/lib -lsqt @LDFLAGS@ -lm $sqt_libs"
+    sqt_libs="-L${exec_prefix}/lib -lsqt @LIBS@"
+    sqt_libs=`uniquify "$sqt_libs"`
     echo ${sqt_libs}
 fi

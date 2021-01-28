@@ -188,12 +188,14 @@ gint sqt_laplace_source_target_tri_self(gdouble *xe, gint xstr, gint ne,
 					gint N,
 					gdouble *s, gint sstr,
 					gdouble *t, gint tstr,
+					gint nt,
 					gdouble *Ast) ;
 gint sqt_laplace_source_target_tri_self_f(gfloat *xe, gint xstr, gint ne,
 					  gfloat *Kq, gint nqk, gint nK,
 					  gint N,
 					  gfloat *s, gint sstr,
 					  gfloat *t, gint tstr,
+					  gint nt,
 					  gfloat *Ast) ;
 
 #endif /*SQT_H_INCLUDED*/

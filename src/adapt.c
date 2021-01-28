@@ -42,7 +42,7 @@ static void adaptive_quad_tri(SQT_REAL *xe, gint xstr, gint ne,
 
 {
   gint i ;
-  SQT_REAL s, t, w, J, y[3], n[3], c, si, ti ;
+  SQT_REAL s, t, w, J, y[3], n[3], si, ti ;
   
   for ( i = 0 ; i < nq ; i ++ ) {
     si = q[3*i+0] ; ti = q[3*i+1] ; w = q[3*i+2] ;

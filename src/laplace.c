@@ -27,20 +27,19 @@
 
 #include "sqt-private.h"
 
-static gint SQT_FUNCTION_NAME(laplace_quad_weights)(SQT_REAL s, SQT_REAL t,
-						    SQT_REAL w,
-						    SQT_REAL *y, SQT_REAL *n,
-						    SQT_REAL *quad, gint nc,
-						    gpointer data[])
+static gint laplace_quad_weights(SQT_REAL s, SQT_REAL t,
+				 SQT_REAL w,
+				 SQT_REAL *y, SQT_REAL *n,
+				 SQT_REAL *quad, gint nc,
+				 gpointer data[])
 
 {
   SQT_REAL *Knm = data[SQT_DATA_KNM] ;
   gint nq = *((gint *)(data[SQT_DATA_NKNM])) ;
   gint Nk = *((gint *)(data[SQT_DATA_ORDER_K])) ;
   SQT_REAL *x  = data[SQT_DATA_TARGET] ;
-  SQT_REAL R, G, dG ;
   SQT_REAL *Kq  = data[SQT_DATA_MATRIX] ;
-  SQT_REAL wt, d1 = 1.0 ;
+  SQT_REAL R, G, dG, wt, d1 = 1.0 ;
   gint i1 = 1 ;
 
   /*Koornwinder polynomials at evaluation point*/
@@ -89,7 +88,7 @@ gint SQT_FUNCTION_NAME(sqt_laplace_weights_tri_basic)(SQT_REAL *xe,
   
 #ifdef SQT_SINGLE_PRECISION
   sqt_quadrature_func_f_t func =
-    (sqt_quadrature_func_f_t)laplace_quad_weights_f ;
+    (sqt_quadrature_func_f_t)laplace_quad_weights ;
 #else /*SQT_SINGLE_PRECISION*/
   sqt_quadrature_func_t func =
     (sqt_quadrature_func_t)laplace_quad_weights ;
@@ -127,7 +126,7 @@ gint SQT_FUNCTION_NAME(sqt_laplace_weights_tri_adaptive)(SQT_REAL *xe,
   
 #ifdef SQT_SINGLE_PRECISION
   sqt_quadrature_func_f_t func =
-    (sqt_quadrature_func_f_t)laplace_quad_weights_f ;
+    (sqt_quadrature_func_f_t)laplace_quad_weights ;
 #else /*SQT_SINGLE_PRECISION*/
   sqt_quadrature_func_t func =
     (sqt_quadrature_func_t)laplace_quad_weights ;
@@ -166,7 +165,7 @@ gint SQT_FUNCTION_NAME(sqt_laplace_weights_tri_singular)(SQT_REAL *xe,
   
 #ifdef SQT_SINGLE_PRECISION
   sqt_quadrature_func_f_t func =
-    (sqt_quadrature_func_f_t)laplace_quad_weights_f ;
+    (sqt_quadrature_func_f_t)laplace_quad_weights ;
 #else /*SQT_SINGLE_PRECISION*/
   sqt_quadrature_func_t func =
     (sqt_quadrature_func_t)laplace_quad_weights ;
@@ -252,12 +251,14 @@ SQT_FUNCTION_NAME(sqt_laplace_source_target_tri_self)(SQT_REAL *xe,
 						      gint sstr,
 						      SQT_REAL *t,
 						      gint tstr,
+						      gint nt,
 						      SQT_REAL *Ast)
+
 {
   gint i ;
 
   memset(Ast, 0, 2*nqk*nqk*sizeof(SQT_REAL)) ;
-  for ( i = 0 ; i < nqk ; i ++ ) {
+  for ( i = 0 ; i < nt ; i ++ ) {
     SQT_FUNCTION_NAME(sqt_laplace_weights_tri_singular)(xe, xstr, ne,
 							Kq, nqk, nK, N,
 							s[i*sstr],

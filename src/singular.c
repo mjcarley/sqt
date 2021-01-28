@@ -40,9 +40,23 @@ static gint invert2x2(SQT_REAL *A, SQT_REAL *Ai)
   Ai[0] =  A[3]/det ; Ai[1] = -A[1]/det ;
   Ai[2] = -A[2]/det ; Ai[3] =  A[0]/det ;
 
+  det = A[0]*A[3] - A[1]*A[2] ;
+
   return 0 ;
 }
 
+static SQT_REAL tri_orientation(SQT_REAL *xt)
+
+{
+  SQT_REAL det, A[4] ;
+
+  A[0] = xt[1*2+0] - xt[0*2+0] ; A[1] = xt[1*2+1] - xt[0*2+1] ;
+  A[2] = xt[2*2+0] - xt[0*2+0] ; A[3] = xt[2*2+1] - xt[0*2+1] ;
+  
+  det = A[0]*A[3] - A[1]*A[2] ;
+
+  return det ;
+}
 
 static gint triangle_mapping(SQT_REAL *xt, gint xstr, gint nt,
 			     SQT_REAL s, SQT_REAL t,
@@ -75,7 +89,7 @@ static gint triangle_mapping(SQT_REAL *xt, gint xstr, gint nt,
   
 {
   SQT_REAL L[16], dLds[16], dLdt[16], n[16], U[32], S[32], V[32] ;
-  SQT_REAL work[138], Ai[16], dr[16] ;
+  SQT_REAL work[138], Ai[16], dr[6], tmp ;
   gint i, one = 1, two = 2, three = 3, lwork, info, iwork ;
 
   /* memset(L, 0, 16*sizeof(SQT_REAL)) ; */
@@ -84,7 +98,7 @@ static gint triangle_mapping(SQT_REAL *xt, gint xstr, gint nt,
   /* memset(U, 0, 16*sizeof(SQT_REAL)) ; */
   /* memset(S, 0, 16*sizeof(SQT_REAL)) ; */
   /* memset(V, 0, 16*sizeof(SQT_REAL)) ; */
-  memset(dr, 0, 16*sizeof(SQT_REAL)) ;
+  memset(dr, 0, 6*sizeof(SQT_REAL)) ;
   memset(Ai, 0, 4*sizeof(SQT_REAL)) ;
   memset(work, 0, 138*sizeof(SQT_REAL)) ;
   memset(n, 0, 3*sizeof(SQT_REAL)) ;
@@ -95,8 +109,6 @@ static gint triangle_mapping(SQT_REAL *xt, gint xstr, gint nt,
   SQT_FUNCTION_NAME(sqt_element_point_interp_3d)(xt, xstr, nt, L, dLds, dLdt,
 						 x0, n, J0) ;
 
-  /* dr[2] = dr[3] = dr[4] = dr[5] = 0.0 ; */
-  
   /*SVD of Jacobian matrix*/
   for ( i = 0 ; i < nt ; i ++ ) {
     dr[0] += dLds[i]*xt[i*xstr+0] ;
@@ -131,6 +143,14 @@ static gint triangle_mapping(SQT_REAL *xt, gint xstr, gint nt,
   xti[3] = Ai[2]*(1 - s) + Ai[3]*(0 - t) ;
   xti[4] = Ai[0]*(0 - s) + Ai[1]*(1 - t) ;
   xti[5] = Ai[2]*(0 - s) + Ai[3]*(1 - t) ;
+
+  /*check orientation of remapped triangle*/
+  if ( tri_orientation(xti) > 0.0 ) return 0 ;
+
+  tmp = xti[2*0+0] ; xti[2*0+0] = xti[2*1+0] ; xti[2*1+0] = tmp ;
+  tmp = xti[2*0+1] ; xti[2*0+1] = xti[2*1+1] ; xti[2*1+1] = tmp ;
+  
+  /* g_assert_not_reached() ; */
   
   return 0 ;
 }

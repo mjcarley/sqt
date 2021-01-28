@@ -41,7 +41,7 @@ gint SQT_FUNCTION_NAME(sqt_basic_quad_tri)(SQT_REAL *xe, gint xstr, gint ne,
 
 
 {
-  SQT_REAL f[512], s, t, w, J, y[3], n[3], c ;
+  SQT_REAL s, t, w, J, y[3], n[3] ;
   gint i ;
   
   memset(quad, 0, nc*sizeof(SQT_REAL)) ;

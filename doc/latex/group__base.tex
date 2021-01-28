@@ -10,9 +10,9 @@ Basic functions for geometric handling and element manipulation.
 \item 
 gint {\bf sqt\+\_\+element\+\_\+shape\+\_\+3d} (gint ne, gdouble s, gdouble t, gdouble $\ast$L, gdouble $\ast$d\+Lds, gdouble $\ast$d\+Ldt, gdouble $\ast$d\+Ldss, gdouble $\ast$d\+Ldst, gdouble $\ast$d\+Ldtt)
 \begin{DoxyCompactList}\small\item\em Shape function evaluations for three-\/dimensional elements. \end{DoxyCompactList}\item 
-gint {\bf sqt\+\_\+element\+\_\+point\+\_\+interp\+\_\+3d} (gdouble $\ast$xe, gint xstr, gint ne, gdouble $\ast$L, gdouble $\ast$d\+Lds, gdouble $\ast$d\+Ldt, gdouble $\ast$y, gdouble $\ast$n, gdouble $\ast$J, gdouble $\ast$c)
+gint {\bf sqt\+\_\+element\+\_\+point\+\_\+interp\+\_\+3d} (gdouble $\ast$xe, gint xstr, gint ne, gdouble $\ast$L, gdouble $\ast$d\+Lds, gdouble $\ast$d\+Ldt, gdouble $\ast$y, gdouble $\ast$n, gdouble $\ast$J)
 \begin{DoxyCompactList}\small\item\em Interpolation of point on element using shape functions. \end{DoxyCompactList}\item 
-gint {\bf sqt\+\_\+element\+\_\+point\+\_\+3d} (gdouble $\ast$xe, gint xstr, gint ne, gdouble s, gdouble t, gdouble $\ast$y, gdouble $\ast$n, gdouble $\ast$J, gdouble $\ast$c)
+gint {\bf sqt\+\_\+element\+\_\+point\+\_\+3d} (gdouble $\ast$xe, gint xstr, gint ne, gdouble s, gdouble t, gdouble $\ast$y, gdouble $\ast$n, gdouble $\ast$J)
 \begin{DoxyCompactList}\small\item\em Convenience function for direct evaluation of point position on element. \end{DoxyCompactList}\item 
 gdouble {\bf sqt\+\_\+element\+\_\+area} (gdouble $\ast$xe, gint xstr, gint ne, gdouble $\ast$qrule, gint nq)
 \begin{DoxyCompactList}\small\item\em Estimate surface area of element. \end{DoxyCompactList}\item 
@@ -20,9 +20,9 @@ gint {\bf sqt\+\_\+triangle\+\_\+curvature} (gdouble $\ast$xe, gint xstr, gint n
 \begin{DoxyCompactList}\small\item\em Curvatures on a triangular element. \end{DoxyCompactList}\item 
 gint {\bf sqt\+\_\+element\+\_\+shape\+\_\+3d\+\_\+f} (gint ne, gfloat s, gfloat t, gfloat $\ast$L, gfloat $\ast$d\+Lds, gfloat $\ast$d\+Ldt, gfloat $\ast$d\+Ldss, gfloat $\ast$d\+Ldst, gfloat $\ast$d\+Ldtt)
 \begin{DoxyCompactList}\small\item\em Shape function evaluations for three-\/dimensional elements. \end{DoxyCompactList}\item 
-gint {\bf sqt\+\_\+element\+\_\+point\+\_\+interp\+\_\+3d\+\_\+f} (gfloat $\ast$xe, gint xstr, gint ne, gfloat $\ast$L, gfloat $\ast$d\+Lds, gfloat $\ast$d\+Ldt, gfloat $\ast$y, gfloat $\ast$n, gfloat $\ast$J, gfloat $\ast$c)
+gint {\bf sqt\+\_\+element\+\_\+point\+\_\+interp\+\_\+3d\+\_\+f} (gfloat $\ast$xe, gint xstr, gint ne, gfloat $\ast$L, gfloat $\ast$d\+Lds, gfloat $\ast$d\+Ldt, gfloat $\ast$y, gfloat $\ast$n, gfloat $\ast$J)
 \begin{DoxyCompactList}\small\item\em Interpolation of point on element using shape functions. \end{DoxyCompactList}\item 
-gint {\bf sqt\+\_\+element\+\_\+point\+\_\+3d\+\_\+f} (gfloat $\ast$xe, gint xstr, gint ne, gfloat s, gfloat t, gfloat $\ast$y, gfloat $\ast$n, gfloat $\ast$J, gfloat $\ast$c)
+gint {\bf sqt\+\_\+element\+\_\+point\+\_\+3d\+\_\+f} (gfloat $\ast$xe, gint xstr, gint ne, gfloat s, gfloat t, gfloat $\ast$y, gfloat $\ast$n, gfloat $\ast$J)
 \begin{DoxyCompactList}\small\item\em Convenience function for direct evaluation of point position on element. \end{DoxyCompactList}\item 
 gfloat {\bf sqt\+\_\+element\+\_\+area\+\_\+f} (gfloat $\ast$xe, gint xstr, gint ne, gfloat $\ast$qrule, gint nq)
 \begin{DoxyCompactList}\small\item\em Estimate surface area of element. \end{DoxyCompactList}\item 
@@ -109,10 +109,9 @@ estimate of area of element.
 \item[{gdouble}]{t, }
 \item[{gdouble $\ast$}]{y, }
 \item[{gdouble $\ast$}]{n, }
-\item[{gdouble $\ast$}]{J, }
-\item[{gdouble $\ast$}]{c}
+\item[{gdouble $\ast$}]{J}
 \end{DoxyParamCaption}
-)}\label{group__base_ga1478b37030a94fcb1a8169b03bd4df8b}
+)}\label{group__base_ga14d05ee77c5be5b628de1daf2d65a767}
 
 
 Convenience function for direct evaluation of point position on element. 
@@ -133,9 +132,7 @@ Convenience function for direct evaluation of point position on element.
 \hline
 {\em n} & on exit normal at {\itshape y}; \\
 \hline
-{\em J} & on exit Jacobian at {\itshape y}; \\
-\hline
-{\em c} & reserved for future use (can be N\+U\+L\+L).\\
+{\em J} & on exit Jacobian at {\itshape y};\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -152,10 +149,9 @@ Convenience function for direct evaluation of point position on element.
 \item[{gfloat}]{t, }
 \item[{gfloat $\ast$}]{y, }
 \item[{gfloat $\ast$}]{n, }
-\item[{gfloat $\ast$}]{J, }
-\item[{gfloat $\ast$}]{c}
+\item[{gfloat $\ast$}]{J}
 \end{DoxyParamCaption}
-)}\label{group__base_ga403716cd4f06e9ad8b9d8b5ab60c5d3d}
+)}\label{group__base_gad5a09148a132779b94d53a15b63f5a84}
 
 
 Convenience function for direct evaluation of point position on element. 
@@ -176,9 +172,7 @@ Convenience function for direct evaluation of point position on element.
 \hline
 {\em n} & on exit normal at {\itshape y}; \\
 \hline
-{\em J} & on exit Jacobian at {\itshape y}; \\
-\hline
-{\em c} & reserved for future use (can be N\+U\+L\+L).\\
+{\em J} & on exit Jacobian at {\itshape y};\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -196,10 +190,9 @@ Convenience function for direct evaluation of point position on element.
 \item[{gdouble $\ast$}]{d\+Ldt, }
 \item[{gdouble $\ast$}]{y, }
 \item[{gdouble $\ast$}]{n, }
-\item[{gdouble $\ast$}]{J, }
-\item[{gdouble $\ast$}]{c}
+\item[{gdouble $\ast$}]{J}
 \end{DoxyParamCaption}
-)}\label{group__base_gabb0474a759623a588d525440e339ca7c}
+)}\label{group__base_ga4408653ff1b6856f8c0fd6d71b7c7189}
 
 
 Interpolation of point on element using shape functions. 
@@ -222,9 +215,7 @@ Interpolation of point on element using shape functions.
 \hline
 {\em n} & on exit normal at {\itshape y}; \\
 \hline
-{\em J} & on exit Jacobian at {\itshape y}; \\
-\hline
-{\em c} & reserved for future use (can be N\+U\+L\+L).\\
+{\em J} & on exit Jacobian at {\itshape y};\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -242,10 +233,9 @@ Interpolation of point on element using shape functions.
 \item[{gfloat $\ast$}]{d\+Ldt, }
 \item[{gfloat $\ast$}]{y, }
 \item[{gfloat $\ast$}]{n, }
-\item[{gfloat $\ast$}]{J, }
-\item[{gfloat $\ast$}]{c}
+\item[{gfloat $\ast$}]{J}
 \end{DoxyParamCaption}
-)}\label{group__base_ga23beff191d9d3ba6fe682d2c787f9c89}
+)}\label{group__base_ga18b014cd27cfecdaa3b2c683c9900cf9}
 
 
 Interpolation of point on element using shape functions. 
@@ -268,9 +258,7 @@ Interpolation of point on element using shape functions.
 \hline
 {\em n} & on exit normal at {\itshape y}; \\
 \hline
-{\em J} & on exit Jacobian at {\itshape y}; \\
-\hline
-{\em c} & reserved for future use (can be N\+U\+L\+L).\\
+{\em J} & on exit Jacobian at {\itshape y};\\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}

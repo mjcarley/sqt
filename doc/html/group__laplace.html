@@ -34,6 +34,8 @@
   </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">Laplace potentials</div>  </div>
 </div><!--header-->
@@ -41,11 +43,1451 @@
 
 <p>Specialized functions for Laplace evaluation.  
 <a href="#details">More...</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:gaa6affb713e6d19b1eedfae17e5033c86"><td class="memItemLeft" align="right" valign="top">gint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__laplace.html#gaa6affb713e6d19b1eedfae17e5033c86">sqt_laplace_weights_tri_basic</a> (gdouble *xe, gint xstr, gint ne, gdouble *q, gint nq, gdouble *Kq, gint nqk, gint nK, gdouble *x, gdouble *w)</td></tr>
+<tr class="memdesc:gaa6affb713e6d19b1eedfae17e5033c86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculating weights for evaluation of Laplace potential from triangular element using standard quadrature.  <a href="#gaa6affb713e6d19b1eedfae17e5033c86">More...</a><br /></td></tr>
+<tr class="separator:gaa6affb713e6d19b1eedfae17e5033c86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga132329beff6a564ba45533ccbfdb97e4"><td class="memItemLeft" align="right" valign="top">gint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__laplace.html#ga132329beff6a564ba45533ccbfdb97e4">sqt_laplace_weights_tri_adaptive</a> (gdouble *xe, gint xstr, gint ne, gdouble *q, gint nq, gdouble *Kq, gint nqk, gint nK, gdouble tol, gint dmax, gdouble *x, gdouble *w)</td></tr>
+<tr class="memdesc:ga132329beff6a564ba45533ccbfdb97e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculating weights for evaluation of Laplace potential from triangular element using adaptive quadrature.  <a href="#ga132329beff6a564ba45533ccbfdb97e4">More...</a><br /></td></tr>
+<tr class="separator:ga132329beff6a564ba45533ccbfdb97e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4d2ce7fcee04d5237e180beeb900cd19"><td class="memItemLeft" align="right" valign="top">gint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__laplace.html#ga4d2ce7fcee04d5237e180beeb900cd19">sqt_laplace_weights_tri_singular</a> (gdouble *xe, gint xstr, gint ne, gdouble *Kq, gint nqk, gint nK, gint N, gdouble s0, gdouble t0, gdouble *w)</td></tr>
+<tr class="memdesc:ga4d2ce7fcee04d5237e180beeb900cd19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculating weights for evaluation of self-induced Laplace potential on triangular element using singular quadrature.  <a href="#ga4d2ce7fcee04d5237e180beeb900cd19">More...</a><br /></td></tr>
+<tr class="separator:ga4d2ce7fcee04d5237e180beeb900cd19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga86adbd2998687ec1e656d7d4f7cae9f2"><td class="memItemLeft" align="right" valign="top">gint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__laplace.html#ga86adbd2998687ec1e656d7d4f7cae9f2">sqt_laplace_source_target_tri_basic</a> (gdouble *xse, gint xsstr, gint nse, gdouble *q, gint nq, gdouble *Kq, gint nqk, gint nK, gdouble *xte, gint xtstr, gint nte, gdouble *s, gint sstr, gdouble *t, gint tstr, gint nt, gdouble *Ast)</td></tr>
+<tr class="memdesc:ga86adbd2998687ec1e656d7d4f7cae9f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculating weights for evaluation of Laplace potential on target triangular element from source triangular element using standard quadrature.  <a href="#ga86adbd2998687ec1e656d7d4f7cae9f2">More...</a><br /></td></tr>
+<tr class="separator:ga86adbd2998687ec1e656d7d4f7cae9f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8c7a065afad372a4f7d2cd75fdb504a9"><td class="memItemLeft" align="right" valign="top">gint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__laplace.html#ga8c7a065afad372a4f7d2cd75fdb504a9">sqt_laplace_source_target_tri_adaptive</a> (gdouble *xse, gint xsstr, gint nse, gdouble *q, gint nq, gdouble *Kq, gint nqk, gint nK, gdouble tol, gint dmax, gdouble *xte, gint xtstr, gint nte, gdouble *s, gint sstr, gdouble *t, gint tstr, gint nt, gdouble *Ast)</td></tr>
+<tr class="memdesc:ga8c7a065afad372a4f7d2cd75fdb504a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculating weights for evaluation of Laplace potential on target triangular element from source triangular element using adaptive quadrature.  <a href="#ga8c7a065afad372a4f7d2cd75fdb504a9">More...</a><br /></td></tr>
+<tr class="separator:ga8c7a065afad372a4f7d2cd75fdb504a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga81ac92eba9c819dce05fa2ee460817f2"><td class="memItemLeft" align="right" valign="top">gint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__laplace.html#ga81ac92eba9c819dce05fa2ee460817f2">sqt_laplace_source_target_tri_self</a> (gdouble *xe, gint xstr, gint ne, gdouble *Kq, gint nqk, gint nK, gint N, gdouble *s, gint sstr, gdouble *t, gint tstr, gint nt, gdouble *Ast)</td></tr>
+<tr class="memdesc:ga81ac92eba9c819dce05fa2ee460817f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculating weights for evaluation of self-induced Laplace potential on triangular element using singular integral rules.  <a href="#ga81ac92eba9c819dce05fa2ee460817f2">More...</a><br /></td></tr>
+<tr class="separator:ga81ac92eba9c819dce05fa2ee460817f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac091fc7b0a79abfce87f0f85962f0114"><td class="memItemLeft" align="right" valign="top">gint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__laplace.html#gac091fc7b0a79abfce87f0f85962f0114">sqt_laplace_weights_tri_basic_f</a> (gfloat *xe, gint xstr, gint ne, gfloat *q, gint nq, gfloat *Kq, gint nqk, gint nK, gfloat *x, gfloat *w)</td></tr>
+<tr class="memdesc:gac091fc7b0a79abfce87f0f85962f0114"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculating weights for evaluation of Laplace potential from triangular element using standard quadrature.  <a href="#gac091fc7b0a79abfce87f0f85962f0114">More...</a><br /></td></tr>
+<tr class="separator:gac091fc7b0a79abfce87f0f85962f0114"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga80d50608dcd59d5ebd0c7bd45c02c4fb"><td class="memItemLeft" align="right" valign="top">gint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__laplace.html#ga80d50608dcd59d5ebd0c7bd45c02c4fb">sqt_laplace_weights_tri_adaptive_f</a> (gfloat *xe, gint xstr, gint ne, gfloat *q, gint nq, gfloat *Kq, gint nqk, gint nK, gfloat tol, gint dmax, gfloat *x, gfloat *w)</td></tr>
+<tr class="memdesc:ga80d50608dcd59d5ebd0c7bd45c02c4fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculating weights for evaluation of Laplace potential from triangular element using adaptive quadrature.  <a href="#ga80d50608dcd59d5ebd0c7bd45c02c4fb">More...</a><br /></td></tr>
+<tr class="separator:ga80d50608dcd59d5ebd0c7bd45c02c4fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga47009af7ed32148350cebea1cf7f631f"><td class="memItemLeft" align="right" valign="top">gint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__laplace.html#ga47009af7ed32148350cebea1cf7f631f">sqt_laplace_weights_tri_singular_f</a> (gfloat *xe, gint xstr, gint ne, gfloat *Kq, gint nqk, gint nK, gint N, gfloat s0, gfloat t0, gfloat *w)</td></tr>
+<tr class="memdesc:ga47009af7ed32148350cebea1cf7f631f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculating weights for evaluation of self-induced Laplace potential on triangular element using singular quadrature.  <a href="#ga47009af7ed32148350cebea1cf7f631f">More...</a><br /></td></tr>
+<tr class="separator:ga47009af7ed32148350cebea1cf7f631f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaab052a7e665fe37b09bfaa67c8bfefe4"><td class="memItemLeft" align="right" valign="top">gint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__laplace.html#gaab052a7e665fe37b09bfaa67c8bfefe4">sqt_laplace_source_target_tri_basic_f</a> (gfloat *xse, gint xsstr, gint nse, gfloat *q, gint nq, gfloat *Kq, gint nqk, gint nK, gfloat *xte, gint xtstr, gint nte, gfloat *s, gint sstr, gfloat *t, gint tstr, gint nt, gfloat *Ast)</td></tr>
+<tr class="memdesc:gaab052a7e665fe37b09bfaa67c8bfefe4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculating weights for evaluation of Laplace potential on target triangular element from source triangular element using standard quadrature.  <a href="#gaab052a7e665fe37b09bfaa67c8bfefe4">More...</a><br /></td></tr>
+<tr class="separator:gaab052a7e665fe37b09bfaa67c8bfefe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7c7fd2e9365b6c10a28632ff935ded82"><td class="memItemLeft" align="right" valign="top">gint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__laplace.html#ga7c7fd2e9365b6c10a28632ff935ded82">sqt_laplace_source_target_tri_adaptive_f</a> (gfloat *xse, gint xsstr, gint nse, gfloat *q, gint nq, gfloat *Kq, gint nqk, gint nK, gfloat tol, gint dmax, gfloat *xte, gint xtstr, gint nte, gfloat *s, gint sstr, gfloat *t, gint tstr, gint nt, gfloat *Ast)</td></tr>
+<tr class="memdesc:ga7c7fd2e9365b6c10a28632ff935ded82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculating weights for evaluation of Laplace potential on target triangular element from source triangular element using adaptive quadrature.  <a href="#ga7c7fd2e9365b6c10a28632ff935ded82">More...</a><br /></td></tr>
+<tr class="separator:ga7c7fd2e9365b6c10a28632ff935ded82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad78ef75b266ae6829edd76b4e0b95c51"><td class="memItemLeft" align="right" valign="top">gint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__laplace.html#gad78ef75b266ae6829edd76b4e0b95c51">sqt_laplace_source_target_tri_self_f</a> (gfloat *xe, gint xstr, gint ne, gfloat *Kq, gint nqk, gint nK, gint N, gfloat *s, gint sstr, gfloat *t, gint tstr, gint nt, gfloat *Ast)</td></tr>
+<tr class="memdesc:gad78ef75b266ae6829edd76b4e0b95c51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculating weights for evaluation of self-induced Laplace potential on triangular element using singular integral rules.  <a href="#gad78ef75b266ae6829edd76b4e0b95c51">More...</a><br /></td></tr>
+<tr class="separator:gad78ef75b266ae6829edd76b4e0b95c51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Specialized functions for Laplace evaluation. </p>
+<h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="ga8c7a065afad372a4f7d2cd75fdb504a9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">gint sqt_laplace_source_target_tri_adaptive </td>
+          <td>(</td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>xse</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>xsstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nse</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>q</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>Kq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nqk</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nK</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble&#160;</td>
+          <td class="paramname"><em>tol</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>dmax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>xte</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>xtstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nte</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>sstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>tstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>Ast</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculating weights for evaluation of Laplace potential on target triangular element from source triangular element using adaptive quadrature. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xse</td><td>source element nodes as three packed real numbers </td></tr>
+    <tr><td class="paramname">xsstr</td><td>stride between source element nodes </td></tr>
+    <tr><td class="paramname">nse</td><td>number of source element nodes </td></tr>
+    <tr><td class="paramname">q</td><td>nodes and weights of a triangular quadrature rule </td></tr>
+    <tr><td class="paramname">nq</td><td>number of nodes in <em>q</em> </td></tr>
+    <tr><td class="paramname">Kq</td><td>Koornwinder interpolation matrix for <em>xse</em> from sqt_koornwinder_interp_matrix(...) </td></tr>
+    <tr><td class="paramname">nqk</td><td>number of Koornwinder interpolation nodes </td></tr>
+    <tr><td class="paramname">nK</td><td>maximum order of Koornwinder polynomial </td></tr>
+    <tr><td class="paramname">tol</td><td>convergence tolerance for adaptive quadrature </td></tr>
+    <tr><td class="paramname">dmax</td><td>maximum recursion depth </td></tr>
+    <tr><td class="paramname">xte</td><td>target element nodes as three packed real numbers </td></tr>
+    <tr><td class="paramname">xtstr</td><td>stride between target element nodes </td></tr>
+    <tr><td class="paramname">nte</td><td>number of target element nodes </td></tr>
+    <tr><td class="paramname">s</td><td>local coordinates of evaluation points on <em>xte</em> </td></tr>
+    <tr><td class="paramname">sstr</td><td>stride in <em>s</em> </td></tr>
+    <tr><td class="paramname">t</td><td>local coordinates of evaluation points on <em>xte</em> </td></tr>
+    <tr><td class="paramname">tstr</td><td>stride in <em>t</em> </td></tr>
+    <tr><td class="paramname">nt</td><td>number of evaluation points on <em>xte</em> </td></tr>
+    <tr><td class="paramname">Ast</td><td>on exit contains matrix for evaluation of single and double layer potentials generated by source element on target</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ga7c7fd2e9365b6c10a28632ff935ded82"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">gint sqt_laplace_source_target_tri_adaptive_f </td>
+          <td>(</td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>xse</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>xsstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nse</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>q</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>Kq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nqk</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nK</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat&#160;</td>
+          <td class="paramname"><em>tol</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>dmax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>xte</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>xtstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nte</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>sstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>tstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>Ast</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculating weights for evaluation of Laplace potential on target triangular element from source triangular element using adaptive quadrature. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xse</td><td>source element nodes as three packed real numbers </td></tr>
+    <tr><td class="paramname">xsstr</td><td>stride between source element nodes </td></tr>
+    <tr><td class="paramname">nse</td><td>number of source element nodes </td></tr>
+    <tr><td class="paramname">q</td><td>nodes and weights of a triangular quadrature rule </td></tr>
+    <tr><td class="paramname">nq</td><td>number of nodes in <em>q</em> </td></tr>
+    <tr><td class="paramname">Kq</td><td>Koornwinder interpolation matrix for <em>xse</em> from sqt_koornwinder_interp_matrix_f(...) </td></tr>
+    <tr><td class="paramname">nqk</td><td>number of Koornwinder interpolation nodes </td></tr>
+    <tr><td class="paramname">nK</td><td>maximum order of Koornwinder polynomial </td></tr>
+    <tr><td class="paramname">tol</td><td>convergence tolerance for adaptive quadrature </td></tr>
+    <tr><td class="paramname">dmax</td><td>maximum recursion depth </td></tr>
+    <tr><td class="paramname">xte</td><td>target element nodes as three packed real numbers </td></tr>
+    <tr><td class="paramname">xtstr</td><td>stride between target element nodes </td></tr>
+    <tr><td class="paramname">nte</td><td>number of target element nodes </td></tr>
+    <tr><td class="paramname">s</td><td>local coordinates of evaluation points on <em>xte</em> </td></tr>
+    <tr><td class="paramname">sstr</td><td>stride in <em>s</em> </td></tr>
+    <tr><td class="paramname">t</td><td>local coordinates of evaluation points on <em>xte</em> </td></tr>
+    <tr><td class="paramname">tstr</td><td>stride in <em>t</em> </td></tr>
+    <tr><td class="paramname">nt</td><td>number of evaluation points on <em>xte</em> </td></tr>
+    <tr><td class="paramname">Ast</td><td>on exit contains matrix for evaluation of single and double layer potentials generated by source element on target</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ga86adbd2998687ec1e656d7d4f7cae9f2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">gint sqt_laplace_source_target_tri_basic </td>
+          <td>(</td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>xse</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>xsstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nse</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>q</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>Kq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nqk</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nK</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>xte</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>xtstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nte</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>sstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>tstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>Ast</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculating weights for evaluation of Laplace potential on target triangular element from source triangular element using standard quadrature. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xse</td><td>source element nodes as three packed real numbers </td></tr>
+    <tr><td class="paramname">xsstr</td><td>stride between source element nodes </td></tr>
+    <tr><td class="paramname">nse</td><td>number of source element nodes </td></tr>
+    <tr><td class="paramname">q</td><td>nodes and weights of a triangular quadrature rule </td></tr>
+    <tr><td class="paramname">nq</td><td>number of nodes in <em>q</em> </td></tr>
+    <tr><td class="paramname">Kq</td><td>Koornwinder interpolation matrix for <em>xse</em> from sqt_koornwinder_interp_matrix(...) </td></tr>
+    <tr><td class="paramname">nqk</td><td>number of Koornwinder interpolation nodes </td></tr>
+    <tr><td class="paramname">nK</td><td>maximum order of Koornwinder polynomial </td></tr>
+    <tr><td class="paramname">xte</td><td>target element nodes as three packed real numbers </td></tr>
+    <tr><td class="paramname">xtstr</td><td>stride between target element nodes </td></tr>
+    <tr><td class="paramname">nte</td><td>number of target element nodes </td></tr>
+    <tr><td class="paramname">s</td><td>local coordinates of evaluation points on <em>xte</em> </td></tr>
+    <tr><td class="paramname">sstr</td><td>stride in <em>s</em> </td></tr>
+    <tr><td class="paramname">t</td><td>local coordinates of evaluation points on <em>xte</em> </td></tr>
+    <tr><td class="paramname">tstr</td><td>stride in <em>t</em> </td></tr>
+    <tr><td class="paramname">nt</td><td>number of evaluation points on <em>xte</em> </td></tr>
+    <tr><td class="paramname">Ast</td><td>on exit contains matrix for evaluation of single and double layer potentials generated by source element on target</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="gaab052a7e665fe37b09bfaa67c8bfefe4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">gint sqt_laplace_source_target_tri_basic_f </td>
+          <td>(</td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>xse</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>xsstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nse</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>q</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>Kq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nqk</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nK</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>xte</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>xtstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nte</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>sstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>tstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>Ast</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculating weights for evaluation of Laplace potential on target triangular element from source triangular element using standard quadrature. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xse</td><td>source element nodes as three packed real numbers </td></tr>
+    <tr><td class="paramname">xsstr</td><td>stride between source element nodes </td></tr>
+    <tr><td class="paramname">nse</td><td>number of source element nodes </td></tr>
+    <tr><td class="paramname">q</td><td>nodes and weights of a triangular quadrature rule </td></tr>
+    <tr><td class="paramname">nq</td><td>number of nodes in <em>q</em> </td></tr>
+    <tr><td class="paramname">Kq</td><td>Koornwinder interpolation matrix for <em>xse</em> from sqt_koornwinder_interp_matrix_f(...) </td></tr>
+    <tr><td class="paramname">nqk</td><td>number of Koornwinder interpolation nodes </td></tr>
+    <tr><td class="paramname">nK</td><td>maximum order of Koornwinder polynomial </td></tr>
+    <tr><td class="paramname">xte</td><td>target element nodes as three packed real numbers </td></tr>
+    <tr><td class="paramname">xtstr</td><td>stride between target element nodes </td></tr>
+    <tr><td class="paramname">nte</td><td>number of target element nodes </td></tr>
+    <tr><td class="paramname">s</td><td>local coordinates of evaluation points on <em>xte</em> </td></tr>
+    <tr><td class="paramname">sstr</td><td>stride in <em>s</em> </td></tr>
+    <tr><td class="paramname">t</td><td>local coordinates of evaluation points on <em>xte</em> </td></tr>
+    <tr><td class="paramname">tstr</td><td>stride in <em>t</em> </td></tr>
+    <tr><td class="paramname">nt</td><td>number of evaluation points on <em>xte</em> </td></tr>
+    <tr><td class="paramname">Ast</td><td>on exit contains matrix for evaluation of single and double layer potentials generated by source element on target</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ga81ac92eba9c819dce05fa2ee460817f2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">gint sqt_laplace_source_target_tri_self </td>
+          <td>(</td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>xe</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>xstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>ne</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>Kq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nqk</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nK</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>N</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>sstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>tstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>Ast</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculating weights for evaluation of self-induced Laplace potential on triangular element using singular integral rules. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xe</td><td>element nodes as three packed real numbers </td></tr>
+    <tr><td class="paramname">xstr</td><td>stride between element nodes </td></tr>
+    <tr><td class="paramname">ne</td><td>number of element nodes </td></tr>
+    <tr><td class="paramname">Kq</td><td>Koornwinder interpolation matrix for <em>xse</em> from sqt_koornwinder_interp_matrix(...) </td></tr>
+    <tr><td class="paramname">nqk</td><td>number of Koornwinder interpolation nodes </td></tr>
+    <tr><td class="paramname">nK</td><td>maximum order of Koornwinder polynomial </td></tr>
+    <tr><td class="paramname">N</td><td>order of integration method </td></tr>
+    <tr><td class="paramname">s</td><td>local coordinates of evaluation points on <em>xe</em> </td></tr>
+    <tr><td class="paramname">sstr</td><td>stride in <em>s</em> </td></tr>
+    <tr><td class="paramname">t</td><td>local coordinates of evaluation points on <em>xe</em> </td></tr>
+    <tr><td class="paramname">tstr</td><td>stride in <em>t</em> </td></tr>
+    <tr><td class="paramname">nt</td><td>number of evaluation points on <em>xe</em> </td></tr>
+    <tr><td class="paramname">Ast</td><td>on exit contains matrix for evaluation of single and double layer potentials on element</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="gad78ef75b266ae6829edd76b4e0b95c51"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">gint sqt_laplace_source_target_tri_self_f </td>
+          <td>(</td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>xe</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>xstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>ne</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>Kq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nqk</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nK</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>N</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>sstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>tstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>Ast</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculating weights for evaluation of self-induced Laplace potential on triangular element using singular integral rules. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xe</td><td>element nodes as three packed real numbers </td></tr>
+    <tr><td class="paramname">xstr</td><td>stride between element nodes </td></tr>
+    <tr><td class="paramname">ne</td><td>number of element nodes </td></tr>
+    <tr><td class="paramname">Kq</td><td>Koornwinder interpolation matrix for <em>xse</em> from sqt_koornwinder_interp_matrix_f(...) </td></tr>
+    <tr><td class="paramname">nqk</td><td>number of Koornwinder interpolation nodes </td></tr>
+    <tr><td class="paramname">nK</td><td>maximum order of Koornwinder polynomial </td></tr>
+    <tr><td class="paramname">N</td><td>order of integration method </td></tr>
+    <tr><td class="paramname">s</td><td>local coordinates of evaluation points on <em>xe</em> </td></tr>
+    <tr><td class="paramname">sstr</td><td>stride in <em>s</em> </td></tr>
+    <tr><td class="paramname">t</td><td>local coordinates of evaluation points on <em>xe</em> </td></tr>
+    <tr><td class="paramname">tstr</td><td>stride in <em>t</em> </td></tr>
+    <tr><td class="paramname">nt</td><td>number of evaluation points on <em>xe</em> </td></tr>
+    <tr><td class="paramname">Ast</td><td>on exit contains matrix for evaluation of single and double layer potentials on element</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ga132329beff6a564ba45533ccbfdb97e4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">gint sqt_laplace_weights_tri_adaptive </td>
+          <td>(</td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>xe</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>xstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>ne</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>q</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>Kq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nqk</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nK</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble&#160;</td>
+          <td class="paramname"><em>tol</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>dmax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>w</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculating weights for evaluation of Laplace potential from triangular element using adaptive quadrature. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xe</td><td>element nodes as three packed real numbers </td></tr>
+    <tr><td class="paramname">xstr</td><td>stride between nodes </td></tr>
+    <tr><td class="paramname">ne</td><td>number of nodes </td></tr>
+    <tr><td class="paramname">q</td><td>nodes and weights of a triangular quadrature rule </td></tr>
+    <tr><td class="paramname">nq</td><td>number of nodes in <em>q</em> </td></tr>
+    <tr><td class="paramname">Kq</td><td>Koornwinder interpolation matrix from sqt_koornwinder_interp_matrix(...) </td></tr>
+    <tr><td class="paramname">nqk</td><td>number of Koornwinder interpolation nodes </td></tr>
+    <tr><td class="paramname">nK</td><td>maximum order of Koornwinder polynomial </td></tr>
+    <tr><td class="paramname">tol</td><td>convergence tolerance for adaptive quadrature </td></tr>
+    <tr><td class="paramname">dmax</td><td>maximum recursion depth for adaptive quadrature </td></tr>
+    <tr><td class="paramname">x</td><td>field point </td></tr>
+    <tr><td class="paramname">w</td><td>on exit contains weights for Laplace potential at <em>x</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ga80d50608dcd59d5ebd0c7bd45c02c4fb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">gint sqt_laplace_weights_tri_adaptive_f </td>
+          <td>(</td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>xe</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>xstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>ne</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>q</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>Kq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nqk</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nK</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat&#160;</td>
+          <td class="paramname"><em>tol</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>dmax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>w</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculating weights for evaluation of Laplace potential from triangular element using adaptive quadrature. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xe</td><td>element nodes as three packed real numbers </td></tr>
+    <tr><td class="paramname">xstr</td><td>stride between nodes </td></tr>
+    <tr><td class="paramname">ne</td><td>number of nodes </td></tr>
+    <tr><td class="paramname">q</td><td>nodes and weights of a triangular quadrature rule </td></tr>
+    <tr><td class="paramname">nq</td><td>number of nodes in <em>q</em> </td></tr>
+    <tr><td class="paramname">Kq</td><td>Koornwinder interpolation matrix from sqt_koornwinder_interp_matrix_f(...) </td></tr>
+    <tr><td class="paramname">nqk</td><td>number of Koornwinder interpolation nodes </td></tr>
+    <tr><td class="paramname">nK</td><td>maximum order of Koornwinder polynomial </td></tr>
+    <tr><td class="paramname">tol</td><td>convergence tolerance for adaptive quadrature </td></tr>
+    <tr><td class="paramname">dmax</td><td>maximum recursion depth for adaptive quadrature </td></tr>
+    <tr><td class="paramname">x</td><td>field point </td></tr>
+    <tr><td class="paramname">w</td><td>on exit contains weights for Laplace potential at <em>x</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="gaa6affb713e6d19b1eedfae17e5033c86"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">gint sqt_laplace_weights_tri_basic </td>
+          <td>(</td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>xe</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>xstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>ne</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>q</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>Kq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nqk</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nK</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>w</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculating weights for evaluation of Laplace potential from triangular element using standard quadrature. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xe</td><td>element nodes as three packed real numbers </td></tr>
+    <tr><td class="paramname">xstr</td><td>stride between nodes </td></tr>
+    <tr><td class="paramname">ne</td><td>number of nodes </td></tr>
+    <tr><td class="paramname">q</td><td>nodes and weights of a triangular quadrature rule </td></tr>
+    <tr><td class="paramname">nq</td><td>number of nodes in <em>q</em> </td></tr>
+    <tr><td class="paramname">Kq</td><td>Koornwinder interpolation matrix from sqt_koornwinder_interp_matrix(...) </td></tr>
+    <tr><td class="paramname">nqk</td><td>number of Koornwinder interpolation nodes </td></tr>
+    <tr><td class="paramname">nK</td><td>maximum order of Koornwinder polynomial </td></tr>
+    <tr><td class="paramname">x</td><td>field point </td></tr>
+    <tr><td class="paramname">w</td><td>on exit contains weights for Laplace potential at <em>x</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="gac091fc7b0a79abfce87f0f85962f0114"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">gint sqt_laplace_weights_tri_basic_f </td>
+          <td>(</td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>xe</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>xstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>ne</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>q</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>Kq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nqk</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nK</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>w</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculating weights for evaluation of Laplace potential from triangular element using standard quadrature. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xe</td><td>element nodes as three packed real numbers </td></tr>
+    <tr><td class="paramname">xstr</td><td>stride between nodes </td></tr>
+    <tr><td class="paramname">ne</td><td>number of nodes </td></tr>
+    <tr><td class="paramname">q</td><td>nodes and weights of a triangular quadrature rule </td></tr>
+    <tr><td class="paramname">nq</td><td>number of nodes in <em>q</em> </td></tr>
+    <tr><td class="paramname">Kq</td><td>Koornwinder interpolation matrix from sqt_koornwinder_interp_matrix_f(...) </td></tr>
+    <tr><td class="paramname">nqk</td><td>number of Koornwinder interpolation nodes </td></tr>
+    <tr><td class="paramname">nK</td><td>maximum order of Koornwinder polynomial </td></tr>
+    <tr><td class="paramname">x</td><td>field point </td></tr>
+    <tr><td class="paramname">w</td><td>on exit contains weights for Laplace potential at <em>x</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ga4d2ce7fcee04d5237e180beeb900cd19"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">gint sqt_laplace_weights_tri_singular </td>
+          <td>(</td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>xe</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>xstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>ne</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>Kq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nqk</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nK</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>N</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble&#160;</td>
+          <td class="paramname"><em>s0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble&#160;</td>
+          <td class="paramname"><em>t0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>w</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculating weights for evaluation of self-induced Laplace potential on triangular element using singular quadrature. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xe</td><td>element nodes as three packed real numbers </td></tr>
+    <tr><td class="paramname">xstr</td><td>stride between nodes </td></tr>
+    <tr><td class="paramname">ne</td><td>number of nodes </td></tr>
+    <tr><td class="paramname">Kq</td><td>Koornwinder interpolation matrix from sqt_koornwinder_interp_matrix(...) </td></tr>
+    <tr><td class="paramname">nqk</td><td>number of Koornwinder interpolation nodes </td></tr>
+    <tr><td class="paramname">nK</td><td>maximum order of Koornwinder polynomial </td></tr>
+    <tr><td class="paramname">N</td><td>order of integration rules </td></tr>
+    <tr><td class="paramname">s0</td><td>local coordinate of evaluation point on <em>xe</em> </td></tr>
+    <tr><td class="paramname">t0</td><td>local coordinate of evaluation point on <em>xe</em> </td></tr>
+    <tr><td class="paramname">w</td><td>on exit contains weights for Laplace potential at <em>x</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ga47009af7ed32148350cebea1cf7f631f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">gint sqt_laplace_weights_tri_singular_f </td>
+          <td>(</td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>xe</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>xstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>ne</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>Kq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nqk</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nK</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>N</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat&#160;</td>
+          <td class="paramname"><em>s0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat&#160;</td>
+          <td class="paramname"><em>t0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>w</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculating weights for evaluation of self-induced Laplace potential on triangular element using singular quadrature. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xe</td><td>element nodes as three packed real numbers </td></tr>
+    <tr><td class="paramname">xstr</td><td>stride between nodes </td></tr>
+    <tr><td class="paramname">ne</td><td>number of nodes </td></tr>
+    <tr><td class="paramname">Kq</td><td>Koornwinder interpolation matrix from sqt_koornwinder_interp_matrix_f(...) </td></tr>
+    <tr><td class="paramname">nqk</td><td>number of Koornwinder interpolation nodes </td></tr>
+    <tr><td class="paramname">nK</td><td>maximum order of Koornwinder polynomial </td></tr>
+    <tr><td class="paramname">N</td><td>order of integration rules </td></tr>
+    <tr><td class="paramname">s0</td><td>local coordinate of evaluation point on <em>xe</em> </td></tr>
+    <tr><td class="paramname">t0</td><td>local coordinate of evaluation point on <em>xe</em> </td></tr>
+    <tr><td class="paramname">w</td><td>on exit contains weights for Laplace potential at <em>x</em> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success. </dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jan 8 2021 11:10:01 for SQT by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jan 27 2021 10:36:54 for SQT by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

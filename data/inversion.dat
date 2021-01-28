@@ -1,0 +1,10 @@
+3
+
+0.6465777918 -0.5133754412 -0.5642542118
+0.5133754412 -0.5642542118 -0.6465777918
+0.5877852523 -0.4253254042 -0.6881909602
+
+0 0 0
+
+## flat triangle which generates a clockwise orientation under
+## transformation
