@@ -67,10 +67,17 @@ gint sqt_element_nearest_point_f(gfloat *xe, gint xstr,
 				 gfloat *sn, gfloat *tn, 
 				 gfloat *xn, gfloat tol,
 				 gint nimax, gfloat *kn) ;
-gint sqt_koornwinder_nm(gint N, gdouble u, gdouble v, gint str, gint imax,
-			gdouble *Knm) ;
-gint sqt_koornwinder_nm_f(gint N, gfloat u, gfloat v, gint str, gint imax,
-			  gfloat *Knm) ;
+gint sqt_koornwinder_nm(gint N, gdouble u, gdouble v, double *Knm, gint str) ;
+gint sqt_koornwinder_nm_f(gint N, gfloat u, gfloat v, gfloat *Knm, gint str) ;
+
+gint sqt_koornwinder_deriv_nm(gint N, gdouble u, gdouble v,
+			      gdouble *K , gint kstr,
+			      gdouble *Ku, gint ustr,
+			      gdouble *Kv, gint vstr) ;
+gint sqt_koornwinder_deriv_nm_f(gint N, gfloat u, gfloat v,
+				gfloat *K , gint kstr,
+				gfloat *Ku, gint ustr,
+				gfloat *Kv, gint vstr) ;
 
 gint sqt_koornwinder_interp_matrix(gdouble *q, gint nq, gdouble *A) ;
 gint sqt_koornwinder_interp_matrix_f(gfloat *q, gint nq, gfloat *A) ;

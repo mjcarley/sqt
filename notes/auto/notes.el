@@ -9,9 +9,14 @@
     "art12"
     "amsmath"
     "times")
+   (TeX-add-symbols
+    '("ppoly" 3))
    (LaTeX-add-labels
     "equ:koornwinder:1"
     "equ:jacobi:1"
-    "equ:legendre"))
+    "equ:jacobi:3"
+    "equ:legendre"
+    "equ:kw:otv"
+    "equ:pnm011"))
  :latex)
 

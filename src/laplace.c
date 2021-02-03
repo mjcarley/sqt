@@ -43,7 +43,7 @@ static gint laplace_quad_weights(SQT_REAL s, SQT_REAL t,
   gint i1 = 1 ;
 
   /*Koornwinder polynomials at evaluation point*/
-  SQT_FUNCTION_NAME(sqt_koornwinder_nm)(Nk, s, t, 1, nq, Knm) ;
+  SQT_FUNCTION_NAME(sqt_koornwinder_nm)(Nk, s, t, Knm, 1) ;
   R = sqt_vector_distance(x, y) ;
 
   G = 0.25*M_1_PI/R ;

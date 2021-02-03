@@ -39,9 +39,26 @@ gchar *tests[] = {"closest_point",
 		  "matrix_adaptive",
 		  "matrix_self",
 		  "element_interpolation",
+		  "spherical",
+		  "koornwinder_derivatives",
 		  ""} ;
 
 GTimer *timer ;
+
+static gint invert2x2(SQT_REAL *A, SQT_REAL *Ai)
+
+{
+  SQT_REAL det ;
+
+  det = A[0]*A[3] - A[1]*A[2] ;
+
+  Ai[0] =  A[3]/det ; Ai[1] = -A[1]/det ;
+  Ai[2] = -A[2]/det ; Ai[3] =  A[0]/det ;
+
+  det = A[0]*A[3] - A[1]*A[2] ;
+
+  return 0 ;
+}
 
 static gint parse_test(gchar *arg)
 
@@ -137,7 +154,7 @@ static gint koornwinder_test(gint N, gdouble u, gdouble v)
 
   str = 3 ;
   
-  sqt_koornwinder_nm(N, u, v, str, 8192, Knm) ;
+  sqt_koornwinder_nm(N, u, v, Knm, str) ;
 
   for ( n = 0 ; n <= N ; n ++ ) {
     for ( m = 0 ; m <= n ; m ++ ) {
@@ -147,6 +164,65 @@ static gint koornwinder_test(gint N, gdouble u, gdouble v)
     }
   }
 
+  return 0 ;
+}
+
+static gint koornwinder_derivatives_test(gint N, gdouble u, gdouble v)
+
+{
+  gdouble K[1024], Ku[1024], Kv[1024], eK, eu, ev, ee ;
+  gdouble K0[1024], Kup1[1024], Kum1[1024], Kvp1[1024], Kvm1[1024] ;
+  gint n, m, str, kstr, ustr, vstr, idx ;
+
+  fprintf(stderr, "koornwinder derivatives test\n") ;
+  fprintf(stderr, "============================\n") ;
+
+  fprintf(stderr, "N = %d\n", N) ;
+  fprintf(stderr, "(u,v) = (%lg,%lg)\n", u, v) ;
+
+  ee = 1e-6 ;
+  
+  str = 3 ;
+
+  kstr = 4 ; ustr = 2 ; vstr = 3 ;
+  
+  sqt_koornwinder_nm(N, u, v, K0, str) ;
+
+  sqt_koornwinder_nm(N, u+0.5*ee, v       , Kup1, str) ;
+  sqt_koornwinder_nm(N, u-0.5*ee, v       , Kum1, str) ;
+  sqt_koornwinder_nm(N, u       , v+0.5*ee, Kvp1, str) ;
+  sqt_koornwinder_nm(N, u       , v-0.5*ee, Kvm1, str) ;
+
+  for ( n = 0 ; n <= N ; n ++ ) {
+    for ( m = 0 ; m <= n ; m ++ ) {
+      idx = n*(n+1)/2 + m ;
+      Kup1[str*idx] = (Kup1[str*idx] - Kum1[str*idx])/ee ;
+      Kvp1[str*idx] = (Kvp1[str*idx] - Kvm1[str*idx])/ee ;
+    }
+  }
+  
+  sqt_koornwinder_deriv_nm(N, u, v, K, kstr, Ku, ustr, Kv, vstr) ;
+
+  eK = eu = ev = 0.0 ;
+  for ( n = 0 ; n <= N ; n ++ ) {
+    for ( m = 0 ; m <= n ; m ++ ) {
+      idx = n*(n+1)/2 + m ;
+      eK = MAX(eK, fabs(K0[str*idx]-K[kstr*idx])) ;
+      eu = MAX(eu, fabs(Kup1[str*idx]-Ku[ustr*idx])) ;
+      ev = MAX(ev, fabs(Kvp1[str*idx]-Kv[vstr*idx])) ;
+      fprintf(stdout,
+      	      "%d %d %lg %lg %lg %lg %lg %lg %lg %lg\n",
+      	      n, m, u, v,
+	      K0[str*idx], K[kstr*idx],
+	      Kup1[str*idx], Ku[ustr*idx],
+	      Kvp1[str*idx], Kv[vstr*idx]) ;
+    }
+  }
+
+  fprintf(stderr, "error K : %lg\n", eK) ;
+  fprintf(stderr, "error Ku: %lg\n", eu) ;
+  fprintf(stderr, "error Kv: %lg\n", ev) ;
+  
   return 0 ;
 }
 
@@ -182,7 +258,7 @@ static gint koornwinder_orthogonality_test(gint N)
 	    t = q[3*i+1] ;
 	    w = q[3*i+2] ; 
 	    
-	    sqt_koornwinder_nm(N, s, t, str, 8192, Knm) ;
+	    sqt_koornwinder_nm(N, s, t, Knm, str) ;
 	    
 	    I += Knm[str*idx1]*Knm[str*idx2]*w ;
 	  }
@@ -233,7 +309,7 @@ static gint koornwinder_interpolation_test(gint N, gint nq)
 
   for ( s = 0 ; s <= 1.0 ; s += 0.1 ) {
     for ( t = 0 ; t <= 1.0-s ; t += 0.1 ) {
-      sqt_koornwinder_nm(N, s, t, 1, nq, Knm) ;
+      sqt_koornwinder_nm(N, s, t, Knm, 1) ;
 
       f = blaswrap_ddot(nq, c, i1, Knm, i1) ;
       /* fr = 3.0*s*t - t*t ; */
@@ -246,7 +322,8 @@ static gint koornwinder_interpolation_test(gint N, gint nq)
   return 0 ;
 }
 
-static gint stellarator(gdouble u, gdouble v, gdouble *x)
+static gint stellarator(gdouble u, gdouble v, gdouble *x,
+			gdouble *xu, gdouble *xv)
 
 /*
   stellarator geometry from Greengard et al.
@@ -263,13 +340,26 @@ static gint stellarator(gdouble u, gdouble v, gdouble *x)
   gdouble i, j, dij ;
   gint k ;
 
-  x[0] = x[1] = x[2] = 0.0 ;
+  x [0] = x [1] = x [2] = 0.0 ;
+  xu[0] = xu[1] = xu[2] = 0.0 ;
+  xv[0] = xv[1] = xv[2] = 0.0 ;
 
   for ( k = 0 ; k < 7 ; k ++ ) {
     i = d[3*k+0] ; j = d[3*k+1] ; dij = d[3*k+2] ;
     x[0] += dij*cos(v)*cos((1.0-i)*u + j*v) ;
     x[1] += dij*sin(v)*cos((1.0-i)*u + j*v) ;
     x[2] += dij*       sin((1.0-i)*u + j*v) ;
+
+    xu[0] += -(1.0-i)*dij*cos(v)*sin((1.0-i)*u + j*v) ;
+    xu[1] += -(1.0-i)*dij*sin(v)*sin((1.0-i)*u + j*v) ;
+    xu[2] +=  (1.0-i)*dij*       cos((1.0-i)*u + j*v) ;
+
+    xv[0] +=
+      dij*(-sin(v)*cos((1.0-i)*u + j*v) - j*cos(v)*sin((1.0-i)*u + j*v)) ;
+    xv[1] +=
+      dij*(cos(v)*cos((1.0-i)*u + j*v) - j*sin(v)*sin((1.0-i)*u + j*v)) ;
+    xv[2] +=
+      dij*j*cos((1.0-i)*u + j*v) ;
   }
   
   return 0 ;
@@ -280,8 +370,10 @@ static gint element_interpolation_test(gint N, gint nq)
 {
   gint order, i, i1 = 1, i2 = 2, i3 = 3, xstr ;
   gdouble s, t, Knm[32768], K[4*65536], *q, f, fr, fi[512], al, bt, c[512] ;
-  gdouble ui[3], vi[3], xi[453*4], ci[453*3], u, v, x[3], y[3] ;
-  gdouble emax ;
+  gdouble Ks[32768], Kt[32768] ;
+  gdouble ui[3], vi[3], xi[453*4], ci[453*3], u, v, x[3], xu[3], xv[3] ;
+  gdouble y[3], yu[3], yv[3], ys[3], yt[3], us, ut, A[4], Ai[4] ;
+  gdouble emax, eumax, evmax ;
   
   fprintf(stderr, "element interpolation test\n") ;
   fprintf(stderr, "==========================\n") ;
@@ -293,8 +385,8 @@ static gint element_interpolation_test(gint N, gint nq)
 
   fprintf(stderr, "Knm N max: %d\n", N) ;
 
-  ui[0] = 0.5 ; ui[1] = 0.7  ; ui[2] = 0.6 ;
-  vi[0] = 0.1 ; vi[1] = 0.12 ; vi[2] = 0.4 ;
+  ui[0] = 0.3 ; ui[1] = 0.4  ; ui[2] = 0.35 ;
+  vi[0] = 0.1 ; vi[1] = 0.1 ; vi[2] = 0.2 ;
 
   xstr = 4 ;
   for ( i = 0 ; i < nq ; i ++ ) {
@@ -303,8 +395,113 @@ static gint element_interpolation_test(gint N, gint nq)
     u = ui[0]*(1.0 - s - t) + ui[1]*s + ui[2]*t ;
     v = vi[0]*(1.0 - s - t) + vi[1]*s + vi[2]*t ;
 
-    stellarator(u, v, &(xi[i*xstr])) ;
+    stellarator(u, v, &(xi[i*xstr]), xu, xv) ;
   }
+
+  /*compute the interpolation coefficients*/
+  al = 1.0 ; bt = 0.0 ;
+  blaswrap_dgemm(FALSE, FALSE, nq, i3, nq, al, K, nq, xi, xstr, bt, ci, i3) ;
+
+  emax = eumax = evmax = 0.0 ;
+  for ( s = 0.01 ; s <= 1.0 ; s += 0.05 ) {
+    for ( t = 0.01 ; t <= 1.0 - s ; t += 0.05 ) {
+  /* { s = 0.3 ; { t = 0.1 ; */
+      u = ui[0]*(1.0 - s - t) + ui[1]*s + ui[2]*t ;
+      v = vi[0]*(1.0 - s - t) + vi[1]*s + vi[2]*t ;
+
+      A[0] = ui[1] - ui[0] ; A[1] = vi[1] - vi[0] ;
+      A[2] = ui[2] - ui[0] ; A[3] = vi[2] - vi[0] ;
+      
+      invert2x2(A, Ai) ;
+      
+      stellarator(u, v, x, xu, xv) ;
+      /* fprintf(stdout, "%lg %lg %lg ", x[0], x[1], x[2]) ; */
+      /* fprintf(stdout, "%lg %lg %lg ", xu[0], xu[1], xu[2]) ; */
+      fprintf(stdout, "%lg %lg %lg ", xv[0], xv[1], xv[2]) ;
+
+      /*interpolate using K*/
+      /* sqt_koornwinder_nm(N, s, t, Knm, 1) ; */
+      sqt_koornwinder_deriv_nm(N, s, t, Knm, 1, Ks, 1, Kt, 1) ;
+      blaswrap_dgemv(TRUE, nq, i3, al, ci, i3, Knm, i1, bt, y , i1) ;
+      blaswrap_dgemv(TRUE, nq, i3, al, ci, i3, Ks , i1, bt, ys, i1) ;
+      blaswrap_dgemv(TRUE, nq, i3, al, ci, i3, Kt , i1, bt, yt, i1) ;
+
+      yu[0] = Ai[0]*ys[0] + Ai[1]*yt[0] ;
+      yu[1] = Ai[0]*ys[1] + Ai[1]*yt[1] ;
+      yu[2] = Ai[0]*ys[2] + Ai[1]*yt[2] ;
+      
+      yv[0] = Ai[2]*ys[0] + Ai[3]*yt[0] ;
+      yv[1] = Ai[2]*ys[1] + Ai[3]*yt[1] ;
+      yv[2] = Ai[2]*ys[2] + Ai[3]*yt[2] ;
+      
+      /* fprintf(stdout, "%lg %lg %lg\n", y[0], y[1], y[2]) ; */
+      /* fprintf(stdout, "%lg %lg %lg\n", yu[0], yu[1], yu[2]) ; */
+      fprintf(stdout, "%lg %lg %lg\n", yv[0], yv[1], yv[2]) ;
+      emax = MAX(emax,
+		 (x[0]-y[0])*(x[0]-y[0]) +
+		 (x[1]-y[1])*(x[1]-y[1]) +
+		 (x[2]-y[2])*(x[2]-y[2])) ;
+      eumax = MAX(eumax,
+		  (xu[0]-yu[0])*(xu[0]-yu[0]) +
+		  (xu[1]-yu[1])*(xu[1]-yu[1]) +
+		  (xu[2]-yu[2])*(xu[2]-yu[2])) ;
+      evmax = MAX(evmax,
+		  (xv[0]-yv[0])*(xv[0]-yv[0]) +
+		  (xv[1]-yv[1])*(xv[1]-yv[1]) +
+		  (xv[2]-yv[2])*(xv[2]-yv[2])) ;
+    }
+  }
+
+  fprintf(stderr, "maximum interpolation error: %lg\n", sqrt(emax)) ;
+  fprintf(stderr, "maximum differentiation error: %lg\n", sqrt(eumax)) ;
+  fprintf(stderr, "maximum differentiation error: %lg\n", sqrt(evmax)) ;
+  
+  return 0 ;
+}
+
+static gint sphere(gdouble u, gdouble v, gdouble *x)
+
+{
+  x[0] = cos(u)*sin(v) ;
+  x[1] = sin(u)*sin(v) ;
+  x[2] =        cos(v) ;
+  
+  return 0 ;
+}
+
+static gint spherical_patch_test(gint N, gint nq)
+
+{
+  gint order, i, i1 = 1, i2 = 2, i3 = 3, xstr ;
+  gdouble s, t, Knm[32768], K[4*65536], *q, f, fr, fi[512], al, bt, c[512] ;
+  gdouble ui[3], vi[3], xi[453*4], ci[453*3], u, v, x[3], y[3] ;
+  gdouble u1, u2, v1, v2, v3 ;
+  gdouble emax ;
+  
+  fprintf(stderr, "spherical patch test\n") ;
+  fprintf(stderr, "====================\n") ;
+  fprintf(stderr, "nq = %d\n", nq) ;
+  
+  sqt_quadrature_select(nq, &q, &order) ;
+
+  N = sqt_koornwinder_interp_matrix(q, nq, K) ;
+
+  fprintf(stderr, "Knm N max: %d\n", N) ;
+
+  u1 = 0.0 ; u2 = 0.7 ;
+  v1 = 0.1 ; v2 = 0.1 ; v3 = 0.5 ;
+  
+  xstr = 4 ;
+  for ( i = 0 ; i < nq ; i ++ ) {
+    s = q[i*3+0] ; t = q[i*3+1] ;
+
+    u = u1*(1.0 - s - t) + u2*s + u2*t ;
+    v = v1*(1.0 - s - t) + v2*s + v3*t ;
+
+    sphere(u, v, &(xi[i*xstr])) ;
+  }
+  
+#if 0
 
   /*compute the interpolation coefficients*/
   al = 1.0 ; bt = 0.0 ;
@@ -316,11 +513,11 @@ static gint element_interpolation_test(gint N, gint nq)
       u = ui[0]*(1.0 - s - t) + ui[1]*s + ui[2]*t ;
       v = vi[0]*(1.0 - s - t) + vi[1]*s + vi[2]*t ;
   
-      stellarator(u, v, x) ;
+      stellarator(u, v, x, xu, xv) ;
       fprintf(stdout, "%lg %lg %lg ", x[0], x[1], x[2]) ;
 
       /*interpolate using K*/
-      sqt_koornwinder_nm(N, s, t, 1, nq, Knm) ;
+      sqt_koornwinder_nm(N, s, t, Knm, 1) ;
       blaswrap_dgemv(TRUE, nq, i3, al, ci, i3, Knm, i1, bt, y, i1) ;
       
       fprintf(stdout, "%lg %lg %lg\n", y[0], y[1], y[2]) ;
@@ -332,6 +529,7 @@ static gint element_interpolation_test(gint N, gint nq)
   }
 
   fprintf(stderr, "maximum interpolation error: %lg\n", sqrt(emax)) ;
+#endif
   
   return 0 ;
 }
@@ -883,6 +1081,18 @@ gint main(gint argc, gchar **argv)
     return 0 ;
   }
 
+  if ( test == 11 ) {
+    spherical_patch_test(N, nq) ;
+
+    return 0 ;
+  }
+
+  if ( test == 12 ) {
+    koornwinder_derivatives_test(N, s0, t0) ;
+
+    return 0 ;
+  }
+  
   read_element(input, xe, &ne, &xstr) ;
   fscanf(input, "%lg %lg %lg", &(x0[0]), &(x0[1]), &(x0[2])) ;
 	 
