@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.10.11)  2 FEB 2021 16:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.10.11)  8 FEB 2021 17:02
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -83,7 +83,7 @@ LaTeX Info: Redefining \] on input line 2924.
 (/opt/texlive-2020/texmf-dist/tex/latex/psnfss/times.sty
 Package: times 2020/03/25 PSNFSS-v9.3 (SPQR) 
 )
-LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 8
+LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 9
 .
 
 (/opt/texlive-2020/texmf-dist/tex/latex/psnfss/ot1ptm.fd
@@ -94,70 +94,53 @@ File: l3backend-pdftex.def 2020-09-24 L3 backend support: PDF output (pdfTeX)
 \l__kernel_color_stack_int=\count195
 \l__pdf_internal_box=\box49
 )
-(./notes.aux
-
-LaTeX Warning: Label `equ:jacobi:1' multiply defined.
-
-)
+(./notes.aux)
 \openout1 = `notes.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
 
-Overfull \hbox (70.08505pt too wide) detected at line 45
+Overfull \hbox (59.61508pt too wide) detected at line 58
 []
- []
-
-
-Overfull \hbox (10.51802pt too wide) in paragraph at lines 54--56
-[]\OT1/ptm/m/n/12 Differentiation of Koorn-winder poly-no-mi-als. From arXiV:18
-01.09099v1 (Olver,
  []
 
 [1
 
 {/opt/texlive-2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (49.35608pt too wide) detected at line 98
-[]
- []
-
-[2] (./notes.aux)
-
-LaTeX Warning: There were multiply-defined labels.
-
- ) 
+(./notes.aux) ) 
 Here is how much of TeX's memory you used:
- 1088 strings out of 479917
- 15151 string characters out of 5885681
- 293154 words of memory out of 5000000
- 17712 multiletter control sequences out of 15000+600000
+ 1086 strings out of 479917
+ 15127 string characters out of 5885681
+ 293160 words of memory out of 5000000
+ 17710 multiletter control sequences out of 15000+600000
  540083 words of font info for 43 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 59i,12n,66p,226b,123s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/opt/texlive-2020/texmf-dist/fonts/enc/dvips/base/8r.enc}</opt/texlive-2020/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></opt/texlive-2020/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></opt/texlive-2020/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmmi8.pfb></opt/texlive-2020/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmr12.pfb></opt/texlive-2020/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmr8.pfb></opt/texlive-2020/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmsy10.pfb></opt/texlive-2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy
-8.pfb></opt/texlive-2020/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on notes.pdf (2 pages, 78550 bytes).
+ 59i,10n,66p,226b,122s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/opt/texlive-2020/texmf-dist/fonts/enc/dvips/base/8r.enc}</opt/
+texlive-2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></opt/texlive
+-2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></opt/texlive-2020/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></opt/texlive-2020/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmr12.pfb></opt/texlive-2020/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmr8.pfb></opt/texlive-2020/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmsy10.pfb></opt/texlive-2020/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmsy8.pfb></opt/texlive-2020/texmf-dist/fonts/type1/urw/times/utmr8a.p
+fb>
+Output written on notes.pdf (1 page, 77876 bytes).
 PDF statistics:
- 44 PDF objects out of 1000 (max. 8388607)
- 31 compressed objects within 1 object stream
+ 41 PDF objects out of 1000 (max. 8388607)
+ 29 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

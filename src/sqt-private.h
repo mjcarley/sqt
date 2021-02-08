@@ -70,6 +70,14 @@
 
 #define SIGN(SQT_x) ((SQT_x) < 0 ? -1 : 1)
 
+#define sqt_invert2x2(_Ai, _A)			\
+do {						\
+  SQT_REAL _det = _A[0]*_A[3] - _A[1]*_A[2] ;	\
+						\
+  _Ai[0] =  _A[3]/_det ; _Ai[1] = -_A[1]/_det ;	\
+  _Ai[2] = -_A[2]/_det ; _Ai[3] =  _A[0]/_det ;	\
+ } while (0)
+  
 #define sqt_vector_scalar(SQT_A,SQT_B)				\
   (((SQT_A)[0])*((SQT_B)[0])+					\
    ((SQT_A)[1])*((SQT_B)[1])+					\

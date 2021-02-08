@@ -10,13 +10,12 @@
     "amsmath"
     "times")
    (TeX-add-symbols
-    '("ppoly" 3))
+    '("ppoly" 3)
+    "D")
    (LaTeX-add-labels
     "equ:koornwinder:1"
     "equ:jacobi:1"
-    "equ:jacobi:3"
     "equ:legendre"
-    "equ:kw:otv"
-    "equ:pnm011"))
+    "equ:sphere:1"))
  :latex)
 

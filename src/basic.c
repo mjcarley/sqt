@@ -55,3 +55,28 @@ gint SQT_FUNCTION_NAME(sqt_basic_quad_tri)(SQT_REAL *xe, gint xstr, gint ne,
 
   return 0 ;
 }
+
+gint SQT_FUNCTION_NAME(sqt_basic_quad_kw)(SQT_REAL *xe, gint xstr,
+					  SQT_REAL *n , gint nstr,
+					  SQT_REAL *wt, gint wstr,
+					  gint ne,
+#ifdef SQT_SINGLE_PRECISION
+					   sqt_quadrature_func_f_t func,
+#else /*SQT_SINGLE_PRECISION*/
+					   sqt_quadrature_func_t func,
+#endif /*SQT_SINGLE_PRECISION*/
+					   SQT_REAL *quad, gint nc,
+					   gpointer data)
+
+
+{
+  gint i ;
+  
+  memset(quad, 0, nc*sizeof(SQT_REAL)) ;
+
+  for ( i = 0 ; i < ne ; i ++ ) {
+    func(0, 0, wt[i*wstr], &(xe[i*xstr]), &(n [i*nstr]), quad, nc, data) ;
+  }
+
+  return 0 ;
+}

@@ -79,8 +79,14 @@ gint sqt_koornwinder_deriv_nm_f(gint N, gfloat u, gfloat v,
 				gfloat *Ku, gint ustr,
 				gfloat *Kv, gint vstr) ;
 
-gint sqt_koornwinder_interp_matrix(gdouble *q, gint nq, gdouble *A) ;
-gint sqt_koornwinder_interp_matrix_f(gfloat *q, gint nq, gfloat *A) ;
+gint sqt_koornwinder_interp_matrix(gdouble *s, gint sstr,
+				   gdouble *t, gint tstr,
+				   gdouble *w, gint wstr,
+				   gint nst, gdouble *A) ;
+gint sqt_koornwinder_interp_matrix_f(gfloat *s, gint sstr,
+				     gfloat *t, gint tstr,
+				     gfloat *w, gint wstr,
+				     gint nst, gfloat *A) ;
 
 gint sqt_adaptive_quad_tri(gdouble *xe, gint xstr, gint ne,
 			   gdouble *q, gint nq,
@@ -92,6 +98,32 @@ gint sqt_adaptive_quad_tri_f(gfloat *xe, gint xstr, gint ne,
 			     sqt_quadrature_func_f_t func,
 			     gfloat *quad, gint nc, gfloat tol, gint dmax,
 			     gpointer data) ;
+
+gint sqt_adaptive_quad_kw(gdouble *ce, gint ne, gint Nk,
+			  gdouble *q, gint nq,
+			  sqt_quadrature_func_t func,
+			  gdouble *quad, gint nc,
+			  gdouble tol, gint dmax,
+			  gpointer data) ;
+gint sqt_adaptive_quad_kw_f(gfloat *ce, gint ne, gint Nk,
+			    gfloat *q, gint nq,
+			    sqt_quadrature_func_f_t func,
+			    gfloat *quad, gint nc,
+			    gfloat tol, gint dmax,
+			    gpointer data) ;
+gint sqt_singular_quad_kw(gdouble *ce, gint ne, gint Nk,
+			  gdouble s0, gdouble t0,
+			  gint N,
+			  sqt_quadrature_func_t func,
+			  gdouble *quad, gint nc,
+			  gpointer data) ;
+gint sqt_singular_quad_kw_f(gfloat *ce, gint ne, gint Nk,
+			    gfloat s0, gfloat t0,
+			    gint N,
+			    sqt_quadrature_func_f_t func,
+			    gfloat *quad, gint nc,
+			    gpointer data) ;
+
 gint sqt_singular_quad_tri(gdouble *xe, gint xstr, gint ne,
 			   gdouble s0, gdouble t0,
 			   gint N,
@@ -204,5 +236,51 @@ gint sqt_laplace_source_target_tri_self_f(gfloat *xe, gint xstr, gint ne,
 					  gfloat *t, gint tstr,
 					  gint nt,
 					  gfloat *Ast) ;
+
+gint sqt_element_interp(gdouble *ci, gint nq, gint Nk,
+			gdouble s, gdouble t,
+			gdouble *x, gdouble *n,
+			gdouble *J, gdouble *dx, gdouble *work) ;
+gint sqt_element_interp_f(gfloat *ci, gint nq, gint Nk,
+			  gfloat s, gfloat t,
+			  gfloat *x, gfloat *n,
+			  gfloat *J, gfloat *dx, gfloat *work) ;
+
+gint sqt_geometry_stellarator(gdouble u, gdouble v, gdouble *x, gdouble *n) ;
+gint sqt_geometry_stellarator_f(gfloat u, gfloat v, gfloat *x, gfloat *n) ;
+
+gint sqt_geometry_sphere(gdouble u, gdouble v, gdouble *x,
+			 gdouble *xu, gdouble *xv) ;
+gint sqt_geometry_sphere_f(gfloat u, gfloat v, gfloat *x,
+			   gfloat *xu, gfloat *xv) ;
+
+gint sqt_patch_nodes_tri(gdouble *xe, gint xstr, gint ne,
+			 gdouble *s, gint sstr,
+			 gdouble *t, gint tstr,
+			 gint nst,
+			 gdouble *xp, gint pstr,
+			 gdouble *np, gint nstr) ;
+gint sqt_patch_nodes_tri_f(gfloat *xe, gint xstr, gint ne,
+			   gfloat *s, gint sstr,
+			   gfloat *t, gint tstr,
+			   gint nst,
+			   gfloat *xp, gint pstr,
+			   gfloat *np, gint nstr) ;
+gint sqt_patch_nodes_sphere(gdouble th0, gdouble ph0,
+			    gdouble th1, gdouble ph1,
+			    gdouble th2, gdouble ph2,
+			    gdouble *s, gint sstr,
+			    gdouble *t, gint tstr,
+			    gint nst,
+			    gdouble *xp, gint pstr,
+			    gdouble *np, gint nstr) ;
+gint sqt_patch_nodes_sphere_f(gfloat th0, gfloat ph0,
+			      gfloat th1, gfloat ph1,
+			      gfloat th2, gfloat ph2,
+			      gfloat *s, gint sstr,
+			      gfloat *t, gint tstr,
+			      gint nst,
+			      gfloat *xp, gint pstr,
+			      gfloat *np, gint nstr) ;
 
 #endif /*SQT_H_INCLUDED*/

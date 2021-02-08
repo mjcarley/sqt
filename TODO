@@ -1,0 +1,2 @@
+setting matrix and array sizes for Koornwinder polynomials (including
+extra space for unsed polynomials of a given order)
