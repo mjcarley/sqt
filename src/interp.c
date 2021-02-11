@@ -44,8 +44,8 @@ gint SQT_FUNCTION_NAME(sqt_element_interp)(SQT_REAL *ci, gint nq,
    *         J: Jacobian determinant
    *        dx: if not NULL, Jacobian matrix
    *
-   * workspace must be at least 3*(Nk+1)*(Nk+2)/2 elements for calculation
-   * of Koornwinder polynomials and derivatives
+   * workspace must be at least 3*nq elements for calculation of
+   * Koornwinder polynomials and derivatives
    */
 
 {
@@ -54,7 +54,7 @@ gint SQT_FUNCTION_NAME(sqt_element_interp)(SQT_REAL *ci, gint nq,
   
   K = work ; Ks = &(work[1]) ; Kt = &(work[2]) ;
 
-  sqt_koornwinder_deriv_nm(Nk, s, t, K, str, Ks, str, Kt, str) ;
+  sqt_koornwinder_deriv_nm(Nk, s, t, K, str, Ks, str, Kt, str, nq) ;
 #ifndef SQT_SINGLE_PRECISION
   gint i1 = 1, i3 = 3 ;
   SQT_REAL al = 1.0, bt = 0.0 ;

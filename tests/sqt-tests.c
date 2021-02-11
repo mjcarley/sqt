@@ -129,7 +129,7 @@ static gint koornwinder_test(gint N, gdouble u, gdouble v)
 
 {
   gdouble Knm[1024] ;
-  gint n, m, str ;
+  gint n, m, str, nq ;
 
   fprintf(stderr, "koornwinder test\n") ;
   fprintf(stderr, "================\n") ;
@@ -137,15 +137,17 @@ static gint koornwinder_test(gint N, gdouble u, gdouble v)
   fprintf(stderr, "N = %d\n", N) ;
   fprintf(stderr, "(u,v) = (%lg,%lg)\n", u, v) ;
 
-  str = 3 ;
+  str = 3 ; nq = 333 ;
   
-  sqt_koornwinder_nm(N, u, v, Knm, str) ;
+  sqt_koornwinder_nm(N, u, v, Knm, str, nq) ;
 
-  for ( n = 0 ; n <= N ; n ++ ) {
+  for ( n = 0 ; n < N ; n ++ ) {
     for ( m = 0 ; m <= n ; m ++ ) {
-      fprintf(stdout,
-	      "%d %d %1.16e %1.16e %1.16e\n",
-	      n, m, u, v, Knm[str*(n*(n+1)/2+m)]) ;
+      if ( n*(n+1)/2+m < nq ) {
+	fprintf(stdout,
+		"%d %d %1.16e %1.16e %1.16e\n",
+		n, m, u, v, Knm[str*(n*(n+1)/2+m)]) ;
+      }
     }
   }
 
@@ -170,13 +172,14 @@ static gint koornwinder_derivatives_test(gint N, gdouble u, gdouble v)
   str = 3 ;
 
   kstr = 4 ; ustr = 2 ; vstr = 3 ;
+  str = 1 ;
   
-  sqt_koornwinder_nm(N, u, v, K0, str) ;
+  sqt_koornwinder_nm(N, u, v, K0, str, 1024) ;
 
-  sqt_koornwinder_nm(N, u+0.5*ee, v       , Kup1, str) ;
-  sqt_koornwinder_nm(N, u-0.5*ee, v       , Kum1, str) ;
-  sqt_koornwinder_nm(N, u       , v+0.5*ee, Kvp1, str) ;
-  sqt_koornwinder_nm(N, u       , v-0.5*ee, Kvm1, str) ;
+  sqt_koornwinder_nm(N, u+0.5*ee, v       , Kup1, str, 1024) ;
+  sqt_koornwinder_nm(N, u-0.5*ee, v       , Kum1, str, 1024) ;
+  sqt_koornwinder_nm(N, u       , v+0.5*ee, Kvp1, str, 1024) ;
+  sqt_koornwinder_nm(N, u       , v-0.5*ee, Kvm1, str, 1024) ;
 
   for ( n = 0 ; n <= N ; n ++ ) {
     for ( m = 0 ; m <= n ; m ++ ) {
@@ -186,7 +189,7 @@ static gint koornwinder_derivatives_test(gint N, gdouble u, gdouble v)
     }
   }
   
-  sqt_koornwinder_deriv_nm(N, u, v, K, kstr, Ku, ustr, Kv, vstr) ;
+  sqt_koornwinder_deriv_nm(N, u, v, K, kstr, Ku, ustr, Kv, vstr, 1024) ;
 
   eK = eu = ev = 0.0 ;
   for ( n = 0 ; n <= N ; n ++ ) {
@@ -243,7 +246,7 @@ static gint koornwinder_orthogonality_test(gint N)
 	    t = q[3*i+1] ;
 	    w = q[3*i+2] ; 
 	    
-	    sqt_koornwinder_nm(N, s, t, Knm, str) ;
+	    sqt_koornwinder_nm(N, s, t, Knm, str, nq) ;
 	    
 	    I += Knm[str*idx1]*Knm[str*idx2]*w ;
 	  }
@@ -271,7 +274,7 @@ static gint koornwinder_interpolation_test(gint N, gint nq)
 
 {
   gint order, i, i1 = 1 ;
-  gdouble s, t, Knm[32768], K[453*453], *q, f, fr, fi[512], al, bt, c[512],
+  gdouble s, t, Knm[453], K[453*453], *q, f, fr, fi[512], al, bt, c[512],
     emax ;
   
   fprintf(stderr, "koornwinder interpolation test\n") ;
@@ -280,8 +283,6 @@ static gint koornwinder_interpolation_test(gint N, gint nq)
   
   sqt_quadrature_select(nq, &q, &order) ;
 
-  /* N = sqt_koornwinder_interp_matrix(q, nq, K) ; */
-  /* memset(K, 0, 453*453*sizeof(gdouble)) ; */
   N = sqt_koornwinder_interp_matrix(&(q[0]), 3, &(q[1]), 3, &(q[2]), 3, nq, K) ;
 
   fprintf(stderr, "Knm N max: %d\n", N) ;
@@ -298,7 +299,7 @@ static gint koornwinder_interpolation_test(gint N, gint nq)
   emax = 0.0 ;
   for ( s = 0 ; s <= 1.0 ; s += 0.1 ) {
     for ( t = 0 ; t <= 1.0-s ; t += 0.1 ) {
-      sqt_koornwinder_nm(N, s, t, Knm, 1) ;
+      sqt_koornwinder_nm(N, s, t, Knm, 1, nq) ;
 
       f = blaswrap_ddot(nq, c, i1, Knm, i1) ;
       /* fr = 3.0*s*t - t*t ; */
@@ -392,7 +393,8 @@ static gint spherical_quad_func(gdouble s, gdouble t, gdouble w,
   
   R = sqt_vector_distance(x, y) ;
 
-  quad[0] += w/R ;
+  quad[0] += w/R*0.25*M_1_PI ;
+  quad[1] += w/R/R*0.25*M_1_PI ;
   
   return 0 ;
 }
@@ -404,14 +406,16 @@ static gint spherical_test_func(gdouble th0, gdouble th1,
 				gdouble *quad)
 
 {
-  gdouble a, gm ;
+  gdouble a, gm, sc ;
 
+  sc = 0.25*M_1_PI ;
   gm = (ph1*th1 - ph0*th0)/(th1 - th0) ;
   a = (ph1 - ph0)/(th1 - th0) ;
 
   quad[0] = (sin(gm - a*th1) - sin(gm - a*th0))/a
     + cos(ph0)*(th1 - th0) ;
-  quad[0] *= rho*rho/rho ;
+  quad[0] *= sc*rho*rho/rho ;
+  quad[1]  = quad[0]/rho ;
   
   return 0 ;
 }
@@ -419,11 +423,11 @@ static gint spherical_test_func(gdouble th0, gdouble th1,
 static gint spherical_patch_test(gint N, gint nq, gint depth, gdouble tol)
 
 {
-  gint order, i, i3 = 3, xstr, nqk, nc, Nk ;
+  gint order, i, i3 = 3, i1 = 1, xstr, nqk, nc, Nk ;
   gdouble K[454*453], *q, *qk, al, bt ;
   gdouble xi[453*4], ci[453*3], x[3] ;
-  gdouble th0, th1, ph0, ph1, rho, quad[1024], qref[1024] ;
-  gdouble emax ;
+  gdouble wt[453*2], src[453] ;
+  gdouble th0, th1, ph0, ph1, rho, quad[1024], qref[1024], qwt[1024] ;
   sqt_quadrature_func_t func = (sqt_quadrature_func_t)spherical_quad_func ;
   gpointer data[8] ;
   
@@ -431,7 +435,7 @@ static gint spherical_patch_test(gint N, gint nq, gint depth, gdouble tol)
   fprintf(stderr, "====================\n") ;
   fprintf(stderr, "nq = %d\n", nq) ;
 
-  nqk = 453 ; nc = 1 ; xstr = 4 ;
+  nqk = 453 ; nc = 2 ; xstr = 4 ;
   
   sqt_quadrature_select(nqk, &qk, &order) ;
   sqt_quadrature_select(nq, &q, &order) ;
@@ -440,20 +444,15 @@ static gint spherical_patch_test(gint N, gint nq, gint depth, gdouble tol)
 				     nqk, K) ;
 
   fprintf(stderr, "Knm N max: %d\n", Nk) ;
-  fprintf(stderr, "Knm alloc: %d\n", (Nk+1)*(Nk+2)/2) ;
 
   th0 = 0.4 ; th1 = 0.9 ;
   ph0 = 0.3 ; ph1 = 0.7 ;
   rho = 1.9 ;
   x[0] = x[1] = x[2] = 0.0 ;
   
-  sqt_patch_nodes_sphere(th0, ph0, th1, ph0, th0, ph1,
+  sqt_patch_nodes_sphere(rho, th0, ph0, th1, ph0, th0, ph1,
 			 &(qk[0]), 3, &(qk[1]), 3, nqk,
 			 xi, xstr, NULL, 1) ;
-
-  for ( i = 0 ; i < nqk ; i ++ ) {
-    xi[i*xstr+0] *= rho ; xi[i*xstr+1] *= rho ; xi[i*xstr+2] *= rho ; 
-  }
 
   al = 1.0 ; bt = 0.0 ;
   blaswrap_dgemm(FALSE, FALSE, nqk, i3, nqk, al, K, nqk, xi, xstr, bt, ci, i3) ;
@@ -461,20 +460,36 @@ static gint spherical_patch_test(gint N, gint nq, gint depth, gdouble tol)
   data[0] = x ;
   sqt_adaptive_quad_kw(ci, nqk, Nk, q, nq, func, quad, nc, tol, depth, data) ;
 
-  fprintf(stderr, "KW:  ") ;
+  /*integration using pre-computed weights*/
+  sqt_laplace_weights_kw_adaptive(ci, nqk, Nk, K, q, nq, tol, depth, x, wt) ;
+  for ( i = 0 ; i < nqk ; i ++ ) src[i] = 1.0 ;
+  qwt[0] = blaswrap_ddot(nqk, &(wt[0  ]), i1, &(src[0]), i1) ;
+  qwt[1] = blaswrap_ddot(nqk, &(wt[nqk]), i1, &(src[0]), i1) ;
+  
+  fprintf(stderr, "KW:      ") ;
   for ( i = 0 ; i < nc ; i ++ )
     fprintf(stderr, " %lg", quad[i]) ;
   fprintf(stderr, "\n") ;
 
+  fprintf(stderr, "weights: ") ;
+  for ( i = 0 ; i < nc ; i ++ )
+    fprintf(stderr, " %lg", qwt[i]) ;
+  fprintf(stderr, "\n") ;
+
   spherical_test_func(th0, th1, ph0, ph1, rho, nc, qref) ;
-  fprintf(stderr, "ref: ") ;
+  fprintf(stderr, "ref:     ") ;
   for ( i = 0 ; i < nc ; i ++ )
     fprintf(stderr, " %lg", qref[i]) ;
   fprintf(stderr, "\n") ;
 
-  fprintf(stderr, "err: ") ;
+  fprintf(stderr, "err 1: ") ;
   for ( i = 0 ; i < nc ; i ++ )
     fprintf(stderr, " %lg", fabs(qref[i] - quad[i])) ;
+  fprintf(stderr, "\n") ;
+
+  fprintf(stderr, "err 2: ") ;
+  for ( i = 0 ; i < nc ; i ++ )
+    fprintf(stderr, " %lg", fabs(qref[i] - qwt[i])) ;
   fprintf(stderr, "\n") ;
 
   return 0 ;
@@ -590,9 +605,10 @@ static gint laplace_quad_func(gdouble s, gdouble t, gdouble w,
   dR = sqt_vector_diff_scalar(x, y, n)/R/R ;  
   w *= 0.25*M_1_PI/R ;
 
-  SQT_FUNCTION_NAME(sqt_element_shape_3d)(nq/2, s, t, L,
-					  NULL, NULL, NULL, NULL, NULL) ;
-  src = s*t - 1.0 ;
+  /* SQT_FUNCTION_NAME(sqt_element_shape_3d)(nq/2, s, t, L, */
+  /* 					  NULL, NULL, NULL, NULL, NULL) ; */
+  /* src = s*t - 1.0 ; */
+  src = 1.0 ;
   quad[0] += w*src ;
   quad[1] += w*src*dR ;
   
@@ -704,25 +720,28 @@ static gint normal_quad_test(gdouble *xe, gint xstr, gint ne,
 			     gdouble s0, gdouble t0, gdouble umax, gint nu)
 
 {
-  gdouble *q, J, n[3], g[512], gk[512], K[453*453], ce[453*3] ;
-  gdouble *qk, x0[3], x[3], u, xi[453*3], al, bt, ei, emax ;
-  gint oq, nc, i, j, i3 = 3 ;
+  gdouble *q, J, n[3], g[512], gk[512], gw[512], K[453*453], ce[453*3] ;
+  gdouble *qk, x0[3], x[3], u, xi[453*3], w[453*2] ;
+  gdouble al, bt, ei, ew, eimax, ewmax ;
+  gdouble src[6*453] ;
+  gint oq, nc, i, j, i3 = 3, i1 = 1 ;
   gint nk, Nk, order ;
   sqt_quadrature_func_t func = (sqt_quadrature_func_t)adaptive_quad_func ;
   gpointer data[4] ;
 
   nc = 2*ne ;
-  nk = 85 ;
+  nk = 175 ;
     
   sqt_element_point_3d(xe, xstr, ne, s0, t0, x0, n, &J) ;
 
   fprintf(stderr, "normal quadrature test\n") ;
   fprintf(stderr, "=====================\n") ;
-  fprintf(stderr, "x0  = %lg %lg %lg\n", x0[0], x0[1], x0[2]) ;
-  fprintf(stderr, "tol = %lg\n", tol) ;
-  fprintf(stderr, "nq  = %d\n", nq) ;
-  fprintf(stderr, "nk  = %d\n", nk) ;
-  fprintf(stderr, "N   = %d\n", N) ;
+  fprintf(stderr, "x0   = %lg %lg %lg\n", x0[0], x0[1], x0[2]) ;
+  fprintf(stderr, "tol  = %lg\n", tol) ;
+  fprintf(stderr, "dmax = %d\n", depth) ;
+  fprintf(stderr, "nq   = %d\n", nq) ;
+  fprintf(stderr, "nk   = %d\n", nk) ;
+  fprintf(stderr, "N    = %d\n", N) ;
 
   /*initialize Koornwinder interpolations*/
   sqt_quadrature_select(nk, &qk, &order) ;
@@ -736,24 +755,38 @@ static gint normal_quad_test(gdouble *xe, gint xstr, gint ne,
   /*compute the interpolation coefficients*/
   al = 1.0 ; bt = 0.0 ;
   blaswrap_dgemm(FALSE, FALSE, nk, i3, nk, al, K, nk, xi, xstr, bt, ce, i3) ;
-  
+
   /*singular integral on surface to start with*/
   memset(g , 0, 2*ne*sizeof(gdouble)) ;
   memset(gk, 0, 2*ne*sizeof(gdouble)) ;
+  memset(gw, 0, 2*ne*sizeof(gdouble)) ;
   sqt_element_shape_3d(ne, s0, t0, &(g[ne]), NULL, NULL, NULL, NULL, NULL) ;
-  for ( i = 0 ; i < ne ; i ++ ) { g[ne+i] *= 0.5 ; gk[ne+i] = g[ne+i] ; }
+  for ( i = 0 ; i < ne ; i ++ ) {
+    g[ne+i] *= 0.5 ; gw[ne+i] = gk[ne+i] = g[ne+i] ;
+  }
   data[0] = x0 ;
   sqt_singular_quad_tri(xe, xstr, ne, s0, t0, N, func, g, nc, data) ;
   sqt_singular_quad_kw(ce, nk, Nk, s0, t0, N, func, gk, nc, data) ;
+  sqt_laplace_weights_kw_singular(ce, nk, Nk, K, N, s0, t0, w) ;
+  for ( i = 0 ; i < nk ; i ++ ) {
+    sqt_element_shape_3d(ne, qk[3*i+0], qk[3*i+1], &(src[i*ne]),
+    			 NULL, NULL, NULL, NULL, NULL) ;
+  }
 
-  fprintf(stdout, "0") ; ei = 0.0 ;
+  for ( i = 0 ; i < ne ; i ++ ) {
+    gw[   i]  = blaswrap_ddot(nk, &(w[ 0]), i1, &(src[i]), ne) ;
+    gw[ne+i] += blaswrap_ddot(nk, &(w[nk]), i1, &(src[i]), ne) ;
+  }
+  
+  fprintf(stdout, "0") ; ei = ew = 0.0 ;
   for ( i = 0 ; i < nc ; i ++ ) {
     fprintf(stdout, " %lg", g[i]) ;
-    ei = MAX(g[i] - gk[i], ei) ;
+    ei = MAX(fabs(g[i] - gk[i]), ei) ;
+    ew = MAX(fabs(g[i] - gw[i]), ew) ;
   }
-  fprintf(stdout, " (%lg)\n", ei) ;
-  emax = ei ;
-
+  fprintf(stdout, " (%lg, %lg)\n", ei, ew) ;
+  eimax = ei ; ewmax = ew ;
+  
   sqt_quadrature_select(nq, &q, &oq) ;
   data[0] = x ;
 
@@ -764,20 +797,27 @@ static gint normal_quad_test(gdouble *xe, gint xstr, gint ne,
     x[2] = x0[2] + n[2]*u ;
     memset(g , 0, nc*sizeof(gdouble)) ;
     memset(gk, 0, nc*sizeof(gdouble)) ;
+
     sqt_adaptive_quad_tri(xe, xstr, ne, q, nq, func, g, nc, tol, depth, data) ;
     sqt_adaptive_quad_kw(ce, nk, Nk, q, nq, func, gk, nc, tol, depth, data) ;
-    fprintf(stdout, "%lg", u) ; ei = 0.0 ;
+    sqt_laplace_weights_kw_adaptive(ce, nk, Nk, K, q, nq, tol, depth, x, w) ;
+    for ( i = 0 ; i < ne ; i ++ ) {
+      gw[   i] = blaswrap_ddot(nk, &(w[ 0]), i1, &(src[i]), ne) ;
+      gw[ne+i] = blaswrap_ddot(nk, &(w[nk]), i1, &(src[i]), ne) ;
+    }
+
+    fprintf(stdout, "%lg", u) ; ei = ew = 0.0 ;
     for ( i = 0 ; i < nc ; i ++ ) {
       fprintf(stdout, " %lg", g[i]) ;
-      ei = MAX(g[i] - gk[i], ei) ;
+      ei = MAX(fabs(g[i] - gk[i]), ei) ;
+      ew = MAX(fabs(g[i] - gw[i]), ew) ;
     }
-    fprintf(stdout, " (%lg)\n", ei) ;
-    emax = MAX(emax, ei) ;
-    /* for ( i = 0 ; i < nc ; i ++ ) fprintf(stdout, " %1.16e", g[i]) ; */
-    /* fprintf(stdout, "\n") ; */
+    fprintf(stdout, " (%lg, %lg)\n", ei, ew) ;
+    eimax = MAX(eimax, ei) ;
+    ewmax = MAX(ewmax, ew) ;
   }
 
-  fprintf(stderr, "maximum error: %lg\n", emax) ;
+  fprintf(stderr, "maximum error: %lg, %lg\n", eimax, ewmax) ;
   
   return 0 ;
 }
@@ -808,7 +848,6 @@ static gint quad_weight_test(gdouble *xe, gint xstr, gint ne,
 
 
   sqt_quadrature_select(nqk, &q, &oq) ;
-  /* nK = sqt_koornwinder_interp_matrix(q, nqk, Kq) ; */
   nK = sqt_koornwinder_interp_matrix(&(q[0]), 3, &(q[1]), 3, &(q[2]), 3,
 				     nqk, Kq) ;
   for ( i = 0 ; i < nqk ; i ++ ) {
@@ -820,9 +859,9 @@ static gint quad_weight_test(gdouble *xe, gint xstr, gint ne,
   memset(g, 0, ne*sizeof(gdouble)) ;
   sqt_element_shape_3d(ne, s0, t0, &(g[ne]), NULL, NULL, NULL, NULL, NULL) ;
 
-  g[1] = s0*t0 - 1.0 ;
+  /* g[1] = s0*t0 - 1.0 ; */
 
-  g[1] *= 0.5 ;
+  /* g[1] *= 0.5 ; */
   
   data[0] = x0 ;
   sqt_laplace_weights_tri_singular(xe, xstr, ne, Kq, nqk, nK, N, s0, t0,
@@ -890,16 +929,21 @@ static gint matrix_adaptive_test(gdouble *xse, gint xsstr, gint nse,
 {
   gdouble *q, J, n[3], s, t, err ;
   gdouble x[3], Kq[453*453], src[453], al, bt, *st ;
-  gdouble f[32], Ast[453*453*2], Astb[453*453*2], *qs, fts[453], ftd[453] ;
-  gint oq, nc, i, nK, nqk, one = 1, nqt, nqs, lda ;
+  gdouble Astb[453*453*2] ;
+  gdouble f[32], Ast[453*453*2] ;
+  gdouble xp[453*3], xt[453*3] ;
+  gdouble *qs, fts[453], ftd[453], kts[453], ktd[453] ;
+  gdouble ew, ek ;
+  gint oq, nc, i, nK, nqk, one = 1, nqt, nqs, lda, pstr ;
   gpointer data[4] ;
   sqt_quadrature_func_t func = (sqt_quadrature_func_t)laplace_quad_func ;
 
   nc = 2*nse ;
-
-  nqk = 85 ;
-  nqt = 25 ;
-  nqs = 126 ;
+  pstr = 3 ;
+  
+  nqk = 25 ;
+  nqt = 54 ;
+  nqs = 85 ;
   
   fprintf(stderr, "interaction matrix test\n") ;
   fprintf(stderr, "=======================\n") ;
@@ -911,7 +955,6 @@ static gint matrix_adaptive_test(gdouble *xse, gint xsstr, gint nse,
   sqt_quadrature_select(nqt, &st, &oq) ;
 
   sqt_quadrature_select(nqk, &q, &oq) ;
-  /* nK = sqt_koornwinder_interp_matrix(q, nqk, Kq) ; */
   nK = sqt_koornwinder_interp_matrix(&(q[0]), 3, &(q[1]), 3, &(q[2]), 3,
 				     nqk, Kq) ;
   for ( i = 0 ; i < nqk ; i ++ ) {
@@ -919,6 +962,11 @@ static gint matrix_adaptive_test(gdouble *xse, gint xsstr, gint nse,
     src[i] = s*t - 1.0 ;
   }
 
+  sqt_patch_nodes_tri(xse, xsstr, nse, &(q[0]), 3, &(q[1]), 3, nqk,
+  		      xp, pstr, NULL, 4) ;
+  sqt_patch_nodes_tri(xte, xtstr, nte, &(st[0]), 3, &(st[1]), 3, nqt,
+  		      xt, pstr, NULL, 4) ;
+  
   sqt_quadrature_select(nqs, &qs, &oq) ;
 
   /*interaction matrix*/
@@ -927,20 +975,30 @@ static gint matrix_adaptive_test(gdouble *xse, gint xsstr, gint nse,
 					 xte, xtstr, nte,
 					 &(st[0]), 3, &(st[1]), 3, nqt,
 					 Ast) ;
-
+  sqt_laplace_source_target_kw_adaptive(xp, pstr, nqk, qs, nqs, Kq, nK,
+  					tol, depth, xt, pstr, nqt,
+  					Astb) ;
+					
   /*calculate single and double layer potentials on target element*/
   al = 1.0 ; bt = 0.0 ; lda = 2*nqk ;
   blaswrap_dgemv(FALSE, nqt, nqk, al, &(Ast[0*nqk]), lda, src, one, bt,
 		 fts, one) ;
   blaswrap_dgemv(FALSE, nqt, nqk, al, &(Ast[1*nqk]), lda, src, one, bt,
 		 ftd, one) ;
+  blaswrap_dgemv(FALSE, nqt, nqk, al, &(Astb[0*nqk]), lda, src, one, bt,
+		 kts, one) ;
+  blaswrap_dgemv(FALSE, nqt, nqk, al, &(Astb[1*nqk]), lda, src, one, bt,
+		 ktd, one) ;
 
-  data[0] = x ;
+  data[0] = x ; ew = ek = 0.0 ;
   for ( i = 0 ; i < nqt ; i ++ ) {
     sqt_element_point_3d(xte, xtstr, nte, st[3*i+0], st[3*i+1], x, n, &J) ;
     sqt_adaptive_quad_tri(xse, xsstr, nse, qs, nqs, func, f, nc,
 			  tol, depth, data) ;
-    fprintf(stderr, "%lg %lg %lg %lg\n", fts[i], f[0], ftd[i], f[1]) ;
+    fprintf(stderr, "%lg %lg %lg %lg %lg %lg\n",
+	    f[0], f[1],
+	    fabs(fts[i]-f[0]), fabs(kts[i]-f[0]), 
+	    fabs(ftd[i]-f[1]), fabs(ktd[i]-f[1])) ;
   }
   
   /*use last set of adaptively-integrated weights to check basic
@@ -957,41 +1015,54 @@ static gint matrix_adaptive_test(gdouble *xse, gint xsstr, gint nse,
 
   fprintf(stderr, "weights using %d point quadrature\n", nq) ;
   fprintf(stderr, "maximum error: %lg\n", err) ;
-  
+
   return 0 ;
 }
 
-static gint matrix_self_test(gdouble *xe, gint xstr, gint ne, gint N)
+static gint matrix_self_test(gdouble *xe, gint xstr, gint ne, gint N,
+			     gint nqk)
 
 {
   gdouble J, n[3], s, t, x[3] ;
-  gdouble Kq[455*456*4], src[453], al, bt, *st ;
-  gdouble f[32], fts[453], ftd[453], Ast[16384*4] ;
-  gint oq, nc, i, nK, nqk, one = 1, lda ;
+  gdouble *Kq, *src, al, bt, *st, *xp ;
+  gdouble f[32], *Ast, *Astk ;
+  gdouble *kts, *ktd, *fts, *ftd ;
+  gint oq, nc, i, nK, one = 1, lda, pstr ;
   gpointer data[4] ;
   sqt_quadrature_func_t func = (sqt_quadrature_func_t)laplace_quad_func ;
 
-  nc = 2*ne ;
-
-  nqk = 175 ;
+  nc = 2*ne ; pstr = 3 ;
   
   fprintf(stderr, "self-interaction matrix test\n") ;
   fprintf(stderr, "============================\n") ;
   fprintf(stderr, "N   = %d\n", N) ;
   fprintf(stderr, "nqk = %d\n", nqk) ;
 
+  Kq   = (gdouble *)g_malloc(  nqk*nqk*sizeof(gdouble)) ;
+  Ast  = (gdouble *)g_malloc(2*nqk*nqk*sizeof(gdouble)) ;
+  Astk = (gdouble *)g_malloc(2*nqk*nqk*sizeof(gdouble)) ;
+
+  fts  = (gdouble *)g_malloc(      nqk*sizeof(gdouble)) ;
+  ftd  = (gdouble *)g_malloc(      nqk*sizeof(gdouble)) ;
+  kts  = (gdouble *)g_malloc(      nqk*sizeof(gdouble)) ;
+  ktd  = (gdouble *)g_malloc(      nqk*sizeof(gdouble)) ;
+  src  = (gdouble *)g_malloc(      nqk*sizeof(gdouble)) ;
+  xp   = (gdouble *)g_malloc(    3*nqk*sizeof(gdouble)) ;
+  
   sqt_quadrature_select(nqk, &st, &oq) ;
-  /* nK = sqt_koornwinder_interp_matrix(st, nqk, Kq) ; */
   nK = sqt_koornwinder_interp_matrix(&(st[0]), 3, &(st[1]), 3, &(st[2]), 3,
 				     nqk, Kq) ;
   for ( i = 0 ; i < nqk ; i ++ ) {
     s = st[3*i+0] ; t = st[3*i+1] ;
     src[i] = s*t - 1.0 ;
-    /* src[i] = 1.0 ; */
+    src[i] = 1.0 ;
   }
-
+  sqt_patch_nodes_tri(xe, xstr, ne, &(st[0]), 3, &(st[1]), 3, nqk,
+  		      xp, pstr, NULL, 4) ;
+  sqt_laplace_source_target_kw_self(xp, pstr, nqk, Kq, nK, N,
+  				    &(st[0]), 3, &(st[1]), 3, Astk) ;
+  
   /*interaction matrix*/
-  data[0] = x ;
   sqt_laplace_source_target_tri_self(xe, xstr, ne, Kq, nqk, nK, N,
 				     &(st[0]), 3, &(st[1]), 3, nqk,
 				     Ast) ;
@@ -1001,6 +1072,10 @@ static gint matrix_self_test(gdouble *xe, gint xstr, gint ne, gint N)
   		 fts, one) ;
   blaswrap_dgemv(FALSE, nqk, nqk, al, &(Ast[1*nqk]), lda, src, one, bt,
   		 ftd, one) ;
+  blaswrap_dgemv(FALSE, nqk, nqk, al, &(Astk[0*nqk]), lda, src, one, bt,
+  		 kts, one) ;
+  blaswrap_dgemv(FALSE, nqk, nqk, al, &(Astk[1*nqk]), lda, src, one, bt,
+  		 ktd, one) ;
 
   data[0] = x ;
   for ( i = 0 ; i < nqk ; i ++ ) {
@@ -1008,10 +1083,14 @@ static gint matrix_self_test(gdouble *xe, gint xstr, gint ne, gint N)
     sqt_element_point_3d(xe, xstr, ne, st[3*i+0], st[3*i+1], x, n, &J) ;
     sqt_singular_quad_tri(xe, xstr, ne, st[3*i+0], st[3*i+1], N, func,
     			  f, nc, data) ;
-    fprintf(stderr, "%lg %lg %lg %lg (%e,%e)\n",
-    	    fts[i], f[0], ftd[i], f[1],
-    	    fabs(fts[i] - f[0]), fabs(ftd[i] - f[1])) ;
+    fprintf(stderr, "%lg %lg (%lg,%lg,%lg,%lg)\n",
+    	    f[0], f[1],
+    	    fabs(fts[i] - f[0]), fabs(ftd[i] - f[1]),
+    	    fabs(kts[i] - f[0]), fabs(ktd[i] - f[1])) ;
+    /* fprintf(stdout, "%lg %lg %lg %lg %lg %lg\n", */
+    /* 	    f[0], f[1], kts[i], ktd[i], fts[i], ftd[i]) ; */
   }
+
   return 0 ;
 }
 
@@ -1025,8 +1104,11 @@ gint main(gint argc, gchar **argv)
 
   timer = g_timer_new() ;
 
+  memset(xe, 0, 256*sizeof(gdouble)) ;
+  memset(xt, 0, 256*sizeof(gdouble)) ;
+  
   test = -1 ;
-  depth = 0 ; tol = 1e-6 ; N = 8 ; nq = 54 ; rc = 0.05 ; nx = 33 ;
+  depth = 8 ; tol = 1e-6 ; N = 8 ; nq = 54 ; rc = 0.05 ; nx = 33 ;
   umax = 0.1 ;
   s0 = t0 = G_MAXDOUBLE ;
   
@@ -1145,7 +1227,7 @@ gint main(gint argc, gchar **argv)
 
   if ( test == 9 ) {
 
-    matrix_self_test(xe, xstr, ne, N) ;
+    matrix_self_test(xe, xstr, ne, N, nq) ;
 
     return 0 ;
   }

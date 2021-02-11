@@ -156,7 +156,7 @@ static void adaptive_quad_kw(SQT_REAL *ce, gint ne, gint Nk,
 
 {
   gint i ;
-  SQT_REAL s, t, w, J, y[3], n[3], si, ti, work[3*(453+1)*(453+2)/2] ;
+  SQT_REAL s, t, w, J, y[3], n[3], si, ti, work[3*453] ;
   
   for ( i = 0 ; i < nq ; i ++ ) {
     si = q[3*i+0] ; ti = q[3*i+1] ; w = q[3*i+2] ;
@@ -253,6 +253,6 @@ gint SQT_FUNCTION_NAME(sqt_adaptive_quad_kw)(SQT_REAL *ce, gint ne, gint Nk,
   adaptive_quad_kw(ce, ne, Nk, st, 1.0, q, nq, func, quad, nc, data) ;
 
   return adaptive_quad_kw_recursion(ce, ne, Nk, st, 1.0, q, nq,
-  				     func, quad, nc, tol, dmax,
-  				     data) ;
+				    func, quad, nc, tol, dmax,
+				    data) ;
 }

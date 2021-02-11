@@ -52,7 +52,8 @@ gint SQT_FUNCTION_NAME(sqt_patch_nodes_tri)(SQT_REAL *xe, gint xstr, gint ne,
   return 0 ;
 }
 
-gint SQT_FUNCTION_NAME(sqt_patch_nodes_sphere)(SQT_REAL th0, SQT_REAL ph0,
+gint SQT_FUNCTION_NAME(sqt_patch_nodes_sphere)(SQT_REAL rho,
+					       SQT_REAL th0, SQT_REAL ph0,
 					       SQT_REAL th1, SQT_REAL ph1,
 					       SQT_REAL th2, SQT_REAL ph2,
 					       SQT_REAL *s, gint sstr,
@@ -74,6 +75,8 @@ gint SQT_FUNCTION_NAME(sqt_patch_nodes_sphere)(SQT_REAL th0, SQT_REAL ph0,
     ph = ph0*(1.0 - s[i*sstr] - t[i*tstr]) + ph1*s[i*sstr] + ph2*t[i*tstr] ;
 
     sqt_geometry_sphere(th, ph, &(xp[i*pstr]), xu, xv) ;
+    xp[i*pstr+0] *= rho ; xp[i*pstr+1] *= rho ; xp[i*pstr+2] *= rho ; 
+
     np[i*nstr+0] = xp[i*pstr+0] ;
     np[i*nstr+1] = xp[i*pstr+1] ;
     np[i*nstr+2] = xp[i*pstr+2] ;

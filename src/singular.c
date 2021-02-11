@@ -28,6 +28,9 @@
 gint dgesdd_(gchar *JOBZ, gint *M, gint *N, gdouble *A, gint *lda,
 	     gdouble *S, gdouble *U, gint *ldu, gdouble *VT, gint *ldvt,
 	     gdouble *work, gint *lwork, gint *iwork, gint *info) ;
+gint sgesdd_(gchar *JOBZ, gint *M, gint *N, gfloat *A, gint *lda,
+	     gfloat *S, gfloat *U, gint *ldu, gfloat *VT, gint *ldvt,
+	     gfloat *work, gint *lwork, gint *iwork, gint *info) ;
 
 static SQT_REAL tri_orientation(SQT_REAL *xt)
 
@@ -72,9 +75,9 @@ static gint triangle_mapping(SQT_REAL *xt, gint xstr, gint nt,
 */
   
 {
-  SQT_REAL L[16], dLds[16], dLdt[16], n[16], U[32], S[32], V[32] ;
-  SQT_REAL work[138], Ai[16], dr[6], tmp ;
-  gint i, one = 1, two = 2, three = 3, lwork, info, iwork ;
+  SQT_REAL L[10], dLds[10], dLdt[10], n[3], U[9], S[2], V[4] ;
+  SQT_REAL work[138], Ai[4], dr[6], tmp ;
+  gint i, two = 2, three = 3, lwork, info, iwork ;
 
   /*physical location of singularity and reference Jacobian*/
   SQT_FUNCTION_NAME(sqt_element_shape_3d)(nt, s, t, L, dLds, dLdt,
@@ -82,6 +85,7 @@ static gint triangle_mapping(SQT_REAL *xt, gint xstr, gint nt,
   SQT_FUNCTION_NAME(sqt_element_point_interp_3d)(xt, xstr, nt, L, dLds, dLdt,
 						 x0, n, J0) ;
 
+  memset(dr, 0, 6*sizeof(SQT_REAL)) ;
   /*SVD of Jacobian matrix*/
   for ( i = 0 ; i < nt ; i ++ ) {
     dr[0] += dLds[i]*xt[i*xstr+0] ;
@@ -98,7 +102,11 @@ static gint triangle_mapping(SQT_REAL *xt, gint xstr, gint nt,
 #ifdef SQT_SINGLE_PRECISION
   /*need to put single-precision BLAS call in here*/
   g_assert_not_reached() ;
+  sgesdd_("A", &three, &two, dr, &three, S, U, &three, V, &two,
+	  work, &lwork, &iwork, &info) ;
 #else
+  /*note that dr has been filled in FORTRAN ordering so this is a
+    standard call to dgesdd with no transposition*/
   dgesdd_("A", &three, &two, dr, &three, S, U, &three, V, &two,
 	  work, &lwork, &iwork, &info) ;
   g_assert(info == 0) ;
@@ -290,7 +298,7 @@ gint SQT_FUNCTION_NAME(sqt_singular_quad_tri)(SQT_REAL *xe, gint xstr, gint ne,
 					      gpointer data)
   
 {
-  SQT_REAL x0[3], J0, xti[64], A[4], d ;
+  SQT_REAL x0[3], J0, xti[6], A[4], d ;
 
   triangle_mapping(xe, xstr, ne, s0, t0, x0, &J0, A, xti) ;
 
@@ -335,9 +343,8 @@ static gint triangle_mapping_kw(SQT_REAL *ce, gint ne, gint Nk,
 */
   
 {
-  SQT_REAL L[16], dLds[16], dLdt[16], n[16], U[32], S[32], V[32] ;
-  SQT_REAL Ai[16], dr[6], tmp ;
-  gint i, one = 1, two = 2, three = 3, lwork, info, iwork ;
+  SQT_REAL n[3], U[9], S[2], V[4], Ai[4], dr[6], tmp ;
+  gint two = 2, three = 3, lwork, info, iwork ;
   
   /*physical location of singularity and reference Jacobian*/
   SQT_FUNCTION_NAME(sqt_element_interp)(ce, ne, Nk, s, t, x0, n, J0, dr, work) ;
@@ -348,7 +355,11 @@ static gint triangle_mapping_kw(SQT_REAL *ce, gint ne, gint Nk,
 #ifdef SQT_SINGLE_PRECISION
   /*need to put single-precision BLAS call in here*/
   g_assert_not_reached() ;
+  sgesdd_("A", &three, &two, dr, &three, S, U, &three, V, &two,
+	  work, &lwork, &iwork, &info) ;
 #else
+  /*note that dr has been filled in FORTRAN ordering so this is a
+    standard call to dgesdd with no transposition*/
   dgesdd_("A", &three, &two, dr, &three, S, U, &three, V, &two,
 	  work, &lwork, &iwork, &info) ;
   g_assert(info == 0) ;
@@ -394,9 +405,9 @@ static gint triangle_quad_kw(
   func: integrand
   data: data for func
   xti:  mapped plane triangle
-  ce:    interpolation coefficients for nodes of physical triangle
-  ne:    number of interpolation coefficients 
-  Nk:    order of Koornwinder polynomials
+  ce:   interpolation coefficients for nodes of physical triangle
+  ne:   number of interpolation coefficients 
+  Nk:   order of Koornwinder polynomials
   A:    mapping matrix
   s,t:  singularity coordinates on unit triangle
   J0:   Jacobian at singularity
@@ -479,7 +490,7 @@ gint SQT_FUNCTION_NAME(sqt_singular_quad_kw)(SQT_REAL *ce, gint ne, gint Nk,
 					      gpointer data)
   
 {
-  SQT_REAL x0[3], J0, xti[64], A[4], d, work[3*(453+1)*(453+2)/2] ;
+  SQT_REAL x0[3], J0, xti[64], A[4], d, work[3*453] ;
 
   triangle_mapping_kw(ce, ne, Nk, s0, t0, x0, &J0, A, xti, work) ;
 

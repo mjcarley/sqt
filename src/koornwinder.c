@@ -27,102 +27,68 @@
 
 #include "sqt-private.h"
 
-/* #define INDEX_TRACKING */
+static gint koornwinder_deriv_recursion(gint N, gint m,
+					SQT_REAL Pm, SQT_REAL dPm,
+					SQT_REAL vpm,
+					SQT_REAL u, SQT_REAL v,
+					SQT_REAL w,
+					SQT_REAL *K, gint kstr,
+					SQT_REAL *Ku, gint ustr,
+					SQT_REAL *Kv, gint vstr,
+					gint nst)
 
-gint SQT_FUNCTION_NAME(sqt_koornwinder_nm)(gint N, SQT_REAL u, SQT_REAL v,
-					   SQT_REAL *Knm, gint str)
-
-/*
-  Definition of Koornwinder polynomials from Greengard et al, Fast
-  multipole methods for the evaluation of layer potentials with
-  locally-corrected quadratures arXiv:2006.02545v1.
-
-  Jacobi and Legendre recursions from DLMF
-
-  indexing idx_{nm} = n*(n+1)/2 + m
-*/
-  
 {
-  gint nn, n, m, idx, idxm1, idxp1, idxP ;
-  SQT_REAL x, Jnm1, Jn, tmp ;
-#ifdef INDEX_TRACKING
-  gint imax = 0 ;
-#endif /*INDEX_TRACKING*/
-  
-  /*initialize (1-v)^m P_m for n = m*/
-  x = (2.0*u + v - 1.0)/(1.0 - v) ;
-  n = 0 ; m = 0 ;
+  SQT_REAL cnm, tmp, Jnm1, Jnm, dJnm, A, B, C ;
+  gint n, idx ;
+
+  Jnm1 = 1.0 ; dJnm = 0.0 ;
+  n = m ;
   idx = n*(n+1)/2 + m ;
-#ifdef INDEX_TRACKING
-  imax = idx ; 
-#endif /*INDEX_TRACKING*/
-  Knm[str*idx] = 1.0 ;
-  n = 1 ; m = 1 ;
-  idxp1 = n*(n+1)/2 + m ;
-  Knm[str*idxp1] = (1.0 - v)*x ;
-#ifdef INDEX_TRACKING
-  imax = MAX(imax, idxp1) ; 
-#endif /*INDEX_TRACKING*/
+  cnm = sqrt(2.0*(1+2*m)*(m+1)) ;
 
-  /*recursive generation of Legendre polynomials*/
-  for ( m = 1 ; m < N ; m ++ ) {
-    n = m ; 
-    idxm1 = idx ; idx = idxp1 ; 
-    idxp1 = (n+1)*(n+1+1)/2 + m + 1 ;
-    Knm[str*idxp1] = (1.0-v)*((2.0*n+1)/(n+1)*x*Knm[str*idx] -
-			      ((1.0-v)*n)/(n+1)*Knm[str*idxm1]) ;
-#ifdef INDEX_TRACKING
-  imax = MAX(imax, idxp1) ; 
-#endif /*INDEX_TRACKING*/    
+  if ( idx < nst ) {
+    K [kstr*idx] = Jnm1* Pm*vpm*cnm ;
+    Ku[ustr*idx] = Jnm1*dPm*vpm*cnm*2.0/(1.0-v) ;
+    Kv[vstr*idx] =
+      Ku[ustr*idx]*u/(1.0-v) - cnm*vpm*Pm*(Jnm1*m/(1.0-v) + dJnm*2.0) ;
   }
+  if ( m+1 > N ) return 0 ;
   
-  x = 1.0 - 2.0*v ;
-  for ( m = 0 ; (m < N) ; m ++ ) {
-    /*index of Legendre polynomial P_m*/
-    idxP = m*(m+1)/2 + m ;
-    Jnm1 = 1.0 ;
-    nn = m ;
-    idx = nn*(nn+1)/2 + m ;
-    Knm[str*idx] = Jnm1*Knm[str*idxP]*sqrt(2.0*(1+2*m)*(m+1)) ;
-#ifdef INDEX_TRACKING
-  imax = MAX(imax, idx) ; 
-#endif /*INDEX_TRACKING*/
+  A = 0.5*(2*m+3) ; B = -0.5*(2*m+1) ;
 
-    n = 0 ; 
-    Jn   = (SQT_REAL)(n+m+1)*(2*n+2*m+3)/(n+1)/(n+2*m+2)*x -
-      (SQT_REAL)(2*m+1)*(2*m+1)*(n+m+1)/(n+1)/(n+2*m+2)/(2*n+2*m+1) ;
+  Jnm = A*w + B ; dJnm = A ;
+  n = m + 1 ;
+  cnm = sqrt(2.0*(1+2*m)*(n+1)) ;
+  idx = n*(n+1)/2 + m ;
+  if ( idx < nst ) {
+    K [kstr*idx] = Jnm* Pm*vpm*cnm ;
+    Ku[ustr*idx] = Jnm*dPm*vpm*cnm*2.0/(1.0-v) ;
+    Kv[vstr*idx] =
+      Ku[ustr*idx]*u/(1.0-v) - cnm*vpm*Pm*(Jnm*m/(1.0-v) + dJnm*2.0) ;
+  }
 
-    nn = m+1 ;
-    idx = nn*(nn+1)/2 + m ;
-    Knm[str*idx] = Jn*Knm[str*idxP]*sqrt((SQT_REAL)(nn+1)/(m+1)) ;
-#ifdef INDEX_TRACKING
-  imax = MAX(imax, idx) ; 
-#endif /*INDEX_TRACKING*/
+  if ( N*(N+1)/2 + m >= nst ) N -- ;
 
-    for ( n = 1 ; (n <= N-m-1) ; n ++ ) {
-      /*Jacobi polynomial recursion*/
-      tmp = ((SQT_REAL)(n+m+1)*(2*n+2*m+3)/(n+1)/(n+2*m+2)*x -
-	     (SQT_REAL)(2*m+1)*(2*m+1)*(n+m+1)/(n+1)/(n+2*m+2)/(2*n+2*m+1))*Jn -
-	(SQT_REAL)n*(n+2*m+1)*(2*n+2*m+3)/(n+1)/(n+2*m+2)/(2*n+2*m+1)*Jnm1 ;
-      Jnm1 = Jn ; Jn = tmp ;
+  for ( n = m+2 ; n <= N ; n ++ ) {
+    A =  (SQT_REAL)(n-1+1)*(2*n-2+3)/(n-1-m+1)/(n-1+m+2) ;
+    B = -(SQT_REAL)(2*m+1)*(2*m+1)*(n-1+1)/(n-1-m+1)/(n-1+m+2)/(2*n-2+1) ;
+    C =  (SQT_REAL)(n-1-m)*(n-1+m+1)*(2*n-2+3)/(n-1-m+1)/(n-1+m+2)/(2*n-2+1) ;
+    
+    tmp = Jnm ;
+    Jnm = (A*w + B)*Jnm - C*Jnm1 ;
+    Jnm1 = tmp ;
 
-      nn = n+m+1 ;
-      idx = nn*(nn+1)/2 + m ;
-      Knm[str*idx] = Jn*Knm[str*idxP]*sqrt((SQT_REAL)(nn+1)/(m+1)) ;
-#ifdef INDEX_TRACKING
-  imax = MAX(imax, idx) ; 
-#endif /*INDEX_TRACKING*/
-    }
-  }  
+    dJnm  = 2.0*(n-m)*(n+m+1)*Jnm1 - (n-m)*((2*n+1)*w + 2*m+1)*Jnm ;
+    dJnm /= (1.0-w*w)*(2*n+1) ;
 
-  m = N ; nn = N ;
-  idx = nn*(nn+1)/2 + m ;
-  Knm[str*idx] *= sqrt(2.0*(1+2*m)*(nn+1)) ;
-#ifdef INDEX_TRACKING
-  imax = MAX(imax, idx) ;
-
-  fprintf(stderr, "maximum index: %d\n", imax) ;
-#endif /*INDEX_TRACKING*/
+    cnm = sqrt(2.0*(1+2*m)*(n+1)) ;
+    idx = n*(n+1)/2 + m ;
+    K [kstr*idx] = Jnm* Pm*vpm*cnm ;
+    Ku[ustr*idx] = Jnm*dPm*vpm*cnm*2.0/(1.0-v) ;
+    Kv[vstr*idx] =
+      Ku[ustr*idx]*u/(1.0-v) - cnm*vpm*Pm*(Jnm*m/(1.0-v) + dJnm*2.0) ;
+      /* -cnm*vpm*(Jnm*(Pm*m - 2.0*dPm*u/(1.0-v))/(1.0-v) + Pm*dJnm*2.0) ; */
+  }
 
   return 0 ;
 }
@@ -130,94 +96,48 @@ gint SQT_FUNCTION_NAME(sqt_koornwinder_nm)(gint N, SQT_REAL u, SQT_REAL v,
 gint SQT_FUNCTION_NAME(sqt_koornwinder_deriv_nm)(gint N, SQT_REAL u, SQT_REAL v,
 						 SQT_REAL *K , gint kstr,
 						 SQT_REAL *Ku, gint ustr,
-						 SQT_REAL *Kv, gint vstr)
+						 SQT_REAL *Kv, gint vstr,
+						 gint nst)
 
 /*
-  Evaluation of Koornwinder polynomials and derivatives
-
   Definition of Koornwinder polynomials from Greengard et al, Fast
   multipole methods for the evaluation of layer potentials with
   locally-corrected quadratures arXiv:2006.02545v1.
 
-  Jacobi and Legendre recursions from DLMF
+  Jacobi and Legendre recursions from DL2MF
 
   indexing idx_{nm} = n*(n+1)/2 + m
 */
   
 {
-  gint n, m, idx, idxm1, idxp1, idxP ;
-  SQT_REAL x, Jnm1, Jn, dJn, tmp, Pm, dPm, cnm, vpm, A, B, C ;
-
-  idx = N*(N+1)/2 ;
+  gint m ;
+  SQT_REAL x, tmp, w, Pm, Pmm1, dPm, vpm ;
   
-  /*initialize P_m for n = m*/
+  w = 1.0 - 2.0*v ;
   x = (2.0*u + v - 1.0)/(1.0 - v) ;
-  n = 0 ; m = 0 ;
-  idx = n*(n+1)/2 + m ;
-  K[kstr*idx] = 1.0 ; Ku[ustr*idx  ] = 0.0 ; Kv[vstr*idx  ] = 0.0 ; 
-  n = 1 ; m = 1 ;
-  idxp1 = n*(n+1)/2 + m ;
-  K[kstr*idxp1] = x ; Ku[ustr*idxp1] = 1.0 ; 
 
-  /*initialize Legendre polynomials and derivatives*/
-  for ( m = 1 ; m < N ; m ++ ) {
-    n = m ; 
-    idxm1 = idx ; idx = idxp1 ; 
-    idxp1 = (n+1)*(n+1+1)/2 + m + 1 ;
-    K[kstr*idxp1] = (2.0*m+1)/(m+1)*x*K[kstr*idx] -
-      (SQT_REAL)(m)/(m+1)*K[kstr*idxm1] ;
+  m = 0 ;
+  Pm = 1.0 ; dPm = 0.0 ; vpm = 1.0 ; 
+  koornwinder_deriv_recursion(N, m, Pm, dPm, vpm, u, v, w,
+			      K, kstr, Ku, ustr, Kv, vstr, nst) ;
 
-    /*derivative of P_m*/
-    Ku[ustr*idxp1] = (K[kstr*idx] - x*K[kstr*idxp1])*(m+1)/(1.0 - x*x) ;
+  m = 1 ;
+  Pmm1 = Pm ; Pm = x ; dPm = 1.0 ; vpm = 1.0 - v ;
+
+  koornwinder_deriv_recursion(N, m, Pm, dPm, vpm, u, v, w,
+			      K, kstr, Ku, ustr, Kv, vstr, nst) ;
+
+  /*recursive generation of Legendre polynomials*/
+  for ( m = 2 ; m <= N ; m ++ ) {
+    tmp = Pm ;
+    Pm = (Pm*x*(2*m-1) - Pmm1*(m-1))/m ;
+    Pmm1 = tmp ;
+    dPm = (Pmm1 - x*Pm)/(1.0-x*x)*m ;
+    vpm *= 1.0 - v ;
+    koornwinder_deriv_recursion(N, m, Pm, dPm, vpm, u, v, w,
+				K, kstr, Ku, ustr, Kv, vstr, nst) ;
   }
   
-  x = 1.0 - 2.0*v ; vpm = 1.0 ;
-  for ( m = 0 ; (m <= N) ; m ++ ) {
-    idxP = m*(m+1)/2 + m ;
-    Pm  = K[kstr*idxP] ; dPm = Ku[ustr*idxP] ;
-    Jnm1 = 1.0 ; dJn = 0.0 ;
-    n = m ;
-    idx = n*(n+1)/2 + m ;
-    cnm = sqrt(2.0*(1+2*m)*(n+1)) ;
-    K [kstr*idx] = cnm*vpm*Jnm1*Pm ;
-    Ku[ustr*idx] = cnm*vpm*Jnm1*dPm*2.0/(1.0-v) ;
-    Kv[vstr*idx] =
-      -cnm*vpm*(Jnm1*(Pm*m - 2.0*dPm*u/(1.0-v))/(1.0-v) + Pm*dJn*2.0) ;
-
-    A = 0.5*(2*m+3) ; B = -0.5*(2*m+1) ;
-
-    Jn = A*x + B ; dJn = A ;
-    
-    n = m+1 ;
-    cnm = sqrt((2.0)*(2*m+1)*(n+1)) ;
-    idx = n*(n+1)/2 + m ;
-    K[kstr*idx] = cnm*vpm*Jn*Pm ;
-    Ku[ustr*idx] = cnm*vpm*Jn*dPm*2.0/(1.0-v) ;
-    Kv[vstr*idx] =
-	-cnm*vpm*(Jn*(Pm*m - 2.0*dPm*u/(1.0-v))/(1.0-v) + Pm*dJn*2.0) ;
-
-    for ( n = m+2 ; n <= N ; n ++ ) {
-      A =  (SQT_REAL)((n)*(2*n+1))/(n-m)/(n+m+1) ;
-      B = -(SQT_REAL)((2*m+1)*(2*m+1)*(n))/(n-m)/(n+m+1)/(2*n-1) ;
-      C =  (SQT_REAL)((n-m-1)*(n+m)*(2*n+1))/(n-m)/(n+m+1)/(2*n-1) ;
-      
-      tmp = (A*x + B)*Jn - C*Jnm1 ;
-      
-      Jnm1 = Jn ; Jn = tmp ;
-      dJn = 2.0*(n-m)*(n+m+1)*Jnm1 - (n-m)*((2*n+1)*x + 2*m+1)*Jn ;
-      dJn /= (2*n+1)*(1.0-x*x) ;
-      
-      idx = n*(n+1)/2 + m ;
-      cnm = sqrt(2.0*(1+2*m)*(n+1)) ;
-      K[kstr*idx] = cnm*vpm*Jn*Pm ;
-      Ku[ustr*idx] = cnm*vpm*Jn*dPm*2.0/(1.0-v) ;
-      Kv[vstr*idx] =
-	-cnm*vpm*(Jn*(Pm*m - 2.0*dPm*u/(1.0-v))/(1.0-v) + Pm*dJn*2.0) ;
-    }
-
-    vpm *= 1.0 - v ;
-  }  
-
   return 0 ;
 }
 
@@ -225,49 +145,45 @@ static gint koornwinder_recursion(gint N, gint m, SQT_REAL Pm, SQT_REAL w,
 				  SQT_REAL *Knm, gint str, gint nst)
 
 {
-  SQT_REAL cnm, tmp, Jnm1, Jn ;
-  gint n, idx, nmax ;
+  SQT_REAL cnm, tmp, Jnm1, Jnm, A, B, C ;
+  gint n, idx ;
 
-  nmax = N-m-1 ;
-  nmax = (gint)floor(-m-1.5+0.5*sqrt(1 + 8*(nst -1 - m))) ;
-
-  if ( nmax <= 0 ) return 0 ;
   Jnm1 = 1.0 ;
   n = m ;
   idx = n*(n+1)/2 + m ;
-  /* g_assert(idx < nst) ; */
   cnm = sqrt(2.0*(1+2*m)*(m+1)) ;
-  Knm[str*idx] = Jnm1*Pm*cnm ;
+
+  if ( idx < nst ) Knm[str*idx] = Jnm1*Pm*cnm ;
+  if ( m+1 > N ) return 0 ;
   
-  n = 0 ; 
-  Jn = (SQT_REAL)(n+m+1)*(2*n+2*m+3)/(n+1)/(n+2*m+2)*w -
-    (SQT_REAL)(2*m+1)*(2*m+1)*(n+m+1)/(n+1)/(n+2*m+2)/(2*n+2*m+1) ;
+  A = 0.5*(2*m+3) ; B = -0.5*(2*m+1) ;
 
-  if ( nmax < 1 ) return 0 ;
-  n = m+1 ;
-  idx = n*(n+1)/2 + m ;
-  /* g_assert(idx < nst) ; */
+  Jnm = A*w + B ;
+  n = m + 1 ;
   cnm = sqrt(2.0*(1+2*m)*(n+1)) ;
-  Knm[str*idx] = Jn*Pm*cnm ;
+  idx = n*(n+1)/2 + m ;
+  if ( idx < nst ) Knm[str*idx] = Jnm*Pm*cnm ;
 
-  for ( (n = 1), (idx = (n+m+1)*(n+m+2)/2 + m) ;
-	(n <= nmax) ;
-	(n ++), (idx = (n+m+1)*(n+m+2)/2 + m) ) {
-    /* g_assert(idx < nst) ; */
-    /*Jacobi polynomial recursion*/
-    tmp = ((SQT_REAL)(n+m+1)*(2*n+2*m+3)/(n+1)/(n+2*m+2)*w -
-	   (SQT_REAL)(2*m+1)*(2*m+1)*(n+m+1)/(n+1)/(n+2*m+2)/(2*n+2*m+1))*Jn -
-      (SQT_REAL)n*(n+2*m+1)*(2*n+2*m+3)/(n+1)/(n+2*m+2)/(2*n+2*m+1)*Jnm1 ;
-    Jnm1 = Jn ; Jn = tmp ;
-    cnm = sqrt(2.0*(1+2*m)*(n+m+2)) ;
-    Knm[str*idx] = Jn*Pm*cnm ;
+  if ( N*(N+1)/2 + m >= nst ) N -- ;
+
+  for ( n = m+2 ; n <= N ; n ++ ) {
+    A =  (SQT_REAL)(n-1+1)*(2*n-2+3)/(n-1-m+1)/(n-1+m+2) ;
+    B = -(SQT_REAL)(2*m+1)*(2*m+1)*(n-1+1)/(n-1-m+1)/(n-1+m+2)/(2*n-2+1) ;
+    C =  (SQT_REAL)(n-1-m)*(n-1+m+1)*(2*n-2+3)/(n-1-m+1)/(n-1+m+2)/(2*n-2+1) ;
+    
+    tmp = Jnm ;
+    Jnm = (A*w + B)*Jnm - C*Jnm1 ;
+    Jnm1 = tmp ;
+    cnm = sqrt(2.0*(1+2*m)*(n+1)) ;
+    idx = n*(n+1)/2 + m ;
+    Knm[str*idx] = Jnm*Pm*cnm ;
   }
 
   return 0 ;
 }
 
-static gint sqt_koornwinder_tmp(gint N, SQT_REAL u, SQT_REAL v,
-				SQT_REAL *Knm, gint str, gint nst)
+gint SQT_FUNCTION_NAME(sqt_koornwinder_nm)(gint N, SQT_REAL u, SQT_REAL v,
+					   SQT_REAL *Knm, gint str, gint nst)
 
 /*
   Definition of Koornwinder polynomials from Greengard et al, Fast
@@ -283,7 +199,6 @@ static gint sqt_koornwinder_tmp(gint N, SQT_REAL u, SQT_REAL v,
   gint m ;
   SQT_REAL x, tmp, w, Pm, Pmm1 ;
   
-  /*initialize (1-v)^m P_m for n = m*/
   w = 1.0 - 2.0*v ;
   x = (2.0*u + v - 1.0)/(1.0 - v) ;
 
@@ -295,15 +210,13 @@ static gint sqt_koornwinder_tmp(gint N, SQT_REAL u, SQT_REAL v,
   Pmm1 = Pm ; Pm = (1.0 - v)*x ;
   koornwinder_recursion(N, m, Pm, w, Knm, str, nst) ;
 
-  /*recursive generation of Legendre polynomials*/
-  for ( m = 2 ; m < N ; m ++ ) {
+  /*recursive generation of Legendre polynomials and Jacobi recursion*/
+  for ( m = 2 ; m <= N ; m ++ ) {
     tmp = Pm ;
-    Pm = (1.0-v)*((2.0*m-1)/m*x*Pm - ((1.0-v)*(m-1))/m*Pmm1) ;
+    Pm = (1.0-v)*((2.0*m-1)*x*Pm - (1.0-v)*(m-1)*Pmm1)/m ;
     Pmm1 = tmp ;
     koornwinder_recursion(N, m, Pm, w, Knm, str, nst) ;
   }  
-
-  /* exit(0) ; */
   
   return 0 ;
 }
@@ -319,12 +232,11 @@ gint SQT_FUNCTION_NAME(sqt_koornwinder_interp_matrix)(SQT_REAL *s, gint sstr,
 
   N = 0 ;
   while ( N*(N+1)/2 < nst ) N ++ ;
+  N -- ;
   
   for ( i = 0 ; i < nst ; i ++ ) {
-    /* SQT_FUNCTION_NAME(sqt_koornwinder_nm)(N, s[i*sstr], t[i*tstr], */
-    /* 					  &(A[i]), nst) ; */
-    sqt_koornwinder_tmp(N, s[i*sstr], t[i*tstr],
-			&(A[i]), nst, nst) ;
+    SQT_FUNCTION_NAME(sqt_koornwinder_nm)(N, s[i*sstr], t[i*tstr],
+    					  &(A[i]), nst, nst) ;
 #ifdef SQT_SINGLE_PRECISION
     g_assert_not_reached() ;
 #else /*SQT_SINGLE_PRECISION*/
@@ -333,6 +245,11 @@ gint SQT_FUNCTION_NAME(sqt_koornwinder_interp_matrix)(SQT_REAL *s, gint sstr,
   }
   
   /*return order of Knm required for interpolation after application
-    of matrix*/
+    of matrix
+
+    matrix contains polynomials K_nm, 0 <= n <= N, 0 <= m <= n, 
+    n*(n+1)/2 + m < nst
+  */
+
   return N ;
 }
