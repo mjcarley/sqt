@@ -99,7 +99,7 @@ adapt.lo: adapt.c /usr/include/stdc-predef.h /usr/include/stdio.h \
  /usr/include/sched.h /usr/include/bits/sched.h \
  /usr/include/bits/setjmp.h \
  /usr/include/glib-2.0/glib/glib-autocleanups.h \
- /home/michael/Codes/include/blaswrap.h sqt.h sqt-private.h
+ /home/michael/Codes/include/blaswrap.h sqt.h sqt-private.h ../config.h
 
 /usr/include/stdc-predef.h:
 
@@ -404,3 +404,5 @@ adapt.lo: adapt.c /usr/include/stdc-predef.h /usr/include/stdio.h \
 sqt.h:
 
 sqt-private.h:
+
+../config.h:

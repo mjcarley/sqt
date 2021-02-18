@@ -105,7 +105,7 @@ static gint triangle_mapping(SQT_REAL *xt, gint xstr, gint nt,
   sgesdd_("A", &three, &two, dr, &three, S, U, &three, V, &two,
 	  work, &lwork, &iwork, &info) ;
 #else
-  /*note that dr has been filled in FORTRAN ordering so this is a
+  /*dr has been filled in FORTRAN ordering so this is a
     standard call to dgesdd with no transposition*/
   dgesdd_("A", &three, &two, dr, &three, S, U, &three, V, &two,
 	  work, &lwork, &iwork, &info) ;
@@ -358,8 +358,8 @@ static gint triangle_mapping_kw(SQT_REAL *ce, gint ne, gint Nk,
   sgesdd_("A", &three, &two, dr, &three, S, U, &three, V, &two,
 	  work, &lwork, &iwork, &info) ;
 #else
-  /*note that dr has been filled in FORTRAN ordering so this is a
-    standard call to dgesdd with no transposition*/
+  /*dr has been filled in FORTRAN ordering so this is a standard call
+    to dgesdd with no transposition*/
   dgesdd_("A", &three, &two, dr, &three, S, U, &three, V, &two,
 	  work, &lwork, &iwork, &info) ;
   g_assert(info == 0) ;

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.10.11)  8 FEB 2021 17:02
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.10.11)  12 FEB 2021 10:41
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -111,15 +111,10 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
+ [1
 
-Overfull \hbox (59.61508pt too wide) detected at line 58
-[]
- []
-
-[1
-
-{/opt/texlive-2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-(./notes.aux) ) 
+{/opt/texlive-2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (./notes.aux)
+ ) 
 Here is how much of TeX's memory you used:
  1086 strings out of 479917
  15127 string characters out of 5885681
@@ -128,16 +123,15 @@ Here is how much of TeX's memory you used:
  540083 words of font info for 43 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  59i,10n,66p,226b,122s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/opt/texlive-2020/texmf-dist/fonts/enc/dvips/base/8r.enc}</opt/
-texlive-2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></opt/texlive
--2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></opt/texlive-2020/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></opt/texlive-2020/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmr12.pfb></opt/texlive-2020/texmf-dist/fonts/
-type1/public/amsfonts/cm/cmr8.pfb></opt/texlive-2020/texmf-dist/fonts/type1/pub
-lic/amsfonts/cm/cmsy10.pfb></opt/texlive-2020/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmsy8.pfb></opt/texlive-2020/texmf-dist/fonts/type1/urw/times/utmr8a.p
-fb>
-Output written on notes.pdf (1 page, 77876 bytes).
+{/opt/texlive-2020/texmf-dist/fonts/enc/dvips/base/8r.enc}</opt/texlive-2020/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></opt/texlive-2020/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></opt/texlive-2020/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmmi8.pfb></opt/texlive-2020/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmr12.pfb></opt/texlive-2020/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmr8.pfb></opt/texlive-2020/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmsy10.pfb></opt/texlive-2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy
+8.pfb></opt/texlive-2020/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
+Output written on notes.pdf (1 page, 77930 bytes).
 PDF statistics:
  41 PDF objects out of 1000 (max. 8388607)
  29 compressed objects within 1 object stream

@@ -74,6 +74,7 @@ gint SQT_FUNCTION_NAME(sqt_basic_quad_kw)(SQT_REAL *xe, gint xstr,
   
   memset(quad, 0, nc*sizeof(SQT_REAL)) ;
 
+  g_assert_not_reached() ;
   for ( i = 0 ; i < ne ; i ++ ) {
     func(0, 0, wt[i*wstr], &(xe[i*xstr]), &(n [i*nstr]), quad, nc, data) ;
   }

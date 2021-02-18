@@ -323,7 +323,7 @@ static gint element_interpolation_test(gint N, gint nq)
   gdouble ui[3], vi[3], xi[453*4], ci[453*3], u, v, x[3], xu[3], xv[3] ;
   gdouble y[3], n[3], ny[3], J ;
   gdouble emax, enmax ;
-  gdouble work[3*(453+1)*(453+2)/2] ;
+  gdouble work[3*453] ;
   
   fprintf(stderr, "element interpolation test\n") ;
   fprintf(stderr, "==========================\n") ;
@@ -331,7 +331,6 @@ static gint element_interpolation_test(gint N, gint nq)
   
   sqt_quadrature_select(nq, &q, &order) ;
 
-  /* N = sqt_koornwinder_interp_matrix(q, nq, K) ; */
   N = sqt_koornwinder_interp_matrix(&(q[0]), 3, &(q[1]), 3, &(q[2]), 3, nq, K) ;
 
   fprintf(stderr, "Knm N max: %d\n", N) ;
@@ -359,10 +358,8 @@ static gint element_interpolation_test(gint N, gint nq)
       u = ui[0]*(1.0 - s - t) + ui[1]*s + ui[2]*t ;
       v = vi[0]*(1.0 - s - t) + vi[1]*s + vi[2]*t ;
       
-      sqt_geometry_stellarator(u, v, x, n) ; /* xu, xv) ; */
-      fprintf(stdout, "%lg %lg %lg ", x[0], x[1], x[2]) ;
-      fprintf(stdout, "%lg %lg %lg ", xu[0], xu[1], xu[2]) ;
-      fprintf(stdout, "%lg %lg %lg\n", xv[0], xv[1], xv[2]) ;
+      sqt_geometry_stellarator(u, v, x, n) ;
+      fprintf(stdout, "%lg %lg %lg\n", x[0], x[1], x[2]) ;
 
       sqt_element_interp(ci, nq, N, s, t, y, ny, &J, NULL, work) ;
 
@@ -451,8 +448,8 @@ static gint spherical_patch_test(gint N, gint nq, gint depth, gdouble tol)
   x[0] = x[1] = x[2] = 0.0 ;
   
   sqt_patch_nodes_sphere(rho, th0, ph0, th1, ph0, th0, ph1,
-			 &(qk[0]), 3, &(qk[1]), 3, nqk,
-			 xi, xstr, NULL, 1) ;
+			 &(qk[0]), 3, &(qk[1]), 3, NULL, 1, nqk,
+			 xi, xstr, NULL, 1, NULL, 1) ;
 
   al = 1.0 ; bt = 0.0 ;
   blaswrap_dgemm(FALSE, FALSE, nqk, i3, nqk, al, K, nqk, xi, xstr, bt, ci, i3) ;
@@ -607,8 +604,8 @@ static gint laplace_quad_func(gdouble s, gdouble t, gdouble w,
 
   /* SQT_FUNCTION_NAME(sqt_element_shape_3d)(nq/2, s, t, L, */
   /* 					  NULL, NULL, NULL, NULL, NULL) ; */
-  /* src = s*t - 1.0 ; */
-  src = 1.0 ;
+  src = s*t - 1.0 ;
+  /* src = 1.0 ; */
   quad[0] += w*src ;
   quad[1] += w*src*dR ;
   
@@ -644,8 +641,8 @@ static gint adaptive_quad_test(gdouble *xe, gint xstr, gint ne,
   /* Nk = sqt_koornwinder_interp_matrix(q, nq, K) ; */
   Nk =
     sqt_koornwinder_interp_matrix(&(q[0]), 3, &(q[1]), 3, &(q[2]), 3, nq, K) ;
-  sqt_patch_nodes_tri(xe, xstr, ne, &(q[0]), 3, &(q[1]), 3, nq,
-		      xi, xstr, NULL, 4) ;
+  sqt_patch_nodes_tri(xe, xstr, ne, &(q[0]), 3, &(q[1]), 3, NULL, 1, nq,
+		      xi, xstr, NULL, 1, NULL, 1) ;
   al = 1.0 ; bt = 0.0 ;
   blaswrap_dgemm(FALSE, FALSE, nq, i3, nq, al, K, nq, xi, xstr, bt, ce, i3) ;
 
@@ -749,8 +746,8 @@ static gint normal_quad_test(gdouble *xe, gint xstr, gint ne,
   /* Nk = sqt_koornwinder_interp_matrix(qk, nk, K) ; */
   Nk = sqt_koornwinder_interp_matrix(&(qk[0]), 3, &(qk[1]), 3, &(qk[2]), 3,
 				     nk, K) ;
-  sqt_patch_nodes_tri(xe, xstr, ne, &(qk[0]), 3, &(qk[1]), 3, nk,
-		      xi, xstr, NULL, 4) ;
+  sqt_patch_nodes_tri(xe, xstr, ne, &(qk[0]), 3, &(qk[1]), 3, NULL, 1, nk,
+		      xi, xstr, NULL, 1, NULL, 1) ;
 
   /*compute the interpolation coefficients*/
   al = 1.0 ; bt = 0.0 ;
@@ -943,15 +940,16 @@ static gint matrix_adaptive_test(gdouble *xse, gint xsstr, gint nse,
   
   nqk = 25 ;
   nqt = 54 ;
-  nqs = 85 ;
+  nqs = 25 ;
   
   fprintf(stderr, "interaction matrix test\n") ;
   fprintf(stderr, "=======================\n") ;
   fprintf(stderr, "tol = %lg\n", tol) ;
+  fprintf(stderr, "depth = %d\n", depth) ;
   fprintf(stderr, "nqs = %d\n", nqs) ;
   fprintf(stderr, "nqk = %d\n", nqk) ;
   fprintf(stderr, "nqt = %d\n", nqt) ;
-
+  
   sqt_quadrature_select(nqt, &st, &oq) ;
 
   sqt_quadrature_select(nqk, &q, &oq) ;
@@ -962,10 +960,10 @@ static gint matrix_adaptive_test(gdouble *xse, gint xsstr, gint nse,
     src[i] = s*t - 1.0 ;
   }
 
-  sqt_patch_nodes_tri(xse, xsstr, nse, &(q[0]), 3, &(q[1]), 3, nqk,
-  		      xp, pstr, NULL, 4) ;
-  sqt_patch_nodes_tri(xte, xtstr, nte, &(st[0]), 3, &(st[1]), 3, nqt,
-  		      xt, pstr, NULL, 4) ;
+  sqt_patch_nodes_tri(xse, xsstr, nse, &(q[0]), 3, &(q[1]), 3, NULL, 1, nqk,
+  		      xp, pstr, NULL, 1, NULL, 1) ;
+  sqt_patch_nodes_tri(xte, xtstr, nte, &(st[0]), 3, &(st[1]), 3, NULL, 1, nqt,
+  		      xt, pstr, NULL, 1, NULL, 1) ;
   
   sqt_quadrature_select(nqs, &qs, &oq) ;
 
@@ -978,6 +976,9 @@ static gint matrix_adaptive_test(gdouble *xse, gint xsstr, gint nse,
   sqt_laplace_source_target_kw_adaptive(xp, pstr, nqk, qs, nqs, Kq, nK,
   					tol, depth, xt, pstr, nqt,
   					Astb) ;
+  /* sqt_laplace_source_target_kw_adaptive(xp, pstr, nqk, qs, nqs, Kq, nK, */
+  /* 					tol, depth, xt, pstr, nqt, */
+  /* 					Astb) ; */
 					
   /*calculate single and double layer potentials on target element*/
   al = 1.0 ; bt = 0.0 ; lda = 2*nqk ;
@@ -1057,8 +1058,8 @@ static gint matrix_self_test(gdouble *xe, gint xstr, gint ne, gint N,
     src[i] = s*t - 1.0 ;
     src[i] = 1.0 ;
   }
-  sqt_patch_nodes_tri(xe, xstr, ne, &(st[0]), 3, &(st[1]), 3, nqk,
-  		      xp, pstr, NULL, 4) ;
+  sqt_patch_nodes_tri(xe, xstr, ne, &(st[0]), 3, &(st[1]), 3, NULL, 1, nqk,
+  		      xp, pstr, NULL, 1, NULL, 1) ;
   sqt_laplace_source_target_kw_self(xp, pstr, nqk, Kq, nK, N,
   				    &(st[0]), 3, &(st[1]), 3, Astk) ;
   

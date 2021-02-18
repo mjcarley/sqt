@@ -25,7 +25,7 @@ Koornwinder polynomials from Greengard et al:
   \right]^{1/2}.
 \end{align}
 
-Recursions (DLMF):
+Jacobi polynomial recursions (DLMF):
 \begin{align}
   % \label{equ:jacobi:1}
   % P_{n+1}^{(0,2m+1)}(x)
@@ -53,10 +53,12 @@ Recursions (DLMF):
   C_{n} &= \frac{(n-m)(n+m+1)(2n+3)}{(n-m+1)(n+m+2)(2n+1)},\\
   \frac{\D P_{n-m}^{0,2m+1}(x)}{\D x}
   &=
-  2(n-m)(n+m+1)P_{n-m-1}^{0,2m+1}(x) -
+  2(n-m)(n+m+1)P_{n-m-1}^{0,2m+1}(x) \nonumber\\
+  &-
   (n-m)((2n+1)x + 2m+1)P_{n-m}^{0,2m+1}.
 \end{align}
 
+Legendre polynomials:
 \begin{align}
   \label{equ:legendre}
   P_{n+1}(x)

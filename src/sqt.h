@@ -3,6 +3,8 @@
 
 #include <glib.h>
 
+#define SQT_ADAPTIVE_BUFFER_SIZE 2048
+
 typedef gint (*sqt_quadrature_func_t)(gdouble s, gdouble t, gdouble w,
 				    gdouble *y, gdouble *n,
 				    gdouble *quad, gint nc, gpointer data) ;
@@ -185,6 +187,19 @@ gint sqt_laplace_weights_kw_adaptive_f(gfloat *ce, gint ne, gint Nk,
 				       gfloat *x,
 				       gfloat *w) ;
 
+gint sqt_laplace_matrix_kw_adaptive(gdouble *ce, gint ne, gint Nk,
+				    gdouble *K,
+				    gdouble *q, gint nq,
+				    gdouble tol, gint dmax,
+				    gdouble *x, gint xstr, gint nx,
+				    gdouble *w) ;
+gint sqt_laplace_matrix_kw_adaptive_f(gfloat *ce, gint ne, gint Nk,
+				      gfloat *K,
+				      gfloat *q, gint nq,
+				      gfloat tol, gint dmax,
+				      gfloat *x, gint xstr, gint nx,
+				      gfloat *w) ;
+
 gint sqt_laplace_weights_tri_singular(gdouble *xe, gint xstr, gint ne,
 				      gdouble *Kq, gint nkq, gint nK,
 				      gint N,
@@ -323,32 +338,40 @@ gint sqt_geometry_sphere_f(gfloat u, gfloat v, gfloat *x,
 gint sqt_patch_nodes_tri(gdouble *xe, gint xstr, gint ne,
 			 gdouble *s, gint sstr,
 			 gdouble *t, gint tstr,
+			 gdouble *w, gint wstr,
 			 gint nst,
 			 gdouble *xp, gint pstr,
-			 gdouble *np, gint nstr) ;
+			 gdouble *np, gint nstr,
+			 gdouble *wt, gint wtstr) ;
 gint sqt_patch_nodes_tri_f(gfloat *xe, gint xstr, gint ne,
 			   gfloat *s, gint sstr,
 			   gfloat *t, gint tstr,
+			   gfloat *w, gint wstr,
 			   gint nst,
 			   gfloat *xp, gint pstr,
-			   gfloat *np, gint nstr) ;
+			   gfloat *np, gint nstr,
+			   gfloat *wt, gint wtstr) ;
 gint sqt_patch_nodes_sphere(gdouble rho,
 			    gdouble th0, gdouble ph0,
 			    gdouble th1, gdouble ph1,
 			    gdouble th2, gdouble ph2,
 			    gdouble *s, gint sstr,
 			    gdouble *t, gint tstr,
+			    gdouble *w, gint wstr,
 			    gint nst,
 			    gdouble *xp, gint pstr,
-			    gdouble *np, gint nstr) ;
+			    gdouble *np, gint nstr,
+			    gdouble *wt, gint wtstr) ;
 gint sqt_patch_nodes_sphere_f(gfloat rho,
 			      gfloat th0, gfloat ph0,
 			      gfloat th1, gfloat ph1,
 			      gfloat th2, gfloat ph2,
 			      gfloat *s, gint sstr,
 			      gfloat *t, gint tstr,
+			      gfloat *w, gint wstr,
 			      gint nst,
 			      gfloat *xp, gint pstr,
-			      gfloat *np, gint nstr) ;
-
+			      gfloat *np, gint nstr,
+			      gfloat *wt, gint wtstr) ;
+			      
 #endif /*SQT_H_INCLUDED*/

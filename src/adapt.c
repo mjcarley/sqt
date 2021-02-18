@@ -27,6 +27,8 @@
 
 #include "sqt-private.h"
 
+#include "config.h"
+
 /* #define TRIANGLE_TRACE */
 
 static void adaptive_quad_tri(SQT_REAL *xe, gint xstr, gint ne,
@@ -144,15 +146,15 @@ gint SQT_FUNCTION_NAME(sqt_adaptive_quad_tri)(SQT_REAL *xe, gint xstr, gint ne,
 
 
 static void adaptive_quad_kw(SQT_REAL *ce, gint ne, gint Nk,
-			      SQT_REAL *st, SQT_REAL wt,
-			      SQT_REAL *q, gint nq, 
+			     SQT_REAL *st, SQT_REAL wt,
+			     SQT_REAL *q, gint nq, 
 #ifdef SQT_SINGLE_PRECISION
-			      sqt_quadrature_func_f_t func,
+			     sqt_quadrature_func_f_t func,
 #else /*SQT_SINGLE_PRECISION*/
-			      sqt_quadrature_func_t func,
+			     sqt_quadrature_func_t func,
 #endif /*SQT_SINGLE_PRECISION*/
-			      SQT_REAL *quad, gint nc,
-			      gpointer data)
+			     SQT_REAL *quad, gint nc,
+			     gpointer data)
 
 {
   gint i ;
@@ -187,13 +189,14 @@ static gint adaptive_quad_kw_recursion(SQT_REAL *ce, gint ne, gint Nk,
 
 {
   gint i ;
-  SQT_REAL work[2048], *q0, *q1, *q2, *q3 ;
+  SQT_REAL *q0, *q1, *q2, *q3 ;
   SQT_REAL st0[6], st1[6], st2[6], st3[6] ;
+  SQT_REAL work[SQT_ADAPTIVE_BUFFER_SIZE] ;
   gboolean recurse ;
 
   if ( dmax == 0 ) return 0 ;
 
-  g_assert(4*nc <= 2048) ;
+  g_assert(4*nc <= SQT_ADAPTIVE_BUFFER_SIZE) ;
   
   memset(work, 0, 4*nc*sizeof(SQT_REAL)) ;
   q0 = &(work[0]) ; q1 = &(q0[nc]) ; q2 = &(q1[nc]) ; q3 = &(q2[nc]) ;
@@ -220,14 +223,13 @@ static gint adaptive_quad_kw_recursion(SQT_REAL *ce, gint ne, gint Nk,
   if ( !recurse ) return 0 ;
 
   adaptive_quad_kw_recursion(ce, ne, Nk, st0, wt, q, nq, func,
-			     q0, nc, tol, dmax-1, data) ;
+  			     q0, nc, tol, dmax-1, data) ;
   adaptive_quad_kw_recursion(ce, ne, Nk, st1, wt, q, nq, func,
-			     q1, nc, tol, dmax-1, data) ;
+  			     q1, nc, tol, dmax-1, data) ;
   adaptive_quad_kw_recursion(ce, ne, Nk, st2, wt, q, nq, func,
-			     q2, nc, tol, dmax-1, data) ;
+  			     q2, nc, tol, dmax-1, data) ;
   adaptive_quad_kw_recursion(ce, ne, Nk, st3, wt, q, nq, func,
-			     q3, nc, tol, dmax-1, data) ;
-  
+  			     q3, nc, tol, dmax-1, data) ;
   for ( i = 0 ; i < nc ; i ++ ) {
     quad[i] = q0[i] + q1[i] + q2[i] + q3[i] ;
   }

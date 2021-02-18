@@ -30,23 +30,34 @@
 gint SQT_FUNCTION_NAME(sqt_patch_nodes_tri)(SQT_REAL *xe, gint xstr, gint ne,
 					    SQT_REAL *s, gint sstr,
 					    SQT_REAL *t, gint tstr,
+					    SQT_REAL *w, gint wstr,
 					    gint nst,
 					    SQT_REAL *xp, gint pstr,
-					    SQT_REAL *np, gint nstr)
+					    SQT_REAL *np, gint nstr,
+					    SQT_REAL *wt, gint wtstr)
 
 {
   gint i ;
-  SQT_REAL n[3], J ;
+  SQT_REAL n[3], J, buffer[] = {1.0, 1.0} ;
   
   g_assert(ne == 3 || ne == 6) ;
 
   if ( np == NULL ) {
     np = n ; nstr = 0 ;
   }
+
+  if ( w == NULL ) {
+    w = &(buffer[0]) ; wstr = 0 ;
+  }
+
+  if ( wt == NULL ) {
+    wt = &(buffer[1]) ; wtstr = 0 ;
+  }
   
   for ( i = 0 ; i < nst ; i ++ ) {
-    sqt_element_point_3d(xe, xstr, ne, s[i*sstr], t[i*tstr],
-			 &(xp[i*pstr]), &(np[i*nstr]), &J) ;  
+    SQT_FUNCTION_NAME(sqt_element_point_3d)(xe, xstr, ne, s[i*sstr], t[i*tstr],
+					    &(xp[i*pstr]), &(np[i*nstr]), &J) ;
+    wt[i*wtstr] = J*w[i*wstr] ;
   }
   
   return 0 ;
@@ -58,28 +69,57 @@ gint SQT_FUNCTION_NAME(sqt_patch_nodes_sphere)(SQT_REAL rho,
 					       SQT_REAL th2, SQT_REAL ph2,
 					       SQT_REAL *s, gint sstr,
 					       SQT_REAL *t, gint tstr,
+					       SQT_REAL *w, gint wstr,
 					       gint nst,
 					       SQT_REAL *xp, gint pstr,
-					       SQT_REAL *np, gint nstr)
+					       SQT_REAL *np, gint nstr,
+					       SQT_REAL *wt, gint wtstr)
 
 {
   gint i ;
-  SQT_REAL n[3], J, th, ph, xv[3], xu[3] ;
-  
+  SQT_REAL n[3], J, th, ph, xph[3], xth[3], buffer[] = {1.0, 1.0} ;
+  SQT_REAL xs[3], xt[3], ths, tht, phs, pht ;
+    
   if ( np == NULL ) {
     np = n ; nstr = 0 ;
   }
   
+  if ( w == NULL ) {
+    w = &(buffer[0]) ; wstr = 0 ;
+  }
+
+  if ( wt == NULL ) {
+    wt = &(buffer[1]) ; wtstr = 0 ;
+  }
+
   for ( i = 0 ; i < nst ; i ++ ) {
     th = th0*(1.0 - s[i*sstr] - t[i*tstr]) + th1*s[i*sstr] + th2*t[i*tstr] ;
     ph = ph0*(1.0 - s[i*sstr] - t[i*tstr]) + ph1*s[i*sstr] + ph2*t[i*tstr] ;
 
-    sqt_geometry_sphere(th, ph, &(xp[i*pstr]), xu, xv) ;
+    ths = th0*(0.0 - 1.0 - 0.0) + th1*1.0 + th2*0.0 ;
+    tht = th0*(0.0 - 0.0 - 1.0) + th1*0.0 + th2*1.0 ;
+    phs = ph0*(0.0 - 1.0 - 0.0) + ph1*1.0 + ph2*0.0 ;
+    pht = ph0*(0.0 - 0.0 - 1.0) + ph1*0.0 + ph2*1.0 ;
+    
+    SQT_FUNCTION_NAME(sqt_geometry_sphere)(th, ph, &(xp[i*pstr]), xth, xph) ;
     xp[i*pstr+0] *= rho ; xp[i*pstr+1] *= rho ; xp[i*pstr+2] *= rho ; 
 
     np[i*nstr+0] = xp[i*pstr+0] ;
     np[i*nstr+1] = xp[i*pstr+1] ;
     np[i*nstr+2] = xp[i*pstr+2] ;
+
+    xs[0] = xth[0]*ths + xph[0]*phs ;
+    xs[1] = xth[1]*ths + xph[1]*phs ;
+    xs[2] = xth[2]*ths + xph[2]*phs ;
+    xt[0] = xth[0]*tht + xph[0]*pht ;
+    xt[1] = xth[1]*tht + xph[1]*pht ;
+    xt[2] = xth[2]*tht + xph[2]*pht ;
+
+    sqt_vector_cross(n, xs, xt) ;
+
+    J = sqt_vector_length(n)*rho*rho ;
+    
+    wt[i*wtstr] = J*w[i*wstr] ;
   }
   
   return 0 ;

@@ -81,7 +81,7 @@ gint SQT_FUNCTION_NAME(sqt_geometry_sphere)(SQT_REAL th, SQT_REAL ph,
 {
   x[0] = cos(th)*sin(ph) ;
   x[1] = sin(th)*sin(ph) ;
-  x[2] =        cos(ph) ;
+  x[2] =         cos(ph) ;
 
   xu[0] = -sin(th)*sin(ph) ;
   xu[1] =  cos(th)*sin(ph) ;
@@ -89,7 +89,7 @@ gint SQT_FUNCTION_NAME(sqt_geometry_sphere)(SQT_REAL th, SQT_REAL ph,
 
   xv[0] = cos(th)*cos(ph) ;
   xv[1] = sin(th)*cos(ph) ;
-  xv[2] = -sin(ph) ;
+  xv[2] =        -sin(ph) ;
     
   return 0 ;
 }
