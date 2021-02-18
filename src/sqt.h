@@ -108,13 +108,14 @@ gint sqt_adaptive_quad_kw(gdouble *ce, gint ne, gint Nk,
 			  sqt_quadrature_func_t func,
 			  gdouble *quad, gint nc,
 			  gdouble tol, gint dmax,
-			  gpointer data) ;
+			  gpointer data, gdouble *work) ;
 gint sqt_adaptive_quad_kw_f(gfloat *ce, gint ne, gint Nk,
 			    gfloat *q, gint nq,
 			    sqt_quadrature_func_f_t func,
 			    gfloat *quad, gint nc,
 			    gfloat tol, gint dmax,
-			    gpointer data) ;
+			    gpointer data, gfloat *work) ;
+
 gint sqt_singular_quad_kw(gdouble *ce, gint ne, gint Nk,
 			  gdouble s0, gdouble t0,
 			  gint N,
@@ -179,26 +180,26 @@ gint sqt_laplace_weights_kw_adaptive(gdouble *ce, gint ne, gint Nk,
 				     gdouble *q, gint nq,
 				     gdouble tol, gint dmax,
 				     gdouble *x,
-				     gdouble *w) ;
+				     gdouble *w, gdouble *work) ;
 gint sqt_laplace_weights_kw_adaptive_f(gfloat *ce, gint ne, gint Nk,
 				       gfloat *K,
 				       gfloat *q, gint nq,
 				       gfloat tol, gint dmax,
 				       gfloat *x,
-				       gfloat *w) ;
+				       gfloat *w, gfloat *work) ;
 
 gint sqt_laplace_matrix_kw_adaptive(gdouble *ce, gint ne, gint Nk,
 				    gdouble *K,
 				    gdouble *q, gint nq,
 				    gdouble tol, gint dmax,
 				    gdouble *x, gint xstr, gint nx,
-				    gdouble *w) ;
+				    gdouble *w, gdouble *work) ;
 gint sqt_laplace_matrix_kw_adaptive_f(gfloat *ce, gint ne, gint Nk,
 				      gfloat *K,
 				      gfloat *q, gint nq,
 				      gfloat tol, gint dmax,
 				      gfloat *x, gint xstr, gint nx,
-				      gfloat *w) ;
+				      gfloat *w, gfloat *work) ;
 
 gint sqt_laplace_weights_tri_singular(gdouble *xe, gint xstr, gint ne,
 				      gdouble *Kq, gint nkq, gint nK,
@@ -274,7 +275,7 @@ gint sqt_laplace_source_target_kw_adaptive(gdouble *xse,
 					   gint dmax,
 					   gdouble *xte,
 					   gint tstr, gint nte,
-					   gdouble *Ast) ;
+					   gdouble *Ast, gdouble *work) ;
 gint sqt_laplace_source_target_kw_adaptive_f(gfloat *xse,
 					     gint sstr, gint nse,
 					     gfloat *q, gint nq,
@@ -283,7 +284,7 @@ gint sqt_laplace_source_target_kw_adaptive_f(gfloat *xse,
 					     gint dmax,
 					     gfloat *xte,
 					     gint tstr, gint nte,
-					     gfloat *Ast) ;
+					     gfloat *Ast, gfloat *work) ;
 
 gint sqt_laplace_source_target_tri_self(gdouble *xe, gint xstr, gint ne,
 					gdouble *Kq, gint nqk, gint nK,

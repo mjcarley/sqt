@@ -189,7 +189,8 @@ gint SQT_FUNCTION_NAME(sqt_laplace_weights_kw_adaptive)(SQT_REAL *ce,
 							SQT_REAL tol,
 							gint dmax,
 							SQT_REAL *x,
-							SQT_REAL *w)
+							SQT_REAL *w,
+							SQT_REAL *work)
 
 {
   SQT_REAL Knm[2048] ;
@@ -210,7 +211,7 @@ gint SQT_FUNCTION_NAME(sqt_laplace_weights_kw_adaptive)(SQT_REAL *ce,
 #endif /*SQT_SINGLE_PRECISION*/
 
   SQT_FUNCTION_NAME(sqt_adaptive_quad_kw)(ce, ne, Nk, q, nq, func,
-					  w, 2*ne, tol, dmax, data) ;
+					  w, 2*ne, tol, dmax, data, work) ;
   
   return 0 ;
 }
@@ -223,7 +224,8 @@ gint SQT_FUNCTION_NAME(sqt_laplace_matrix_kw_adaptive)(SQT_REAL *ce,
 						       gint dmax,
 						       SQT_REAL *x,
 						       gint xstr, gint nx,
-						       SQT_REAL *Ast)
+						       SQT_REAL *Ast,
+						       SQT_REAL *work)
 
 {
   SQT_REAL Knm[2048] ;
@@ -246,7 +248,8 @@ gint SQT_FUNCTION_NAME(sqt_laplace_matrix_kw_adaptive)(SQT_REAL *ce,
 #endif /*SQT_SINGLE_PRECISION*/
 
   SQT_FUNCTION_NAME(sqt_adaptive_quad_kw)(ce, ne, Nk, q, nq, func,
-					  Ast, 2*ne*nx, tol, dmax, data) ;
+					  Ast, 2*ne*nx, tol, dmax,
+					  data, work) ;
   
   return 0 ;
 }
@@ -398,7 +401,8 @@ SQT_FUNCTION_NAME(sqt_laplace_source_target_kw_adaptive)(SQT_REAL *xse,
 							 gint dmax,
 							 SQT_REAL *xte,
 							 gint tstr, gint nte,
-							 SQT_REAL *Ast)
+							 SQT_REAL *Ast,
+							 SQT_REAL *work)
 
 {
   gint i, i3 = 3 ;
@@ -419,7 +423,8 @@ SQT_FUNCTION_NAME(sqt_laplace_source_target_kw_adaptive)(SQT_REAL *xse,
   						       q, nq,
   						       tol, dmax,
   						       &(xte[i*tstr]),
-  						       &(Ast[i*2*nse])) ;
+  						       &(Ast[i*2*nse]),
+						       work) ;
   }
 
   /* SQT_FUNCTION_NAME(sqt_laplace_matrix_kw_adaptive)(ce, nse, Ns, Ks, */

@@ -422,9 +422,9 @@ static gint spherical_patch_test(gint N, gint nq, gint depth, gdouble tol)
 {
   gint order, i, i3 = 3, i1 = 1, xstr, nqk, nc, Nk ;
   gdouble K[454*453], *q, *qk, al, bt ;
-  gdouble xi[453*4], ci[453*3], x[3] ;
-  gdouble wt[453*2], src[453] ;
+  gdouble xi[453*4], ci[453*3], x[3], wt[453*2], src[453] ;
   gdouble th0, th1, ph0, ph1, rho, quad[1024], qref[1024], qwt[1024] ;
+  gdouble *work ;
   sqt_quadrature_func_t func = (sqt_quadrature_func_t)spherical_quad_func ;
   gpointer data[8] ;
   
@@ -455,10 +455,13 @@ static gint spherical_patch_test(gint N, gint nq, gint depth, gdouble tol)
   blaswrap_dgemm(FALSE, FALSE, nqk, i3, nqk, al, K, nqk, xi, xstr, bt, ci, i3) ;
 
   data[0] = x ;
-  sqt_adaptive_quad_kw(ci, nqk, Nk, q, nq, func, quad, nc, tol, depth, data) ;
+  work = (gdouble *)g_malloc(4*nc*depth*sizeof(gdouble)) ;
+  sqt_adaptive_quad_kw(ci, nqk, Nk, q, nq, func, quad, nc, tol, depth,
+		       data, work) ;
 
   /*integration using pre-computed weights*/
-  sqt_laplace_weights_kw_adaptive(ci, nqk, Nk, K, q, nq, tol, depth, x, wt) ;
+  sqt_laplace_weights_kw_adaptive(ci, nqk, Nk, K, q, nq, tol, depth, x,
+				  wt, work) ;
   for ( i = 0 ; i < nqk ; i ++ ) src[i] = 1.0 ;
   qwt[0] = blaswrap_ddot(nqk, &(wt[0  ]), i1, &(src[0]), i1) ;
   qwt[1] = blaswrap_ddot(nqk, &(wt[nqk]), i1, &(src[0]), i1) ;
@@ -621,6 +624,7 @@ static gint adaptive_quad_test(gdouble *xe, gint xstr, gint ne,
 {
   gdouble *q, f[512], g[512], *qref, qbas[512], qkw[512] ;
   gdouble xi[4096], ce[4096], K[453*453], al, bt, t ;
+  gdouble *work ;
   gint oq, nc, i, nref, Nk, i3 = 3 ;
   sqt_quadrature_func_t func = (sqt_quadrature_func_t)adaptive_quad_func ;
   gpointer data[4] ;
@@ -657,7 +661,9 @@ static gint adaptive_quad_test(gdouble *xe, gint xstr, gint ne,
 		   &(g[0]), &(g[ne])) ;
   sqt_basic_quad_tri(xe, xstr, ne, qref, nref, func, qbas, nc, data) ;
 
-  sqt_adaptive_quad_kw(ce, nq, Nk, q, nq, func, qkw, nc, tol, depth, data) ;
+  work = (gdouble *)g_malloc(4*nc*depth*sizeof(gdouble)) ;
+  sqt_adaptive_quad_kw(ce, nq, Nk, q, nq, func, qkw, nc, tol, depth,
+		       data, work) ;
   
   for ( i = 0 ; i < 2*ne ; i ++ ) g[i] *= -1.0/4.0/M_PI ;
 
@@ -720,7 +726,7 @@ static gint normal_quad_test(gdouble *xe, gint xstr, gint ne,
   gdouble *q, J, n[3], g[512], gk[512], gw[512], K[453*453], ce[453*3] ;
   gdouble *qk, x0[3], x[3], u, xi[453*3], w[453*2] ;
   gdouble al, bt, ei, ew, eimax, ewmax ;
-  gdouble src[6*453] ;
+  gdouble src[6*453], *work ;
   gint oq, nc, i, j, i3 = 3, i1 = 1 ;
   gint nk, Nk, order ;
   sqt_quadrature_func_t func = (sqt_quadrature_func_t)adaptive_quad_func ;
@@ -795,9 +801,12 @@ static gint normal_quad_test(gdouble *xe, gint xstr, gint ne,
     memset(g , 0, nc*sizeof(gdouble)) ;
     memset(gk, 0, nc*sizeof(gdouble)) ;
 
+    work = (gdouble *)g_malloc(4*2*ne*depth*sizeof(gdouble)) ;
     sqt_adaptive_quad_tri(xe, xstr, ne, q, nq, func, g, nc, tol, depth, data) ;
-    sqt_adaptive_quad_kw(ce, nk, Nk, q, nq, func, gk, nc, tol, depth, data) ;
-    sqt_laplace_weights_kw_adaptive(ce, nk, Nk, K, q, nq, tol, depth, x, w) ;
+    sqt_adaptive_quad_kw(ce, nk, Nk, q, nq, func, gk, nc, tol, depth,
+			 data, work) ;
+    sqt_laplace_weights_kw_adaptive(ce, nk, Nk, K, q, nq, tol, depth, x,
+				    w, work) ;
     for ( i = 0 ; i < ne ; i ++ ) {
       gw[   i] = blaswrap_ddot(nk, &(w[ 0]), i1, &(src[i]), ne) ;
       gw[ne+i] = blaswrap_ddot(nk, &(w[nk]), i1, &(src[i]), ne) ;
@@ -927,9 +936,9 @@ static gint matrix_adaptive_test(gdouble *xse, gint xsstr, gint nse,
   gdouble *q, J, n[3], s, t, err ;
   gdouble x[3], Kq[453*453], src[453], al, bt, *st ;
   gdouble Astb[453*453*2] ;
-  gdouble f[32], Ast[453*453*2] ;
-  gdouble xp[453*3], xt[453*3] ;
+  gdouble f[32], Ast[453*453*2], xp[453*3], xt[453*3] ;
   gdouble *qs, fts[453], ftd[453], kts[453], ktd[453] ;
+  gdouble *work ;
   gdouble ew, ek ;
   gint oq, nc, i, nK, nqk, one = 1, nqt, nqs, lda, pstr ;
   gpointer data[4] ;
@@ -973,9 +982,10 @@ static gint matrix_adaptive_test(gdouble *xse, gint xsstr, gint nse,
 					 xte, xtstr, nte,
 					 &(st[0]), 3, &(st[1]), 3, nqt,
 					 Ast) ;
+  work = (gdouble *)g_malloc(4*2*nqk*depth*sizeof(gdouble)) ;
   sqt_laplace_source_target_kw_adaptive(xp, pstr, nqk, qs, nqs, Kq, nK,
   					tol, depth, xt, pstr, nqt,
-  					Astb) ;
+  					Astb, work) ;
   /* sqt_laplace_source_target_kw_adaptive(xp, pstr, nqk, qs, nqs, Kq, nK, */
   /* 					tol, depth, xt, pstr, nqt, */
   /* 					Astb) ; */
