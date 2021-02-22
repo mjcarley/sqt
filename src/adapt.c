@@ -226,6 +226,7 @@ static gint adaptive_quad_kw_recursion(SQT_REAL *ce, gint ne, gint Nk,
 			      q2, nc, tol, dmax-1, data, &(work[4*nc])) ;
   adaptive_quad_kw_recursion(ce, ne, Nk, st3, wt, q, nq, func,
 			      q3, nc, tol, dmax-1, data, &(work[4*nc])) ;
+
   for ( i = 0 ; i < nc ; i ++ ) {
     quad[i] = q0[i] + q1[i] + q2[i] + q3[i] ;
   }

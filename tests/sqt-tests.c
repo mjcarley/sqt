@@ -933,7 +933,7 @@ static gint matrix_adaptive_test(gdouble *xse, gint xsstr, gint nse,
   
 
 {
-  gdouble *q, J, n[3], s, t, err ;
+  gdouble *q, J, n[3], s, t, err, time ;
   gdouble x[3], Kq[453*453], src[453], al, bt, *st ;
   gdouble Astb[453*453*2] ;
   gdouble f[32], Ast[453*453*2], xp[453*3], xt[453*3] ;
@@ -982,10 +982,14 @@ static gint matrix_adaptive_test(gdouble *xse, gint xsstr, gint nse,
 					 xte, xtstr, nte,
 					 &(st[0]), 3, &(st[1]), 3, nqt,
 					 Ast) ;
-  work = (gdouble *)g_malloc(4*2*nqk*depth*sizeof(gdouble)) ;
+  work = (gdouble *)g_malloc(4*2*nqs*nqt*depth*sizeof(gdouble)) ;
+  fprintf(stderr, "starting matrix generation, t=%lg\n",
+	  time = g_timer_elapsed(timer, NULL)) ;    
   sqt_laplace_source_target_kw_adaptive(xp, pstr, nqk, qs, nqs, Kq, nK,
   					tol, depth, xt, pstr, nqt,
   					Astb, work) ;
+  fprintf(stderr, "matrix generated, t=%lg\n",
+	  g_timer_elapsed(timer, NULL) - time) ;    
   /* sqt_laplace_source_target_kw_adaptive(xp, pstr, nqk, qs, nqs, Kq, nK, */
   /* 					tol, depth, xt, pstr, nqt, */
   /* 					Astb) ; */

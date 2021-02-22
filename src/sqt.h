@@ -374,5 +374,28 @@ gint sqt_patch_nodes_sphere_f(gfloat rho,
 			      gfloat *xp, gint pstr,
 			      gfloat *np, gint nstr,
 			      gfloat *wt, gint wtstr) ;
-			      
+
+gint sqt_patch_nodes_ellipsoid(gdouble a, gdouble b, gdouble c,
+			       gdouble th0, gdouble ph0,
+			       gdouble th1, gdouble ph1,
+			       gdouble th2, gdouble ph2,
+			       gdouble *s, gint sstr,
+			       gdouble *t, gint tstr,
+			       gdouble *w, gint wstr,
+			       gint nst,
+			       gdouble *xp, gint pstr,
+			       gdouble *np, gint nstr,
+			       gdouble *wt, gint wtstr) ;
+gint sqt_patch_nodes_ellipsoid_f(gfloat a, gfloat b, gfloat c,
+				 gfloat th0, gfloat ph0,
+				 gfloat th1, gfloat ph1,
+				 gfloat th2, gfloat ph2,
+				 gfloat *s, gint sstr,
+				 gfloat *t, gint tstr,
+				 gfloat *w, gint wstr,
+				 gint nst,
+				 gfloat *xp, gint pstr,
+				 gfloat *np, gint nstr,
+				 gfloat *wt, gint wtstr) ;
+
 #endif /*SQT_H_INCLUDED*/
