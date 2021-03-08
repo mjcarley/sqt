@@ -31,63 +31,61 @@ static gint koornwinder_deriv_recursion(gint N, gint m,
 					SQT_REAL Pm, SQT_REAL dPm,
 					SQT_REAL vpm,
 					SQT_REAL u, SQT_REAL v,
-					SQT_REAL w,
+					SQT_REAL w, SQT_REAL vinv,
 					SQT_REAL *K, gint kstr,
 					SQT_REAL *Ku, gint ustr,
 					SQT_REAL *Kv, gint vstr,
 					gint nst)
 
 {
-  SQT_REAL cnm, tmp, Jnm1, Jnm, dJnm, A, B, C ;
+  SQT_REAL tmp, Jnm1, Jnm, dJnm ;
   gint n, idx ;
 
   Jnm1 = 1.0 ; dJnm = 0.0 ;
   n = m ;
   idx = n*(n+1)/2 + m ;
-  cnm = sqrt(2.0*(1+2*m)*(m+1)) ;
 
   if ( idx < nst ) {
-    K [kstr*idx] = Jnm1* Pm*vpm*cnm ;
-    Ku[ustr*idx] = Jnm1*dPm*vpm*cnm*2.0/(1.0-v) ;
-    Kv[vstr*idx] =
-      Ku[ustr*idx]*u/(1.0-v) - cnm*vpm*Pm*(Jnm1*m/(1.0-v) + dJnm*2.0) ;
+    K [kstr*idx] = sqrt((1+2*m)*(n+1))*vpm ;
+    /* Ku[ustr*idx] = Jnm1*dPm*K[kstr*idx]*2.0*vinv ; */
+    Ku[ustr*idx] = dPm*K[kstr*idx]*2.0*vinv ;
+    K [kstr*idx] *= Pm ;
+    Kv[vstr*idx] = Ku[ustr*idx]*u*vinv - K[kstr*idx]*(m*vinv) ;
+      /* Ku[ustr*idx]*u*vinv - K[kstr*idx]*(Jnm1*m*vinv + dJnm*2.0) ; */
+    /* K[kstr*idx] *= Jnm1 ; */
   }
   if ( m+1 > N ) return 0 ;
-  
-  A = 0.5*(2*m+3) ; B = -0.5*(2*m+1) ;
 
-  Jnm = A*w + B ; dJnm = A ;
+  Jnm = w*(1.5 + m) - 0.5 - m ; dJnm = 1.5 + m ;
   n = m + 1 ;
-  cnm = sqrt(2.0*(1+2*m)*(n+1)) ;
   idx = n*(n+1)/2 + m ;
   if ( idx < nst ) {
-    K [kstr*idx] = Jnm* Pm*vpm*cnm ;
-    Ku[ustr*idx] = Jnm*dPm*vpm*cnm*2.0/(1.0-v) ;
+    K [kstr*idx] = sqrt((1+2*m)*(n+1))*vpm ;
+    Ku[ustr*idx] = Jnm*dPm*K[kstr*idx]*2.0*vinv ;
+    K [kstr*idx] *= Pm ;
     Kv[vstr*idx] =
-      Ku[ustr*idx]*u/(1.0-v) - cnm*vpm*Pm*(Jnm*m/(1.0-v) + dJnm*2.0) ;
+      Ku[ustr*idx]*u*vinv - K[kstr*idx]*(Jnm*m*vinv + dJnm*2.0) ;
+    K[kstr*idx] *= Jnm ;
   }
 
   if ( N*(N+1)/2 + m >= nst ) N -- ;
 
   for ( n = m+2 ; n <= N ; n ++ ) {
-    A =  (SQT_REAL)(n-1+1)*(2*n-2+3)/(n-1-m+1)/(n-1+m+2) ;
-    B = -(SQT_REAL)(2*m+1)*(2*m+1)*(n-1+1)/(n-1-m+1)/(n-1+m+2)/(2*n-2+1) ;
-    C =  (SQT_REAL)(n-1-m)*(n-1+m+1)*(2*n-2+3)/(n-1-m+1)/(n-1+m+2)/(2*n-2+1) ;
-    
     tmp = Jnm ;
-    Jnm = (A*w + B)*Jnm - C*Jnm1 ;
+    Jnm = (Jnm*(w*(4*n*n-1) - (2*m+1)*(2*m+1))*n -
+	   Jnm1*(n-1-m)*(n+m)*(2*n+1))/((n-m)*(n+m+1)*(2*n-1)) ;
     Jnm1 = tmp ;
 
-    dJnm  = 2.0*(n-m)*(n+m+1)*Jnm1 - (n-m)*((2*n+1)*w + 2*m+1)*Jnm ;
+    dJnm  = (2.0*(n+m+1)*Jnm1 - ((2*n+1)*w + 2*m+1)*Jnm)*(n-m) ;
     dJnm /= (1.0-w*w)*(2*n+1) ;
 
-    cnm = sqrt(2.0*(1+2*m)*(n+1)) ;
     idx = n*(n+1)/2 + m ;
-    K [kstr*idx] = Jnm* Pm*vpm*cnm ;
-    Ku[ustr*idx] = Jnm*dPm*vpm*cnm*2.0/(1.0-v) ;
+    K [kstr*idx] = sqrt((1+2*m)*(n+1))*vpm ;
+    Ku[ustr*idx] = Jnm*dPm*K[kstr*idx]*2.0*vinv ;
+    K [kstr*idx] *= Pm ;
     Kv[vstr*idx] =
-      Ku[ustr*idx]*u/(1.0-v) - cnm*vpm*Pm*(Jnm*m/(1.0-v) + dJnm*2.0) ;
-      /* -cnm*vpm*(Jnm*(Pm*m - 2.0*dPm*u/(1.0-v))/(1.0-v) + Pm*dJnm*2.0) ; */
+      Ku[ustr*idx]*u*vinv - K[kstr*idx]*(Jnm*m*vinv + dJnm*2.0) ;
+    K[kstr*idx] *= Jnm ;
   }
 
   return 0 ;
@@ -111,20 +109,23 @@ gint SQT_FUNCTION_NAME(sqt_koornwinder_deriv_nm)(gint N, SQT_REAL u, SQT_REAL v,
   
 {
   gint m ;
-  SQT_REAL x, tmp, w, Pm, Pmm1, dPm, vpm ;
+  SQT_REAL x, tmp, w, Pm, Pmm1, dPm, vpm, vinv ;
   
-  w = 1.0 - 2.0*v ;
-  x = (2.0*u + v - 1.0)/(1.0 - v) ;
-
+  w = 1.0 - 2.0*v ; vinv = 1.0/(1.0 - v) ;
+  /* x = (2.0*u + v - 1.0)/(1.0 - v) ; */
+  vpm = (1.0 - v) ;
+  x = (2.0*u + -vpm)*vinv ;
+  vpm *= M_SQRT2 ;
+  
   m = 0 ;
-  Pm = 1.0 ; dPm = 0.0 ; vpm = 1.0 ; 
-  koornwinder_deriv_recursion(N, m, Pm, dPm, vpm, u, v, w,
+  Pm = 1.0 ; dPm = 0.0 ; /* vpm = 1.0 ;  */
+  koornwinder_deriv_recursion(N, m, Pm, dPm, M_SQRT2, u, v, w, vinv,
 			      K, kstr, Ku, ustr, Kv, vstr, nst) ;
 
   m = 1 ;
-  Pmm1 = Pm ; Pm = x ; dPm = 1.0 ; vpm = 1.0 - v ;
+  Pmm1 = Pm ; Pm = x ; dPm = 1.0 ;
 
-  koornwinder_deriv_recursion(N, m, Pm, dPm, vpm, u, v, w,
+  koornwinder_deriv_recursion(N, m, Pm, dPm, vpm, u, v, w, vinv,
 			      K, kstr, Ku, ustr, Kv, vstr, nst) ;
 
   /*recursive generation of Legendre polynomials*/
@@ -134,7 +135,7 @@ gint SQT_FUNCTION_NAME(sqt_koornwinder_deriv_nm)(gint N, SQT_REAL u, SQT_REAL v,
     Pmm1 = tmp ;
     dPm = (Pmm1 - x*Pm)/(1.0-x*x)*m ;
     vpm *= 1.0 - v ;
-    koornwinder_deriv_recursion(N, m, Pm, dPm, vpm, u, v, w,
+    koornwinder_deriv_recursion(N, m, Pm, dPm, vpm, u, v, w, vinv,
 				K, kstr, Ku, ustr, Kv, vstr, nst) ;
   }
   

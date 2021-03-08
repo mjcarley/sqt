@@ -21,18 +21,19 @@
 
 #include <glib.h>
 
-#define SQT_DATA_WIDTH     16
-#define SQT_DATA_ELEMENT    0
-#define SQT_DATA_STRIDE     1
-#define SQT_DATA_NUMBER     2
-#define SQT_DATA_TARGET     3
-#define SQT_DATA_NORMAL     4
-#define SQT_DATA_MATRIX     5
-#define SQT_DATA_KNM        6
-#define SQT_DATA_NKNM       7
-#define SQT_DATA_ORDER_K    8
-#define SQT_DATA_WEIGHTS_S  9 
-#define SQT_DATA_WEIGHTS_D 10 
+#define SQT_DATA_WIDTH         16
+#define SQT_DATA_ELEMENT        0
+#define SQT_DATA_STRIDE         1
+#define SQT_DATA_NUMBER         2
+#define SQT_DATA_TARGET         3
+#define SQT_DATA_NORMAL         4
+#define SQT_DATA_MATRIX         5
+#define SQT_DATA_KNM            6
+#define SQT_DATA_NKNM           7
+#define SQT_DATA_ORDER_K        8
+#define SQT_DATA_WEIGHTS_S      9 
+#define SQT_DATA_WEIGHTS_D     10 
+#define SQT_DATA_INDICES       11
 
 #ifdef SQT_SINGLE_PRECISION
 
@@ -94,6 +95,13 @@ do {						\
   ( ((SQT_A)[0]-(SQT_B)[0])*((SQT_A)[0]-(SQT_B)[0]) +	\
     ((SQT_A)[1]-(SQT_B)[1])*((SQT_A)[1]-(SQT_B)[1]) +	\
     ((SQT_A)[2]-(SQT_B)[2])*((SQT_A)[2]-(SQT_B)[2]) )
+
+#define sqt_vector_diff(SQT_A,SQT_B,SQT_C)	\
+  do {						\
+  (SQT_A)[0] = (SQT_B)[0] - (SQT_C)[0] ;	\
+  (SQT_A)[1] = (SQT_B)[1] - (SQT_C)[1] ;	\
+  (SQT_A)[2] = (SQT_B)[2] - (SQT_C)[2] ;	\
+  } while (0)
 
 #define sqt_vector_distance(SQT_A,SQT_B)	\
   (SQRT((sqt_vector_distance2(SQT_A,SQT_B))))
@@ -193,6 +201,12 @@ do {						\
 #define minus_one_pow(SQT_n) ((2*((SQT_n)/2) == (SQT_n) ? 1 : -1))
 
 #define yes_if_true(SQT_t)  ((SQT_t) == TRUE ? "yes" : "no") 
+
+#define sqt_cache_position(_xc,_str,_i) (&((_xc)[(_i)*(_str)+0]))
+#define sqt_cache_normal(_xc,_str,_i) (&((_xc)[(_i)*(_str)+3]))
+#define sqt_cache_weight(_xc,_str,_i) ((_xc)[(_i)*(_str)+6])
+#define sqt_cache_coordinate_s(_xc,_str,_i) ((_xc)[(_i)*(_str)+7])
+#define sqt_cache_coordinate_t(_xc,_str,_i) ((_xc)[(_i)*(_str)+8])
 
 extern gdouble WANDZURA_7[], WANDZURA_25[], WANDZURA_54[], WANDZURA_85[],
   WANDZURA_126[], WANDZURA_175[], XIAO_GIMBUTAS_453[] ;

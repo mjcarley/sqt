@@ -233,7 +233,7 @@ static gint triangle_quad(
       SQT_FUNCTION_NAME(sqt_element_point_3d)(xt, xstr, nt, s1, t1, y, n, &J) ;
       /*quadrature weight*/
       wt = J/J0*rr*qr[2*j+1]*0.5*d*2.0*M_PI/nqt ;
-      func(s1, t1, wt, y, n, Iq, nqi, data) ;
+      func(s1, t1, wt, y, n, Iq, nqi, 0, data) ;
     }
   }
 
@@ -261,7 +261,7 @@ static gint triangle_quad(
 						y, n, &J) ;
 	/*quadrature weight*/
 	wt = (M*r-d)*qr[2*j+1]*qt[2*i+1]*rr*th0*J/J0 ;
-	func(s1, t1, wt, y, n, Iq, nqi, data) ;
+	func(s1, t1, wt, y, n, Iq, nqi, 0, data) ;
       }
     }
   }
@@ -420,17 +420,20 @@ static gint triangle_quad_kw(
 {
   SQT_REAL r0, th0, r, th, *qr, *qt, rr, ti, M, sgn ;
   SQT_REAL y[3], s1, t1, J, n[3], wt, C, S, zero[]={0,0} ;
-  SQT_REAL Ac, As ;
+  SQT_REAL Ac, As, Cd, Sd, tmp, c ;
   gint i, j, k, idx[] = {0, 1, 2, 0}, nqr, nqt ;
 
   /*quadrature on inner disc*/
   nqt = 3*(N+2) + 2 ;
   nqr = (N+1)/2 + 1 ;
 
+  c = d*M_PI/nqt/J0 ;
   SQT_FUNCTION_NAME(legendre_quadrature_select)(N, &qr, &nqr) ;
+  C = 1.0 ; S = 0.0 ;
+  Cd = cos(2.0*M_PI/nqt) ; Sd = sin(2.0*M_PI/nqt) ; 
   for ( i = 0 ; i < nqt ; i ++ ) {
-    ti = 2.0*M_PI*i/nqt ;
-    C = cos(ti) ; S = sin(ti) ;
+    /* ti = 2.0*M_PI*i/nqt ; */
+    /* C = cos(ti) ; S = sin(ti) ; */
     Ac = A[0]*C + A[1]*S ;
     As = A[2]*C + A[3]*S ;
     for ( j = 0 ; j < nqr ; j ++ ) {
@@ -441,36 +444,57 @@ static gint triangle_quad_kw(
       SQT_FUNCTION_NAME(sqt_element_interp)(ce, ne, Nk, s1, t1, y, n, &J,
 					    NULL, work) ;
       /*quadrature weight*/
-      wt = J/J0*rr*qr[2*j+1]*0.5*d*2.0*M_PI/nqt ;
-      func(s1, t1, wt, y, n, Iq, nqi, data) ;
+      /* wt = J/J0*rr*qr[2*j+1]*0.5*d*2.0*M_PI/nqt ; */
+      wt = J*rr*qr[2*j+1]*c ;
+      func(s1, t1, wt, y, n, Iq, nqi, 0, data) ;
     }
+    tmp = C ;
+    C = C*Cd - S*Sd ;
+    S = tmp*Sd + S*Cd ;
   }
 
   for ( k = 0 ; k < 3 ; k ++ ) {
+    SQT_REAL S0 ;
+    /* , C0, St, Ct ; */
     /*singularity is at origin on remapped triangle*/
     triangle_decomp(zero, &(xti[2*idx[k]]), &(xti[2*idx[k+1]]),
 		    &r0, &th0, &r, &th) ;
     sgn = SIGN(th0) ; th0 = fabs(th0) ;
+    S0 = sin(th0) ;
+    /* S0 = sin(th0) ; C0 = cos(th0) ; */
+    /* St = sin(th) ; Ct = cos(th) ; */
+
+    c = th0/J0 ;
     /*select th quadrature*/
     SQT_FUNCTION_NAME(angular_quadrature_select)(N, r0, th0, &qt, &nqt) ;
     for ( i = 0 ; i < nqt ; i ++ ) {
+      /* SQT_REAL Si, Ci ; */
       ti = th0*qt[i*2+0] ;
+      /* Ci = cos(ti) ; Si = sin(ti) ; */
       C = cos(sgn*ti+th) ; S = sin(sgn*ti+th) ;
+      /* C = Ct*Ci - sgn*St*Si ; S = St*Ci + sgn*Ct*Si ; */
       Ac = A[0]*C + A[1]*S ;
       As = A[2]*C + A[3]*S ;
       /*radial limit and quadrature selection*/
-      M = r0*sin(th0)/(r0*sin(th0-ti) + sin(ti)) ;
-      SQT_FUNCTION_NAME(radial_quadrature_select)(N, d/M/r, &qr, &nqr) ;
+      /* M = r0*sin(th0)/(r0*sin(th0-ti) + sin(ti)) ; */
+      /* SQT_FUNCTION_NAME(radial_quadrature_select)(N, d/M/r, &qr, &nqr) ; */
+      /* M = r*r0*sin(th0)/(r0*sin(th0-ti) + sin(ti)) ; */
+      M = r*r0*S0/(r0*sin(th0-ti) + sin(ti)) ;
+      /* M = r*r0*S0/(r0*(S0*Ci - C0*Si) + Si) ; */
+      SQT_FUNCTION_NAME(radial_quadrature_select)(N, d/M, &qr, &nqr) ;
       for ( j = 0 ; j < nqr ; j ++ ) {
-      	rr = d + (M*r-d)*qr[2*j+0] ;
+      	/* rr = d + (M*r-d)*qr[2*j+0] ; */
+      	rr = d + (M-d)*qr[2*j+0] ;
 	/*coordinates on unit triangle*/
 	s1 = s + rr*Ac ; t1 = t + rr*As ;
 	/*map to physical triangle*/
 	SQT_FUNCTION_NAME(sqt_element_interp)(ce, ne, Nk, s1, t1, y, n, &J,
 					      NULL, work) ;
 	/*quadrature weight*/
-	wt = (M*r-d)*qr[2*j+1]*qt[2*i+1]*rr*th0*J/J0 ;
-	func(s1, t1, wt, y, n, Iq, nqi, data) ;
+	/* wt = (M*r-d)*qr[2*j+1]*qt[2*i+1]*rr*th0*J/J0 ; */
+	/* wt = (M-d)*qr[2*j+1]*qt[2*i+1]*rr*th0*J/J0 ; */
+	wt = (M-d)*qr[2*j+1]*qt[2*i+1]*rr*J*c ;
+	func(s1, t1, wt, y, n, Iq, nqi, 0, data) ;
       }
     }
   }

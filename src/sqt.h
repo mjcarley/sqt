@@ -5,12 +5,19 @@
 
 #define SQT_ADAPTIVE_BUFFER_SIZE 2048
 
+#define nbi_cache_level_offset(_d)  (((1 << (2*(_d)))-1)/3)
+#define NBI_CACHE_STRIDE 9
+
 typedef gint (*sqt_quadrature_func_t)(gdouble s, gdouble t, gdouble w,
-				    gdouble *y, gdouble *n,
-				    gdouble *quad, gint nc, gpointer data) ;
+				      gdouble *y, gdouble *n,
+				      gdouble *quad, gint nc,
+				      gint init,
+				      gpointer data) ;
 typedef gint (*sqt_quadrature_func_f_t)(gfloat s, gfloat t, gfloat w,
-				      gfloat *y, gfloat *n,
-				      gfloat *quad, gint nc, gpointer data) ;
+					gfloat *y, gfloat *n,
+					gfloat *quad, gint nc,
+					gint init,
+					gpointer data) ;
 gint sqt_cartesian_to_spherical(gdouble *x0, gdouble *x, gdouble *r,
 				gdouble *th, gdouble *ph) ;
 
@@ -116,6 +123,23 @@ gint sqt_adaptive_quad_kw_f(gfloat *ce, gint ne, gint Nk,
 			    gfloat tol, gint dmax,
 			    gpointer data, gfloat *work) ;
 
+gint sqt_cached_quad_kw(gdouble *ce, gint ne, gint Nk,
+			gdouble *q, gint nq,
+			sqt_quadrature_func_t func,
+			gdouble *quad, gint nc,
+			gdouble tol, gint dmax,
+			gint *icache, gdouble *xcache, gint cstr,
+			gboolean init,
+			gpointer data, gdouble *work) ;
+gint sqt_cached_quad_kw_f(gfloat *ce, gint ne, gint Nk,
+			  gfloat *q, gint nq,
+			  sqt_quadrature_func_f_t func,
+			  gfloat *quad, gint nc,
+			  gfloat tol, gint dmax,
+			  gint *icache, gfloat *xcache, gint cstr,
+			  gboolean init,
+			  gpointer data, gfloat *work) ;
+
 gint sqt_singular_quad_kw(gdouble *ce, gint ne, gint Nk,
 			  gdouble s0, gdouble t0,
 			  gint N,
@@ -200,6 +224,45 @@ gint sqt_laplace_matrix_kw_adaptive_f(gfloat *ce, gint ne, gint Nk,
 				      gfloat tol, gint dmax,
 				      gfloat *x, gint xstr, gint nx,
 				      gfloat *w, gfloat *work) ;
+gint sqt_laplace_source_indexed_kw_adaptive(gdouble *xse, gint sstr, gint nse,
+					    gdouble *q, gint nq,
+					    gdouble *Ks, gint Ns,
+					    gdouble tol, gint dmax,
+					    gdouble *xte, gint tstr,
+					    gint *idx,
+					    gint nte,
+					    gdouble *Ast,
+					    gdouble *work) ;
+gint sqt_laplace_source_indexed_kw_adaptive_f(gfloat *xse, gint sstr, gint nse,
+					      gfloat *q, gint nq,
+					      gfloat *Ks, gint Ns,
+					      gfloat tol, gint dmax,
+					      gfloat *xte, gint tstr,
+					      gint *idx,
+					      gint nte,
+					      gfloat *Ast,
+					      gfloat *work) ;
+
+gint sqt_laplace_source_indexed_kw_cached(gdouble *xse, gint sstr, gint nse,
+					  gdouble *q, gint nq,
+					  gdouble *Ks,
+					  gint Ns,
+					  gdouble tol, gint dmax,
+					  gdouble *xte, gint tstr, gint *idx,
+					  gint nte,
+					  gint *icache, gdouble *xcache,
+					  gint cstr,
+					  gdouble *Ast, gdouble *work) ;
+gint sqt_laplace_source_indexed_kw_cached_f(gfloat *xse, gint sstr, gint nse,
+					    gfloat *q, gint nq,
+					    gfloat *Ks,
+					    gint Ns,
+					    gfloat tol, gint dmax,
+					    gfloat *xte, gint tstr, gint *idx,
+					    gint nte,
+					    gint *icache, gfloat *xcache,
+					    gint cstr,
+					    gfloat *Ast, gfloat *work) ;
 
 gint sqt_laplace_weights_tri_singular(gdouble *xe, gint xstr, gint ne,
 				      gdouble *Kq, gint nkq, gint nK,
@@ -327,6 +390,18 @@ gint sqt_element_interp_f(gfloat *ci, gint nq, gint Nk,
 			  gfloat s, gfloat t,
 			  gfloat *x, gfloat *n,
 			  gfloat *J, gfloat *dx, gfloat *work) ;
+
+gint sqt_interp_matrix(gdouble *K, gint nk, gint Nk,
+		       gdouble *s, gint sstr,
+		       gdouble *t, gint tstr,
+		       gint nst,
+		       gdouble *Ki, gdouble *work) ;
+gint sqt_interp_matrix_f(gfloat *K, gint nk, gint Nk,
+			 gfloat *s, gint sstr,
+			 gfloat *t, gint tstr,
+			 gint nst,
+			 gfloat *Ki, gfloat *work) ;
+
 
 gint sqt_geometry_stellarator(gdouble u, gdouble v, gdouble *x, gdouble *n) ;
 gint sqt_geometry_stellarator_f(gfloat u, gfloat v, gfloat *x, gfloat *n) ;

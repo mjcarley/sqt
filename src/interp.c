@@ -49,20 +49,21 @@ gint SQT_FUNCTION_NAME(sqt_element_interp)(SQT_REAL *ci, gint nq,
    */
 
 {
-  SQT_REAL *K, *Ks, *Kt, xs[3], xt[3] ;
-  gint str = 3 ;
-  
-  K = work ; Ks = &(work[1]) ; Kt = &(work[2]) ;
+  SQT_REAL *K, *Ks, *Kt, buf[9], *xs, *xt ;
 
-  sqt_koornwinder_deriv_nm(Nk, s, t, K, str, Ks, str, Kt, str, nq) ;
+  xs = &(buf[3]) ; xt = &(buf[6]) ;
+
 #ifndef SQT_SINGLE_PRECISION
-  gint i1 = 1, i3 = 3 ;
+  gint i3 = 3 ;
   SQT_REAL al = 1.0, bt = 0.0 ;
-  
-  blaswrap_dgemv(TRUE, nq, i3, al, ci, i3, K , str, bt, x , i1) ;
-  blaswrap_dgemv(TRUE, nq, i3, al, ci, i3, Ks, str, bt, xs, i1) ;
-  blaswrap_dgemv(TRUE, nq, i3, al, ci, i3, Kt, str, bt, xt, i1) ;
 
+  K = work ; Ks = &(K[nq]) ; Kt = &(Ks[nq]) ;
+
+  sqt_koornwinder_deriv_nm(Nk, s, t, K, 1, Ks, 1, Kt, 1, nq) ;
+  blaswrap_dgemm(FALSE, FALSE, i3, i3, nq, al, K, nq, ci, i3, bt, buf, i3) ;
+
+  x[0] = buf[0] ; x[1] = buf[1] ; x[2] = buf[2] ; 
+  
   sqt_vector_cross(n, xs, xt) ;
   *J = sqt_vector_length(n) ;
   n[0] /= (*J) ; n[1] /= (*J) ; n[2] /= (*J) ; 
@@ -72,8 +73,36 @@ gint SQT_FUNCTION_NAME(sqt_element_interp)(SQT_REAL *ci, gint nq,
 
   if ( dx == NULL ) return 0 ;
 
-  dx[0] = xs[0] ; dx[1] = xs[1] ; dx[2] = xs[2] ;
-  dx[3] = xt[0] ; dx[4] = xt[1] ; dx[5] = xt[2] ;
+  memcpy(dx, &(buf[3]), 6*sizeof(SQT_REAL)) ;
+  
+  /* dx[0] = xs[0] ; dx[1] = xs[1] ; dx[2] = xs[2] ; */
+  /* dx[3] = xt[0] ; dx[4] = xt[1] ; dx[5] = xt[2] ; */
+  
+  return 0 ;
+}
+
+gint SQT_FUNCTION_NAME(sqt_interp_matrix)(SQT_REAL *K, gint nk, gint Nk,
+					  SQT_REAL *s, gint sstr,
+					  SQT_REAL *t, gint tstr,
+					  gint nst,
+					  SQT_REAL *Ki, SQT_REAL *work)
+
+{
+  SQT_REAL al, bt, *Knm ;
+  gint i, i1 = 1 ;
+  
+  Knm = work ;
+
+  al = 1.0 ; bt = 0.0 ;
+  for ( i = 0 ; i < nst ; i ++ ) {
+    SQT_FUNCTION_NAME(sqt_koornwinder_nm)(Nk, s[i*sstr], t[i*tstr],
+					  Knm, 1, nk) ;
+#ifndef SQT_SINGLE_PRECISION
+    blaswrap_dgemv(TRUE, nk, nk, al, K, nk, Knm, i1, bt, &(Ki[i*nk]), i1) ;
+#else /*SQT_SINGLE_PRECISION*/
+    g_assert_not_reached() ;
+#endif /*SQT_SINGLE_PRECISION*/
+  }
   
   return 0 ;
 }
