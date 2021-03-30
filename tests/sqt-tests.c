@@ -44,6 +44,9 @@ gchar *tests[] = {"closest_point",
 		  "matrix_indexed",
 		  "cache",
 		  "upsample",
+		  "koornwinder_vector",
+		  "koornwinder_deriv_vector",
+		  "element_interpolation_vector",
 		  ""} ;
 
 GTimer *timer ;
@@ -1326,6 +1329,145 @@ gint upsample_test(gint nq)
   return 0 ;
 }
 
+static gint koornwinder_vector_test(gint N)
+
+{
+  gdouble Knm[1024], Kvec[4096], s[4], t[4], err ;
+  gint n, m, str, nq, i, j, idx, nk ;
+
+  fprintf(stderr, "koornwinder vector test\n") ;
+  fprintf(stderr, "=======================\n") ;
+
+  fprintf(stderr, "N = %d\n", N) ;
+
+  str = 3 ; nq = 333 ; nk = 4 ;
+
+  s[0] = 0.1 ; s[1] = 0.3 ; s[2] = 0.37 ; s[3] = 0.7 ;
+  t[0] = 0.6 ; t[1] = 0.2 ; t[2] = 0.57 ; t[3] = 0.1 ;
+
+  sqt_koornwinder_nm_vector(N, s, t, nk, Kvec, str, nq) ;
+
+  for ( i = 0 ; i < nk ; i ++ ) {
+    sqt_koornwinder_nm(N, s[i], t[i], Knm, str, nq) ;
+
+    err = 0.0 ;
+    for ( n = 0 ; n < N ; n ++ ) {
+      for ( m = 0 ; m <= n ; m ++ ) {
+	idx = n*(n+1)/2+m ;
+	if ( idx < nq ) { 
+	  err = MAX(err, fabs(Knm[idx*str] - Kvec[(i*nq+idx)*str])) ;
+	}
+      }
+    }
+
+    fprintf(stderr, "%d (%lg, %lg) %lg\n", i, s[i], t[i], err) ;
+  }
+  
+  return 0 ;
+}
+
+static gint koornwinder_deriv_vector_test(gint N)
+
+{
+  gdouble Knm[1024], Ks[1024], Kt[1024], Kv[16384], Ksv[16384], Ktv[16384] ;
+  gdouble s[4], t[4], errk, errs, errt ;
+  gint n, m, str, nq, i, j, idx, nk, kstr, sstr, tstr, offk, offs, offt ;
+
+  fprintf(stderr, "koornwinder deriv vector test\n") ;
+  fprintf(stderr, "=============================\n") ;
+
+  fprintf(stderr, "N = %d\n", N) ;
+
+  nq = 333 ; nk = 4 ;
+  kstr = 3 ; sstr = 2 ; tstr = 2 ;
+  offk = nq+7 ; offs = nq+3 ; offt = nq+5 ;
+  
+  s[0] = 0.1 ; s[1] = 0.3 ; s[2] = 0.37 ; s[3] = 0.7 ;
+  t[0] = 0.6 ; t[1] = 0.2 ; t[2] = 0.57 ; t[3] = 0.1 ;
+
+  sqt_koornwinder_deriv_nm_vector(N, s, t, nk,
+				  Kv, kstr, offk,
+				  Ksv, sstr, offs,
+				  Ktv, tstr, offt,
+				  nq) ;
+
+  for ( i = 0 ; i < nk ; i ++ ) {
+    sqt_koornwinder_deriv_nm(N, s[i], t[i], Knm, kstr, Ks, sstr, Kt, tstr,
+			     nq) ;
+    /* sqt_koornwinder_nm(N, s[i], t[i], Knm, str, nq) ; */
+
+    errs = errt = errk = 0.0 ;
+    for ( n = 0 ; n < N ; n ++ ) {
+      for ( m = 0 ; m <= n ; m ++ ) {
+	idx = n*(n+1)/2+m ;
+	if ( idx < nq ) { 
+	  errk = MAX(errk, fabs(Knm[idx*kstr] - Kv[(i*offk+idx)*kstr])) ;
+	  errs = MAX(errs, fabs(Ks[idx*sstr]  - Ksv[(i*offs+idx)*sstr])) ;
+	  errt = MAX(errt, fabs(Kt[idx*tstr]  - Ktv[(i*offt+idx)*tstr])) ;
+	}
+      }
+    }
+
+    fprintf(stderr, "%d (%lg, %lg) %lg, %lg, %lg\n",
+	    i, s[i], t[i], errk, errs, errt) ;
+  }
+  
+  return 0 ;
+}
+
+static gint element_interpolation_vector_test(gint N, gint nq)
+
+{
+  gint order, i, i3 = 3, xstr ;
+  gdouble s[4], t[4], K[4*65536], *q, al, bt, s0, t0 ;
+  gdouble ui[3], vi[3], xi[453*4], ci[453*3], u, v, x[12], xu[12], xv[12] ;
+  gdouble y[12], n[12], ny[12], J[4], Jy ;
+  gdouble emax, enmax ;
+  gdouble work[4*3*453] ;
+  
+  fprintf(stderr, "element interpolation vector test\n") ;
+  fprintf(stderr, "=================================\n") ;
+  fprintf(stderr, "nq = %d\n", nq) ;
+  
+  sqt_quadrature_select(nq, &q, &order) ;
+
+  N = sqt_koornwinder_interp_matrix(&(q[0]), 3, &(q[1]), 3, &(q[2]), 3, nq, K) ;
+
+  fprintf(stderr, "Knm N max: %d\n", N) ;
+
+  ui[0] = 0.3 ; ui[1] = 0.4  ; ui[2] = 0.35 ;
+  vi[0] = 0.1 ; vi[1] = 0.11 ; vi[2] = 0.3 ;
+
+  xstr = 4 ;
+  for ( i = 0 ; i < nq ; i ++ ) {
+    s0 = q[i*3+0] ; t0 = q[i*3+1] ;
+
+    u = ui[0]*(1.0 - s0 - t0) + ui[1]*s0 + ui[2]*t0 ;
+    v = vi[0]*(1.0 - s0 - t0) + vi[1]*s0 + vi[2]*t0 ;
+
+    sqt_geometry_stellarator(u, v, &(xi[i*xstr]), n) ;
+  }
+
+  /*compute the interpolation coefficients*/
+  al = 1.0 ; bt = 0.0 ;
+  blaswrap_dgemm(FALSE, FALSE, nq, i3, nq, al, K, nq, xi, xstr, bt, ci, i3) ;
+
+  s[0] = 0.1 ; s[1] = 0.3 ; s[2] = 0.37 ; s[3] = 0.7 ;
+  t[0] = 0.6 ; t[1] = 0.2 ; t[2] = 0.57 ; t[3] = 0.1 ;
+
+  sqt_element_interp_vector(ci, nq, N, s, t, 4, x, 3, n, 3, J, work) ;
+
+  for ( i = 0 ; i < 4 ; i ++ ) {
+    sqt_element_interp(ci, nq, N, s[i], t[i], y, ny, &Jy, NULL, work) ;
+    fprintf(stderr, "%d: %lg, %lg, %lg, %lg, %lg, %lg (%lg)\n",
+	    i, y[0], y[1], y[2], ny[0], ny[1], ny[2], Jy) ;
+    fprintf(stderr, "   %lg, %lg, %lg, %lg, %lg, %lg (%lg)\n",
+	    x[3*i+0], x[3*i+1], x[3*i+2], n[3*i+0], n[3*i+1], n[3*i+2], J[i]) ;
+  }
+    
+  return 0 ;
+}
+
 gint main(gint argc, gchar **argv)
 
 {
@@ -1420,7 +1562,26 @@ gint main(gint argc, gchar **argv)
 
     return 0 ;
   }
+
+  if ( test == 16 ) {
+    koornwinder_vector_test(N) ;
+
+    return 0 ;
+  }
   
+  if ( test == 17 ) {
+    koornwinder_deriv_vector_test(N) ;
+
+    return 0 ;
+  }
+  
+  if ( test == 18 ) {
+    element_interpolation_vector_test(N, nq) ;
+
+    return 0 ;
+  }
+
+
   read_element(input, xe, &ne, &xstr) ;
   fscanf(input, "%lg %lg %lg", &(x0[0]), &(x0[1]), &(x0[2])) ;
 	 

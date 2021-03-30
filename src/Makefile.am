@@ -27,6 +27,7 @@ libsqt_la_SOURCES = \
 	util.c \
 	location.c \
 	koornwinder.c \
+	koornwinder-avx.c \
 	adapt.c \
 	basic.c \
 	singular.c \
@@ -57,6 +58,7 @@ libsub_la_SOURCES = \
 	util.c \
 	location.c \
 	koornwinder.c \
+	koornwinder-avx.c \
 	adapt.c \
 	basic.c \
 	singular.c \

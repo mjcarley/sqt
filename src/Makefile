@@ -139,9 +139,9 @@ LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 libsqt_la_DEPENDENCIES = libsub.la
 am_libsqt_la_OBJECTS = sqt.lo newman.lo wandzura.lo xiao.lo \
 	wandzura-f.lo xiao-f.lo util.lo location.lo koornwinder.lo \
-	adapt.lo basic.lo singular.lo angular-rules.lo radial-rules.lo \
-	legendre-rules.lo laplace.lo interp.lo geometries.lo \
-	patches.lo cached.lo
+	koornwinder-avx.lo adapt.lo basic.lo singular.lo \
+	angular-rules.lo radial-rules.lo legendre-rules.lo laplace.lo \
+	interp.lo geometries.lo patches.lo cached.lo
 libsqt_la_OBJECTS = $(am_libsqt_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
@@ -153,7 +153,8 @@ libsqt_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 libsub_la_LIBADD =
 am_libsub_la_OBJECTS = libsub_la-sqt.lo libsub_la-util.lo \
 	libsub_la-location.lo libsub_la-koornwinder.lo \
-	libsub_la-adapt.lo libsub_la-basic.lo libsub_la-singular.lo \
+	libsub_la-koornwinder-avx.lo libsub_la-adapt.lo \
+	libsub_la-basic.lo libsub_la-singular.lo \
 	libsub_la-angular-rules-f.lo libsub_la-radial-rules-f.lo \
 	libsub_la-legendre-rules-f.lo libsub_la-laplace.lo \
 	libsub_la-interp.lo libsub_la-geometries.lo \
@@ -392,6 +393,7 @@ libsqt_la_SOURCES = \
 	util.c \
 	location.c \
 	koornwinder.c \
+	koornwinder-avx.c \
 	adapt.c \
 	basic.c \
 	singular.c \
@@ -411,6 +413,7 @@ libsub_la_SOURCES = \
 	util.c \
 	location.c \
 	koornwinder.c \
+	koornwinder-avx.c \
 	adapt.c \
 	basic.c \
 	singular.c \
@@ -564,6 +567,7 @@ include ./$(DEPDIR)/basic.Plo
 include ./$(DEPDIR)/cached.Plo
 include ./$(DEPDIR)/geometries.Plo
 include ./$(DEPDIR)/interp.Plo
+include ./$(DEPDIR)/koornwinder-avx.Plo
 include ./$(DEPDIR)/koornwinder.Plo
 include ./$(DEPDIR)/laplace.Plo
 include ./$(DEPDIR)/legendre-rules.Plo
@@ -573,6 +577,7 @@ include ./$(DEPDIR)/libsub_la-basic.Plo
 include ./$(DEPDIR)/libsub_la-cached.Plo
 include ./$(DEPDIR)/libsub_la-geometries.Plo
 include ./$(DEPDIR)/libsub_la-interp.Plo
+include ./$(DEPDIR)/libsub_la-koornwinder-avx.Plo
 include ./$(DEPDIR)/libsub_la-koornwinder.Plo
 include ./$(DEPDIR)/libsub_la-laplace.Plo
 include ./$(DEPDIR)/libsub_la-legendre-rules-f.Plo
@@ -645,6 +650,13 @@ libsub_la-koornwinder.lo: koornwinder.c
 #	$(AM_V_CC)source='koornwinder.c' object='libsub_la-koornwinder.lo' libtool=yes \
 #	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
 #	$(AM_V_CC_no)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsub_la_CFLAGS) $(CFLAGS) -c -o libsub_la-koornwinder.lo `test -f 'koornwinder.c' || echo '$(srcdir)/'`koornwinder.c
+
+libsub_la-koornwinder-avx.lo: koornwinder-avx.c
+	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsub_la_CFLAGS) $(CFLAGS) -MT libsub_la-koornwinder-avx.lo -MD -MP -MF $(DEPDIR)/libsub_la-koornwinder-avx.Tpo -c -o libsub_la-koornwinder-avx.lo `test -f 'koornwinder-avx.c' || echo '$(srcdir)/'`koornwinder-avx.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/libsub_la-koornwinder-avx.Tpo $(DEPDIR)/libsub_la-koornwinder-avx.Plo
+#	$(AM_V_CC)source='koornwinder-avx.c' object='libsub_la-koornwinder-avx.lo' libtool=yes \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsub_la_CFLAGS) $(CFLAGS) -c -o libsub_la-koornwinder-avx.lo `test -f 'koornwinder-avx.c' || echo '$(srcdir)/'`koornwinder-avx.c
 
 libsub_la-adapt.lo: adapt.c
 	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsub_la_CFLAGS) $(CFLAGS) -MT libsub_la-adapt.lo -MD -MP -MF $(DEPDIR)/libsub_la-adapt.Tpo -c -o libsub_la-adapt.lo `test -f 'adapt.c' || echo '$(srcdir)/'`adapt.c

@@ -80,15 +80,31 @@ gint sqt_koornwinder_nm(gint N, gdouble u, gdouble v, double *Knm,
 			gint str, gint nk) ;
 gint sqt_koornwinder_nm_f(gint N, gfloat u, gfloat v, gfloat *Knm,
 			  gint str, gint nk) ;
+gint sqt_koornwinder_nm_vector(gint N, gdouble *u, gdouble *v, gint nu,
+			       gdouble *Knm, gint str, gint nk) ;
+gint sqt_koornwinder_nm_vector_f(gint N, gfloat *u, gfloat *v, gint nu,
+				 gfloat *Knm, gint str, gint nk) ;
 
 gint sqt_koornwinder_deriv_nm(gint N, gdouble u, gdouble v,
 			      gdouble *K , gint kstr,
 			      gdouble *Ku, gint ustr,
-			      gdouble *Kv, gint vstr, gint nk) ;
+			      gdouble *Kv, gint vstr,
+			      gint nk) ;
 gint sqt_koornwinder_deriv_nm_f(gint N, gfloat u, gfloat v,
 				gfloat *K , gint kstr,
 				gfloat *Ku, gint ustr,
-				gfloat *Kv, gint vstr, gint nk) ;
+				gfloat *Kv, gint vstr,
+				gint nk) ;
+gint sqt_koornwinder_deriv_nm_vector(gint N, gdouble *u, gdouble *v, gint nu,
+				     gdouble *K , gint kstr, gint offk,
+				     gdouble *Ku, gint ustr, gint offu,
+				     gdouble *Kv, gint vstr, gint offv,
+				     gint nk) ;
+gint sqt_koornwinder_deriv_nm_vector_f(gint N, gfloat *u, gfloat *v, gint nu,
+				       gfloat *K , gint kstr, gint offk,
+				       gfloat *Ku, gint ustr, gint offu,
+				       gfloat *Kv, gint vstr, gint offv,
+				       gint nk) ;
 
 gint sqt_koornwinder_interp_matrix(gdouble *s, gint sstr,
 				   gdouble *t, gint tstr,
@@ -390,6 +406,23 @@ gint sqt_element_interp_f(gfloat *ci, gint nq, gint Nk,
 			  gfloat s, gfloat t,
 			  gfloat *x, gfloat *n,
 			  gfloat *J, gfloat *dx, gfloat *work) ;
+gint sqt_element_interp_vector(gdouble *ci, gint nq,
+			       gint Nk,
+			       gdouble *s, gdouble *t,
+			       gint nst,
+			       gdouble *x, gint xstr,
+			       gdouble *n, gint nstr,
+			       gdouble *J,
+			       gdouble *work) ;
+gint sqt_element_interp_vector_f(gfloat *ci, gint nq,
+				 gint Nk,
+				 gfloat *s, gfloat *t,
+				 gint nst,
+				 gfloat *x, gint xstr,
+				 gfloat *n, gint nstr,
+				 gfloat *J,
+				 gfloat *work) ;
+
 
 gint sqt_interp_matrix(gdouble *K, gint nk, gint Nk,
 		       gdouble *s, gint sstr,

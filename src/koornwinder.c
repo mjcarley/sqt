@@ -47,12 +47,9 @@ static gint koornwinder_deriv_recursion(gint N, gint m,
 
   if ( idx < nst ) {
     K [kstr*idx] = sqrt((1+2*m)*(n+1))*vpm ;
-    /* Ku[ustr*idx] = Jnm1*dPm*K[kstr*idx]*2.0*vinv ; */
     Ku[ustr*idx] = dPm*K[kstr*idx]*2.0*vinv ;
     K [kstr*idx] *= Pm ;
     Kv[vstr*idx] = Ku[ustr*idx]*u*vinv - K[kstr*idx]*(m*vinv) ;
-      /* Ku[ustr*idx]*u*vinv - K[kstr*idx]*(Jnm1*m*vinv + dJnm*2.0) ; */
-    /* K[kstr*idx] *= Jnm1 ; */
   }
   if ( m+1 > N ) return 0 ;
 
@@ -112,13 +109,12 @@ gint SQT_FUNCTION_NAME(sqt_koornwinder_deriv_nm)(gint N, SQT_REAL u, SQT_REAL v,
   SQT_REAL x, tmp, w, Pm, Pmm1, dPm, vpm, vinv ;
   
   w = 1.0 - 2.0*v ; vinv = 1.0/(1.0 - v) ;
-  /* x = (2.0*u + v - 1.0)/(1.0 - v) ; */
   vpm = (1.0 - v) ;
   x = (2.0*u + -vpm)*vinv ;
   vpm *= M_SQRT2 ;
   
   m = 0 ;
-  Pm = 1.0 ; dPm = 0.0 ; /* vpm = 1.0 ;  */
+  Pm = 1.0 ; dPm = 0.0 ;
   koornwinder_deriv_recursion(N, m, Pm, dPm, M_SQRT2, u, v, w, vinv,
 			      K, kstr, Ku, ustr, Kv, vstr, nst) ;
 

@@ -1,0 +1,291 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  ms/call  ms/call  name    
+100.01      0.01     0.01    19980     0.00     0.00  koornwinder_deriv_recursion
+  0.00      0.01     0.00     6954     0.00     0.00  sqt_element_shape_3d
+  0.00      0.01     0.00     4449     0.00     0.00  adaptive_quad_func
+  0.00      0.01     0.00     2505     0.00     0.00  sqt_element_point_3d
+  0.00      0.01     0.00     2505     0.00     0.00  sqt_element_point_interp_3d
+  0.00      0.01     0.00     1998     0.00     0.01  sqt_element_interp
+  0.00      0.01     0.00     1998     0.00     0.01  sqt_koornwinder_deriv_nm
+  0.00      0.01     0.00      540     0.00     0.00  koornwinder_recursion
+  0.00      0.01     0.00       54     0.00     0.00  sqt_koornwinder_nm
+  0.00      0.01     0.00       37     0.00     0.27  adaptive_quad_kw
+  0.00      0.01     0.00       37     0.00     0.00  adaptive_quad_tri
+  0.00      0.01     0.00        3     0.00     0.00  newman_edge
+  0.00      0.01     0.00        2     0.00     0.00  sqt_quadrature_select
+  0.00      0.01     0.00        1     0.00     9.73  adaptive_quad_kw_recursion
+  0.00      0.01     0.00        1     0.00    10.00  adaptive_quad_test
+  0.00      0.01     0.00        1     0.00     0.00  adaptive_quad_tri_recursion
+  0.00      0.01     0.00        1     0.00     0.00  newman_tri
+  0.00      0.01     0.00        1     0.00     0.00  newman_tri_shape
+  0.00      0.01     0.00        1     0.00     0.00  parse_test
+  0.00      0.01     0.00        1     0.00     0.00  read_element
+  0.00      0.01     0.00        1     0.00    10.00  sqt_adaptive_quad_kw
+  0.00      0.01     0.00        1     0.00     0.00  sqt_adaptive_quad_tri
+  0.00      0.01     0.00        1     0.00     0.00  sqt_basic_quad_tri
+  0.00      0.01     0.00        1     0.00     0.00  sqt_koornwinder_interp_matrix
+  0.00      0.01     0.00        1     0.00     0.00  sqt_patch_nodes_tri
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012-2015 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 2 byte(s) for 99.99% of 0.01 seconds
+
+index % time    self  children    called     name
+                0.01    0.00   19980/19980       sqt_koornwinder_deriv_nm [3]
+[1]    100.0    0.01    0.00   19980         koornwinder_deriv_recursion [1]
+-----------------------------------------------
+                0.00    0.01    1998/1998        adaptive_quad_kw [4]
+[2]    100.0    0.00    0.01    1998         sqt_element_interp [2]
+                0.00    0.01    1998/1998        sqt_koornwinder_deriv_nm [3]
+-----------------------------------------------
+                0.00    0.01    1998/1998        sqt_element_interp [2]
+[3]    100.0    0.00    0.01    1998         sqt_koornwinder_deriv_nm [3]
+                0.01    0.00   19980/19980       koornwinder_deriv_recursion [1]
+-----------------------------------------------
+                0.00    0.00       1/37          sqt_adaptive_quad_kw [6]
+                0.00    0.01      36/37          adaptive_quad_kw_recursion [8]
+[4]    100.0    0.00    0.01      37         adaptive_quad_kw [4]
+                0.00    0.01    1998/1998        sqt_element_interp [2]
+                0.00    0.00    1998/4449        adaptive_quad_func [10]
+-----------------------------------------------
+                0.00    0.01       1/1           main [7]
+[5]    100.0    0.00    0.01       1         adaptive_quad_test [5]
+                0.00    0.01       1/1           sqt_adaptive_quad_kw [6]
+                0.00    0.00       2/2           sqt_quadrature_select [17]
+                0.00    0.00       1/1           sqt_koornwinder_interp_matrix [25]
+                0.00    0.00       1/1           sqt_patch_nodes_tri [26]
+                0.00    0.00       1/1           sqt_adaptive_quad_tri [23]
+                0.00    0.00       1/1           newman_tri_shape [20]
+                0.00    0.00       1/1           sqt_basic_quad_tri [24]
+-----------------------------------------------
+                0.00    0.01       1/1           adaptive_quad_test [5]
+[6]    100.0    0.00    0.01       1         sqt_adaptive_quad_kw [6]
+                0.00    0.01       1/1           adaptive_quad_kw_recursion [8]
+                0.00    0.00       1/37          adaptive_quad_kw [4]
+-----------------------------------------------
+                                                 <spontaneous>
+[7]    100.0    0.00    0.01                 main [7]
+                0.00    0.01       1/1           adaptive_quad_test [5]
+                0.00    0.00       1/1           parse_test [21]
+                0.00    0.00       1/1           read_element [22]
+-----------------------------------------------
+                                   8             adaptive_quad_kw_recursion [8]
+                0.00    0.01       1/1           sqt_adaptive_quad_kw [6]
+[8]     97.3    0.00    0.01       1+8       adaptive_quad_kw_recursion [8]
+                0.00    0.01      36/37          adaptive_quad_kw [4]
+                                   8             adaptive_quad_kw_recursion [8]
+-----------------------------------------------
+                0.00    0.00    2505/6954        sqt_element_point_3d [11]
+                0.00    0.00    4449/6954        adaptive_quad_func [10]
+[9]      0.0    0.00    0.00    6954         sqt_element_shape_3d [9]
+-----------------------------------------------
+                0.00    0.00     453/4449        sqt_basic_quad_tri [24]
+                0.00    0.00    1998/4449        adaptive_quad_tri [15]
+                0.00    0.00    1998/4449        adaptive_quad_kw [4]
+[10]     0.0    0.00    0.00    4449         adaptive_quad_func [10]
+                0.00    0.00    4449/6954        sqt_element_shape_3d [9]
+-----------------------------------------------
+                0.00    0.00      54/2505        sqt_patch_nodes_tri [26]
+                0.00    0.00     453/2505        sqt_basic_quad_tri [24]
+                0.00    0.00    1998/2505        adaptive_quad_tri [15]
+[11]     0.0    0.00    0.00    2505         sqt_element_point_3d [11]
+                0.00    0.00    2505/6954        sqt_element_shape_3d [9]
+                0.00    0.00    2505/2505        sqt_element_point_interp_3d [12]
+-----------------------------------------------
+                0.00    0.00    2505/2505        sqt_element_point_3d [11]
+[12]     0.0    0.00    0.00    2505         sqt_element_point_interp_3d [12]
+-----------------------------------------------
+                0.00    0.00     540/540         sqt_koornwinder_nm [14]
+[13]     0.0    0.00    0.00     540         koornwinder_recursion [13]
+-----------------------------------------------
+                0.00    0.00      54/54          sqt_koornwinder_interp_matrix [25]
+[14]     0.0    0.00    0.00      54         sqt_koornwinder_nm [14]
+                0.00    0.00     540/540         koornwinder_recursion [13]
+-----------------------------------------------
+                0.00    0.00       1/37          sqt_adaptive_quad_tri [23]
+                0.00    0.00      36/37          adaptive_quad_tri_recursion [18]
+[15]     0.0    0.00    0.00      37         adaptive_quad_tri [15]
+                0.00    0.00    1998/2505        sqt_element_point_3d [11]
+                0.00    0.00    1998/4449        adaptive_quad_func [10]
+-----------------------------------------------
+                0.00    0.00       3/3           newman_tri [19]
+[16]     0.0    0.00    0.00       3         newman_edge [16]
+-----------------------------------------------
+                0.00    0.00       2/2           adaptive_quad_test [5]
+[17]     0.0    0.00    0.00       2         sqt_quadrature_select [17]
+-----------------------------------------------
+                                   8             adaptive_quad_tri_recursion [18]
+                0.00    0.00       1/1           sqt_adaptive_quad_tri [23]
+[18]     0.0    0.00    0.00       1+8       adaptive_quad_tri_recursion [18]
+                0.00    0.00      36/37          adaptive_quad_tri [15]
+                                   8             adaptive_quad_tri_recursion [18]
+-----------------------------------------------
+                0.00    0.00       1/1           newman_tri_shape [20]
+[19]     0.0    0.00    0.00       1         newman_tri [19]
+                0.00    0.00       3/3           newman_edge [16]
+-----------------------------------------------
+                0.00    0.00       1/1           adaptive_quad_test [5]
+[20]     0.0    0.00    0.00       1         newman_tri_shape [20]
+                0.00    0.00       1/1           newman_tri [19]
+-----------------------------------------------
+                0.00    0.00       1/1           main [7]
+[21]     0.0    0.00    0.00       1         parse_test [21]
+-----------------------------------------------
+                0.00    0.00       1/1           main [7]
+[22]     0.0    0.00    0.00       1         read_element [22]
+-----------------------------------------------
+                0.00    0.00       1/1           adaptive_quad_test [5]
+[23]     0.0    0.00    0.00       1         sqt_adaptive_quad_tri [23]
+                0.00    0.00       1/37          adaptive_quad_tri [15]
+                0.00    0.00       1/1           adaptive_quad_tri_recursion [18]
+-----------------------------------------------
+                0.00    0.00       1/1           adaptive_quad_test [5]
+[24]     0.0    0.00    0.00       1         sqt_basic_quad_tri [24]
+                0.00    0.00     453/2505        sqt_element_point_3d [11]
+                0.00    0.00     453/4449        adaptive_quad_func [10]
+-----------------------------------------------
+                0.00    0.00       1/1           adaptive_quad_test [5]
+[25]     0.0    0.00    0.00       1         sqt_koornwinder_interp_matrix [25]
+                0.00    0.00      54/54          sqt_koornwinder_nm [14]
+-----------------------------------------------
+                0.00    0.00       1/1           adaptive_quad_test [5]
+[26]     0.0    0.00    0.00       1         sqt_patch_nodes_tri [26]
+                0.00    0.00      54/2505        sqt_element_point_3d [11]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012-2015 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+  [10] adaptive_quad_func (sqt-tests.c) [19] newman_tri   [12] sqt_element_point_interp_3d
+   [4] adaptive_quad_kw (adapt.c) [20] newman_tri_shape    [9] sqt_element_shape_3d
+   [8] adaptive_quad_kw_recursion (adapt.c) [21] parse_test (sqt-tests.c) [3] sqt_koornwinder_deriv_nm
+   [5] adaptive_quad_test (sqt-tests.c) [22] read_element (sqt-tests.c) [25] sqt_koornwinder_interp_matrix
+  [15] adaptive_quad_tri (adapt.c) [6] sqt_adaptive_quad_kw [14] sqt_koornwinder_nm
+  [18] adaptive_quad_tri_recursion (adapt.c) [23] sqt_adaptive_quad_tri [26] sqt_patch_nodes_tri
+   [1] koornwinder_deriv_recursion (koornwinder.c) [24] sqt_basic_quad_tri [17] sqt_quadrature_select
+  [13] koornwinder_recursion (koornwinder.c) [2] sqt_element_interp
+  [16] newman_edge (newman.c) [11] sqt_element_point_3d
