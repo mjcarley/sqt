@@ -671,7 +671,7 @@ static gint adaptive_quad_test(gdouble *xe, gint xstr, gint ne,
 		   &(g[0]), &(g[ne])) ;
   sqt_basic_quad_tri(xe, xstr, ne, qref, nref, func, qbas, nc, data) ;
 
-  work = (gdouble *)g_malloc(4*nc*depth*sizeof(gdouble)) ;
+  work = (gdouble *)g_malloc((4*nc*depth+4*3*nq)*sizeof(gdouble)) ;
   sqt_adaptive_quad_kw(ce, nq, Nk, q, nq, func, qkw, nc, tol, depth,
 		       data, work) ;
   

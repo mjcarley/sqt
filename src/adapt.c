@@ -300,15 +300,15 @@ gint SQT_FUNCTION_NAME(sqt_adaptive_quad_kw)(SQT_REAL *ce, gint ne, gint Nk,
 
 
 /*
- * work space size: 4*dmax*nc
+ * work space size: 4*dmax*nc + 4*nq*3 ;
  */
 {
-  SQT_REAL st[] = {0.0, 0.0, 1.0, 0.0, 0.0, 1.0}, kwork[3*453*4] ;
+  SQT_REAL st[] = {0.0, 0.0, 1.0, 0.0, 0.0, 1.0} ;
   
   memset(quad, 0, nc*sizeof(SQT_REAL)) ;
-  adaptive_quad_kw(ce, ne, Nk, st, 1.0, q, nq, func, quad, nc, kwork, data) ;
+  adaptive_quad_kw(ce, ne, Nk, st, 1.0, q, nq, func, quad, nc, work, data) ;
 
   return adaptive_quad_kw_recursion(ce, ne, Nk, st, 1.0, q, nq,
 				    func, quad, nc, tol, dmax,
-				    data, kwork, work) ;
+				    data, work, &(work[4*nq*3])) ;
 }
