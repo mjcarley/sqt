@@ -310,5 +310,5 @@ gint SQT_FUNCTION_NAME(sqt_adaptive_quad_kw)(SQT_REAL *ce, gint ne, gint Nk,
 
   return adaptive_quad_kw_recursion(ce, ne, Nk, st, 1.0, q, nq,
 				    func, quad, nc, tol, dmax,
-				    data, work, &(work[4*nq*3])) ;
+				    data, work, &(work[4*nc*3])) ;
 }
