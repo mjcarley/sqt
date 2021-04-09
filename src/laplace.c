@@ -565,15 +565,18 @@ SQT_FUNCTION_NAME(sqt_laplace_source_indexed_kw_adaptive)(SQT_REAL *xse,
 							  SQT_REAL *work)
 
 /*
- * work space size: 16*dmax*2*nse*nte + 12*nse
+ * work space size: 16*dmax*2*nse*nte + 12*nse + 3*nse
  */
 
 {
   gint i, i3 = 3, n, wsize ;
-  SQT_REAL ce[3*453], al, bt ;
+  /* SQT_REAL ce[3*453], al, bt ; */
+  SQT_REAL *ce, *Knm, *awork, al, bt ;
   /* SQT_REAL Knm[3*453] ; */
   gpointer data[SQT_DATA_WIDTH] ;
 
+  ce = work ; Knm = &(ce[3*nse]) ; awork = &(Knm[12*nse]) ;
+  
 #ifndef SQT_SINGLE_PRECISION
   /*element geometric interpolation coefficients*/
   al = 1.0 ; bt = 0.0 ;
@@ -587,9 +590,9 @@ SQT_FUNCTION_NAME(sqt_laplace_source_indexed_kw_adaptive)(SQT_REAL *xse,
   data[SQT_DATA_STRIDE]    = &tstr ; 
   data[SQT_DATA_NUMBER]    = &nte ;
   data[SQT_DATA_MATRIX]    = Ks ;
-  /* data[SQT_DATA_KNM]       = Knm ; */
+  data[SQT_DATA_KNM]       = Knm ;
   /* data[SQT_DATA_KNM]       = &(work[48*nse]) ; */
-  data[SQT_DATA_KNM]       = work ;
+  /* data[SQT_DATA_KNM]       = work ; */
   data[SQT_DATA_NKNM]      = &nse ;
   data[SQT_DATA_ORDER_K]   = &Ns ;
   data[SQT_DATA_INDICES]   = idx ;
@@ -606,7 +609,7 @@ SQT_FUNCTION_NAME(sqt_laplace_source_indexed_kw_adaptive)(SQT_REAL *xse,
   memset(Ast, 0, 2*nse*nte*sizeof(SQT_REAL)) ;
   SQT_FUNCTION_NAME(sqt_adaptive_quad_kw)(ce, nse, Ns, q, nq, func,
   					  Ast, 2*nse*nte, tol, dmax,
-  					  data, &(work[12*nse])) ;
+  					  data, awork) ;
 
   return 0 ;
 }
