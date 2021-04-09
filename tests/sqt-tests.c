@@ -1126,9 +1126,10 @@ static gint matrix_indexed_test(gdouble *xse, gint xsstr, gint nse,
   gdouble *q, err, erc, time ;
   gdouble Kq[453*453], *st, *kcache ;
   gdouble *Ast, *Asti, *Astc, xp[453*3], xt[453*3], *xcache ;
-  gdouble *qs, *work ;
+  gdouble *qs, *work, *iwork ;
   gint oq, i, j, k, nK, nqk, nqt, nqs, pstr, idx[453], ni, *icache, cstr ;
-
+  gint wsize ;
+  
   pstr = 3 ;
   
   nqk = 7 ;
@@ -1183,9 +1184,11 @@ static gint matrix_indexed_test(gdouble *xse, gint xsstr, gint nse,
   kcache = (gdouble *)g_malloc0(sqt_cache_level_offset(depth+1)*nqk*nqs*
 				sizeof(gdouble)) ;
 
+  wsize = depth*4*2*nqk*ni + 12*nqk + 3*nqk ;
+  iwork = (gdouble *)g_malloc(wsize*sizeof(gdouble)) ;
   sqt_laplace_source_indexed_kw_adaptive(xp, pstr, nqk, qs, nqs, Kq, nK,
 					 tol, depth, xt, pstr, idx, ni,
-					 Asti, work) ;
+					 Asti, iwork) ;
   fprintf(stderr, "indexed matrix generated, t=%lg\n",
 	  g_timer_elapsed(timer, NULL) - time) ;    
   sqt_laplace_source_indexed_kw_cached(xp, pstr, nqk, qs, nqs, Kq, nK,

@@ -565,7 +565,7 @@ SQT_FUNCTION_NAME(sqt_laplace_source_indexed_kw_adaptive)(SQT_REAL *xse,
 							  SQT_REAL *work)
 
 /*
- * work space size: 16*dmax*2*nse*nte + 12*nse + 3*nse
+ * work space size: 4*dmax*2*nse*nte + 12*nse + 3*nse
  */
 
 {
