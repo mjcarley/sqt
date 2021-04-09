@@ -1,6 +1,6 @@
 /* This file is part of SQT, a library for Singular Quadrature on Triangles
  *
- * Copyright (C) 2020 Michael Carley
+ * Copyright (C) 2020, 2021 Michael Carley
  *
  * SQT is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by
@@ -25,8 +25,15 @@
 
 #include <sqt.h>
 
+#include "config.h"
+
 #include "sqt-private.h"
 
+#ifdef HAVE_AVX_INSTRUCTIONS
+#include <immintrin.h>
+#endif /*HAVE_AVX_INSTRUCTIONS*/
+
+/* #if defined(SQT_SINGLE_PRECISION) || !defined(HAVE_AVX_INSTRUCTIONS) */
 static gint koornwinder_deriv_recursion4(gint N, gint m,
 					 SQT_REAL *Pm, SQT_REAL *dPm,
 					 SQT_REAL *vpm,
@@ -43,6 +50,7 @@ static gint koornwinder_deriv_recursion4(gint N, gint m,
 
   Jnm1 = &(buf[0]) ; Jnm = &(Jnm1[4]) ;
   for ( i = 0 ; i < 4 ; i ++ ) {
+    /* dPm[i] *= 2.0 ; */
     Jnm1[i] = 1.0 ; dJnm[i] = 0.0 ;
   }
   n = m ;
@@ -51,14 +59,13 @@ static gint koornwinder_deriv_recursion4(gint N, gint m,
   if ( idx < nst ) {
     for ( i = 0 ; i < 4 ; i ++ ) {
       K [kstr*(i*offk+idx)] = sqrt((1+2*m)*(n+1))*vpm[i] ;
-      Ku[ustr*(i*offu+idx)] = dPm[i]*K[kstr*(i*offk+idx)]*2.0*vinv[i] ;
+      Ku[ustr*(i*offu+idx)] = dPm[i]*K[kstr*(i*offk+idx)]*vinv[i] ;
       K [kstr*(i*offk+idx)] *= Pm[i] ;
       Kv[vstr*(i*offv+idx)] = Ku[ustr*(i*offu+idx)]*u[i]*vinv[i] -
 	K[kstr*(i*offk+idx)]*(m*vinv[i]) ;
     }
   }
   if ( m+1 > N ) return 0 ;
-  /* Jnm = &(buf[4]) ; */
   for ( i = 0 ; i < 4 ; i ++ ) {  
     Jnm[i] = w[i]*(1.5 + m) - 0.5 - m ; dJnm[i] = 1.5 + m ;
   }
@@ -67,7 +74,7 @@ static gint koornwinder_deriv_recursion4(gint N, gint m,
   if ( idx < nst ) {
     for ( i = 0 ; i < 4 ; i ++ ) {
       K [kstr*(i*offk+idx)] = sqrt((1+2*m)*(n+1))*vpm[i] ;
-      Ku[ustr*(i*offu+idx)] = Jnm[i]*dPm[i]*K[kstr*(i*offk+idx)]*2.0*vinv[i] ;
+      Ku[ustr*(i*offu+idx)] = Jnm[i]*dPm[i]*K[kstr*(i*offk+idx)]*vinv[i] ;
       K [kstr*(i*offk+idx)] *= Pm[i] ;
       Kv[vstr*(i*offv+idx)] =
 	Ku[ustr*(i*offu+idx)]*u[i]*vinv[i] -
@@ -93,7 +100,7 @@ static gint koornwinder_deriv_recursion4(gint N, gint m,
     idx = n*(n+1)/2 + m ;
     for ( i = 0 ; i < 4 ; i ++ ) {
       K [kstr*(i*offk+idx)] = sqrt((1+2*m)*(n+1))*vpm[i] ;
-      Ku[ustr*(i*offu+idx)] = Jnm[i]*dPm[i]*K[kstr*(i*offk+idx)]*2.0*vinv[i] ;
+      Ku[ustr*(i*offu+idx)] = Jnm[i]*dPm[i]*K[kstr*(i*offk+idx)]*vinv[i] ;
       K [kstr*(i*offk+idx)] *= Pm[i] ;
       Kv[vstr*(i*offv+idx)] =
 	Ku[ustr*(i*offu+idx)]*u[i]*vinv[i] -
@@ -104,6 +111,145 @@ static gint koornwinder_deriv_recursion4(gint N, gint m,
   
   return 0 ;
 }
+/* #else */
+/* static gint koornwinder_deriv_recursion4(gint N, gint m, */
+/* 					 gdouble *Pm, gdouble *dPm, */
+/* 					 gdouble *vpm, */
+/* 					 gdouble *u, gdouble *v, */
+/* 					 gdouble *w, gdouble *vinv, */
+/* 					 gdouble *K, gint kstr, gint offk, */
+/* 					 gdouble *Ku, gint ustr, gint offu, */
+/* 					 gdouble *Kv, gint vstr, gint offv, */
+/* 					 gint nst) */
+
+/* { */
+/*   gdouble Kb0[4], Kb1[4], Kb2[4], cnm ; */
+/*   __m256d rPm, rJnm, rJnm1, rdJnm, op1, op2, op3, rcnm, rw, rvpm, rvinv ; */
+/*   __m256d rm, rdPm, ruvinv ; */
+/*   gint n, idx, i ; */
+
+/*   rPm   = _mm256_loadu_pd(Pm) ; */
+/*   rdPm  = _mm256_loadu_pd(dPm) ; */
+/*   /\* rdPm  = _mm256_mul_pd(rdPm, _mm256_set1_pd(2.0)) ; *\/ */
+/*   rw    = _mm256_loadu_pd(w) ; */
+/*   rm    = _mm256_set1_pd((gdouble)m) ; */
+/*   rvpm  = _mm256_loadu_pd(vpm) ; */
+/*   rvinv = _mm256_loadu_pd(vinv) ; */
+/*   ruvinv = _mm256_loadu_pd(u) ; ruvinv = _mm256_mul_pd(ruvinv, rvinv) ; */
+
+/*   rJnm1 = _mm256_set1_pd(1.0) ; */
+/*   /\* rdJnm = _mm256_set1_pd(0.0) ; *\/ */
+
+/*   n = m ; */
+/*   idx = n*(n+1)/2 + m ; */
+/*   cnm = (1+2*m)*(n+1) ; */
+/*   rcnm = _mm256_set1_pd(cnm) ; rcnm = _mm256_sqrt_pd(rcnm) ; */
+
+/*   op1 = _mm256_mul_pd(rcnm, rvpm) ; */
+/*   op2 = _mm256_mul_pd(rdPm, op1) ; */
+/*   op2 = _mm256_mul_pd(op2, rvinv) ; */
+/*   op1 = _mm256_mul_pd(op1, rPm) ; */
+/*   _mm256_store_pd(Kb0, op1) ; */
+/*   _mm256_store_pd(Kb1, op2) ; */
+/*   /\* op2 = _mm256_mul_pd(op2,ru) ; op2 = _mm256_mul_pd(op2,rvinv) ; *\/ */
+/*   op2 = _mm256_mul_pd(op2,ruvinv) ; */
+/*   op1 = _mm256_mul_pd(op1, rvinv) ; op1 = _mm256_mul_pd(op1, rm) ; */
+/*   op1 = _mm256_sub_pd(op2, op1) ; */
+/*   _mm256_store_pd(Kb2, op1) ; */
+/*   if ( idx < nst ) { */
+/*     for ( i = 0 ; i < 4 ; i ++ ) { */
+/*       K [kstr*(i*offk+idx)] = Kb0[i] ; */
+/*       Ku[ustr*(i*offu+idx)] = Kb1[i] ; */
+/*       Kv[vstr*(i*offv+idx)] = Kb2[i] ; */
+/*     } */
+/*   } */
+/*   if ( m+1 > N ) return 0 ; */
+
+/*   cnm = 1.5 + m ; rdJnm = _mm256_set1_pd(cnm) ; */
+/*   rJnm = _mm256_mul_pd(rdJnm, rw) ;  */
+/*   rJnm = _mm256_sub_pd(rJnm, _mm256_set1_pd(m+0.5)) ;  */
+/*   rdJnm = _mm256_mul_pd(rdJnm, _mm256_set1_pd(2.0)) ;  */
+  
+/*   n = m + 1 ; */
+/*   idx = n*(n+1)/2 + m ; */
+/*   cnm = (1+2*m)*(n+1) ; */
+/*   rcnm = _mm256_set1_pd(cnm) ; rcnm = _mm256_sqrt_pd(rcnm) ; */
+
+/*   op1 = _mm256_mul_pd(rcnm, rvpm) ;    /\*cnm*vpm*\/ */
+/*   op2 = _mm256_mul_pd(rdPm, op1) ; */
+/*   op2 = _mm256_mul_pd(op2, rvinv) ; */
+/*   op2 = _mm256_mul_pd(op2, rJnm) ; */
+/*   op1 = _mm256_mul_pd(op1, rPm) ; */
+/*   op3 = _mm256_mul_pd(op1, rJnm) ;     /\*final K*\/ */
+/*   _mm256_store_pd(Kb0, op3) ; */
+/*   _mm256_store_pd(Kb1, op2) ; */
+/*   /\* op2 = _mm256_mul_pd(op2,ru) ; op2 = _mm256_mul_pd(op2,rvinv) ; *\/ */
+/*   op2 = _mm256_mul_pd(op2,ruvinv) ; */
+/*   op3 = _mm256_mul_pd(rJnm, rm) ; op3 = _mm256_mul_pd(op3, rvinv) ; */
+/*   op3 = _mm256_add_pd(op3, rdJnm) ; */
+/*   op1 = _mm256_mul_pd(op1, op3) ; */
+/*   op1 = _mm256_sub_pd(op2, op1) ; */
+/*   _mm256_store_pd(Kb2, op1) ; */
+/*   if ( idx < nst ) { */
+/*     for ( i = 0 ; i < 4 ; i ++ ) { */
+/*       K [kstr*(i*offk+idx)] = Kb0[i] ; */
+/*       Ku[ustr*(i*offu+idx)] = Kb1[i] ; */
+/*       Kv[vstr*(i*offv+idx)] = Kb2[i] ; */
+/*     } */
+/*   } */
+
+/*   if ( N*(N+1)/2 + m >= nst ) N -- ; */
+
+/*   for ( n = m+2 ; n <= N ; n ++ ) { */
+/*     op1 = _mm256_mul_pd(rw, _mm256_set1_pd((gdouble)(4*n*n-1)*n)) ; */
+/*     op1 = _mm256_sub_pd(op1, _mm256_set1_pd((gdouble)(2*m+1)*(2*m+1)*n)) ; */
+/*     op1 = _mm256_mul_pd(op1, rJnm) ; */
+/*     op2 = _mm256_mul_pd(rJnm1, */
+/* 			_mm256_set1_pd((gdouble)((n-1-m)*(n+m)*(2*n+1)))) ; */
+/*     op1 = _mm256_sub_pd(op1, op2) ; */
+/*     op1 = _mm256_div_pd(op1, */
+/* 			_mm256_set1_pd((gdouble)((n-m)*(n+m+1)*(2*n-1)))) ; */
+/*     rJnm1 = rJnm ; rJnm = op1 ; */
+/*     op1 = _mm256_mul_pd(rJnm1, _mm256_set1_pd(2.0*(n+m+1))) ; */
+/*     op2 = _mm256_mul_pd(rw,  _mm256_set1_pd(2.0*n+1)) ; */
+/*     op2 = _mm256_add_pd(op2, _mm256_set1_pd(2.0*m+1)) ; */
+/*     op2 = _mm256_mul_pd(op2, rJnm) ; */
+/*     op1 = _mm256_sub_pd(op1, op2) ; */
+/*     op1 = _mm256_mul_pd(op1, _mm256_set1_pd(2.0*(n-m))) ; */
+/*     op2 = _mm256_mul_pd(rw, rw) ; */
+/*     op2 = _mm256_sub_pd(_mm256_set1_pd(1.0), op2) ; */
+/*     op2 = _mm256_mul_pd(op2, _mm256_set1_pd(2.0*n+1)) ; */
+/*     rdJnm = _mm256_div_pd(op1, op2) ; */
+    
+/*     idx = n*(n+1)/2 + m ; */
+/*     cnm = (1+2*m)*(n+1) ; */
+/*     rcnm = _mm256_set1_pd(cnm) ; rcnm = _mm256_sqrt_pd(rcnm) ; */
+
+/*     op1 = _mm256_mul_pd(rcnm, rvpm) ;    /\*cnm*vpm*\/ */
+/*     op2 = _mm256_mul_pd(rdPm, op1) ; */
+/*     op2 = _mm256_mul_pd(op2, rvinv) ; */
+/*     op2 = _mm256_mul_pd(op2, rJnm) ; */
+/*     op1 = _mm256_mul_pd(op1, rPm) ; */
+/*     op3 = _mm256_mul_pd(op1, rJnm) ;     /\*final K*\/ */
+/*     _mm256_store_pd(Kb0, op3) ; */
+/*     _mm256_store_pd(Kb1, op2) ; */
+/*     /\* op2 = _mm256_mul_pd(op2,ru) ; op2 = _mm256_mul_pd(op2,rvinv) ; *\/ */
+/*     op2 = _mm256_mul_pd(op2,ruvinv) ; */
+/*     op3 = _mm256_mul_pd(rJnm, rm) ; op3 = _mm256_mul_pd(op3, rvinv) ; */
+/*     op3 = _mm256_add_pd(op3, rdJnm) ; */
+/*     op1 = _mm256_mul_pd(op1, op3) ; */
+/*     op1 = _mm256_sub_pd(op2, op1) ; */
+/*     _mm256_store_pd(Kb2, op1) ; */
+/*     for ( i = 0 ; i < 4 ; i ++ ) { */
+/*       K [kstr*(i*offk+idx)] = Kb0[i] ; */
+/*       Ku[ustr*(i*offu+idx)] = Kb1[i] ; */
+/*       Kv[vstr*(i*offv+idx)] = Kb2[i] ; */
+/*     } */
+/*   } */
+  
+/*   return 0 ; */
+/* } */
+/* #endif /\*defined(SQT_SINGLE_PRECISION) || !defined(HAVE_AVX_INSTRUCTIONS)*\/ */
 
 gint SQT_FUNCTION_NAME(sqt_koornwinder_deriv_nm_vector)(gint N,
 							SQT_REAL *u,
@@ -152,7 +298,9 @@ gint SQT_FUNCTION_NAME(sqt_koornwinder_deriv_nm_vector)(gint N,
   m = 1 ;
   Pmm1 = Pm ; Pm = &(Pmm1[4]) ;
   for ( i = 0 ; i < 4 ; i ++ ) {
-    Pm[i] = x[i] ; dPm[i] = 1.0 ;
+    /*derivative of Pm scaled by 2.0 to save a multiplication in the
+      recursion*/
+    Pm[i] = x[i] ; dPm[i] = 2.0 ;
   }
 
   koornwinder_deriv_recursion4(N, m, Pm, dPm, vpm, u, v, w, vinv,
@@ -167,7 +315,9 @@ gint SQT_FUNCTION_NAME(sqt_koornwinder_deriv_nm_vector)(gint N,
     }
     Pm = Pmm1 ; Pmm1 = tmp ;
     for ( i = 0 ; i < 4 ; i ++ ) {
-      dPm[i] = (Pmm1[i] - x[i]*Pm[i])/(1.0-x[i]*x[i])*m ;
+      /*derivative of Pm scaled by 2.0 to save a multiplication in the
+	recursion*/
+      dPm[i] = 2.0*(Pmm1[i] - x[i]*Pm[i])/(1.0-x[i]*x[i])*m ;
       vpm[i] *= 1.0 - v[i] ;
     }
     koornwinder_deriv_recursion4(N, m, Pm, dPm, vpm, u, v, w, vinv,
@@ -178,6 +328,7 @@ gint SQT_FUNCTION_NAME(sqt_koornwinder_deriv_nm_vector)(gint N,
   return 0 ;
 }
 
+/* #if defined(SQT_SINGLE_PRECISION) || !defined(HAVE_AVX_INSTRUCTIONS) */
 static gint koornwinder_recursion4(gint N, gint m,
 				   SQT_REAL *Pm, SQT_REAL *w,
 				   SQT_REAL *Knm, gint str, gint nst)
@@ -228,6 +379,88 @@ static gint koornwinder_recursion4(gint N, gint m,
   
   return 0 ;
 }
+/* #else */
+/* static gint koornwinder_recursion4(gint N, gint m, */
+/* 				   gdouble *Pm, gdouble *w, */
+/* 				   gdouble *Knm, gint str, gint nst) */
+
+/* { */
+/*   gdouble cnm, A, B, C, Kb[4] ; */
+/*   __m256d rPm, rJnm, rJnm1, op1, op2, rcnm, rw ; */
+/*   gint n, idx ; */
+
+/*   rPm = _mm256_loadu_pd(Pm) ; */
+/*   rw  = _mm256_loadu_pd(w) ; */
+
+/*   rJnm1 = _mm256_set1_pd(1.0) ; */
+/*   n = m ; */
+/*   idx = n*(n+1)/2 + m ; */
+/*   cnm = 2.0*(1+2*m)*(m+1) ; */
+/*   rcnm = _mm256_set1_pd(cnm) ; rcnm = _mm256_sqrt_pd(rcnm) ; */
+
+/*   op1 = _mm256_mul_pd(rJnm1,rPm) ;  */
+/*   op1 = _mm256_mul_pd(op1,rcnm) ; */
+/*   _mm256_store_pd(Kb, op1) ; */
+/*   if ( idx < nst ) { */
+/*     Knm[(0*nst+idx)*str] = Kb[0] ; */
+/*     Knm[(1*nst+idx)*str] = Kb[1] ; */
+/*     Knm[(2*nst+idx)*str] = Kb[2] ; */
+/*     Knm[(3*nst+idx)*str] = Kb[3] ; */
+/*   } */
+/*   if ( m+1 > N ) return 0 ; */
+  
+/*   A = 0.5*(2*m+3) ; B = -0.5*(2*m+1) ; */
+/*   op1 = _mm256_set1_pd(A) ; op2 = _mm256_set1_pd(B) ; */
+/*   rJnm = _mm256_mul_pd(rw, op1) ;  */
+/*   rJnm = _mm256_add_pd(rJnm, op2) ;  */
+  
+/*   n = m + 1 ; */
+/*   cnm = 2.0*(1+2*m)*(n+1) ; */
+/*   rcnm = _mm256_set1_pd(cnm) ; rcnm = _mm256_sqrt_pd(rcnm) ; */
+/*   idx = n*(n+1)/2 + m ; */
+/*   op1 = _mm256_mul_pd(rJnm,rPm) ;  */
+/*   op1 = _mm256_mul_pd(op1,rcnm) ; */
+/*   _mm256_store_pd(Kb, op1) ; */
+
+/*   if ( idx < nst ) { */
+/*     Knm[(0*nst+idx)*str] = Kb[0] ; */
+/*     Knm[(1*nst+idx)*str] = Kb[1] ; */
+/*     Knm[(2*nst+idx)*str] = Kb[2] ; */
+/*     Knm[(3*nst+idx)*str] = Kb[3] ; */
+/*   } */
+
+/*   if ( N*(N+1)/2 + m >= nst ) N -- ; */
+
+/*   for ( n = m+2 ; n <= N ; n ++ ) { */
+/*     cnm = 2.0*(1+2*m)*(n+1) ; */
+/*     rcnm = _mm256_set1_pd(cnm) ; rcnm = _mm256_sqrt_pd(rcnm) ; */
+/*     A =  (gdouble)(n-1+1)*(2*n-2+3)/(n-1-m+1)/(n-1+m+2) ; */
+/*     B = -(gdouble)(2*m+1)*(2*m+1)*(n-1+1)/(n-1-m+1)/(n-1+m+2)/(2*n-2+1) ; */
+/*     C =  (gdouble)(n-1-m)*(n-1+m+1)*(2*n-2+3)/(n-1-m+1)/(n-1+m+2)/(2*n-2+1) ; */
+    
+/*     op1 = _mm256_set1_pd(A) ;            */
+/*     op2 = _mm256_set1_pd(B) ;            */
+/*     op1 = _mm256_mul_pd(rw, op1) ;      /\*A*w*\/ */
+/*     op1 = _mm256_add_pd(op1, op2) ;     /\*A*w + B*\/ */
+/*     op1 = _mm256_mul_pd(op1, rJnm) ;    /\*(A*w + B)*Jnm*\/ */
+/*     op2 = _mm256_set1_pd(C) ;     */
+/*     op2 = _mm256_mul_pd(op2, rJnm1) ;   /\*C*Jnm1*\/ */
+/*     op1 = _mm256_sub_pd(op1, op2) ;     /\*(A*w + B)*Jnm - C*Jnm1*\/ */
+/*     rJnm1 = rJnm ; rJnm = op1 ; */
+/*     op1 = _mm256_mul_pd(rJnm,rPm) ;  */
+/*     op1 = _mm256_mul_pd(op1,rcnm) ; */
+/*     _mm256_store_pd(Kb, op1) ; */
+
+/*     idx = n*(n+1)/2 + m ; */
+/*     Knm[(0*nst+idx)*str] = Kb[0] ; */
+/*     Knm[(1*nst+idx)*str] = Kb[1] ; */
+/*     Knm[(2*nst+idx)*str] = Kb[2] ; */
+/*     Knm[(3*nst+idx)*str] = Kb[3] ; */
+/*   } */
+
+/*   return 0 ; */
+/* } */
+/* #endif /\*defined(SQT_SINGLE_PRECISION) || !defined(HAVE_AVX_INSTRUCTIONS)*\/ */
 
 gint SQT_FUNCTION_NAME(sqt_koornwinder_nm_vector)(gint N,
 						  SQT_REAL *u, SQT_REAL *v,
@@ -259,6 +492,7 @@ gint SQT_FUNCTION_NAME(sqt_koornwinder_nm_vector)(gint N,
     Pm[4+i] = (1.0 - v[i])*x[i] ;
   }
   m = 0 ;
+
   koornwinder_recursion4(N, m, Pm, w, Knm, str, nst) ;
 
   m = 1 ;

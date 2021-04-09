@@ -29,8 +29,6 @@
 
 #include "config.h"
 
-/* #define TRIANGLE_TRACE */
-
 static void cached_quad_kw(SQT_REAL *ce, gint ne, gint Nk,
 			   SQT_REAL *st, SQT_REAL wt,
 			   SQT_REAL *q, gint nq, 
@@ -50,7 +48,7 @@ static void cached_quad_kw(SQT_REAL *ce, gint ne, gint Nk,
   SQT_REAL s, t, J, *y, *n, *xc, si, ti, w ;
 
   /* cstr = NBI_CACHE_STRIDE + nq ; */
-  off = nbi_cache_level_offset(d) ;
+  off = sqt_cache_level_offset(d) ;
   xc = &(xcache[(off+b)*cstr*nq]) ;
   init = 0 ;
   
@@ -83,7 +81,7 @@ static void cached_quad_kw(SQT_REAL *ce, gint ne, gint Nk,
     y = sqt_cache_position(xc,cstr,i) ;
     n = sqt_cache_normal(xc,cstr,i) ;
 
-    func(s, t, w, y, n, quad, nc, init, data) ;
+    func(s, t, w, y, n, NULL, 0, quad, nc, init, data) ;
     /* if ( isnan(quad[0]) ) */
     /*   g_error("NaN") ; */
   }
@@ -182,9 +180,9 @@ gint SQT_FUNCTION_NAME(sqt_cached_quad_kw)(SQT_REAL *ce, gint ne, gint Nk,
 {
   SQT_REAL st[] = {0.0, 0.0, 1.0, 0.0, 0.0, 1.0} ;
 
-  g_assert(cstr >= NBI_CACHE_STRIDE) ;
+  g_assert(cstr >= SQT_CACHE_STRIDE) ;
   
-  if ( init ) memset(icache, 0, nbi_cache_level_offset(dmax+1)*sizeof(gint)) ;
+  if ( init ) memset(icache, 0, sqt_cache_level_offset(dmax+1)*sizeof(gint)) ;
   
   memset(quad, 0, nc*sizeof(SQT_REAL)) ;
   cached_quad_kw(ce, ne, Nk, st, 1.0, q, nq, func, quad, nc,

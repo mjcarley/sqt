@@ -100,14 +100,13 @@ gint SQT_FUNCTION_NAME(sqt_element_interp_vector)(SQT_REAL *ci, gint nq,
    *         J: Jacobian determinant
    *        dx: if not NULL, Jacobian matrix
    *
-   * workspace must be at least 3*nq elements for calculation of
-   * Koornwinder polynomials and derivatives
+   * workspace must be at least 12*nq elements for calculation of
+   * Koornwinder polynomials and derivatives for four elements in
+   * vectorized calculation
    */
 
 {
   SQT_REAL *K, *Ks, *Kt, buf[36], *xs, *xt ;
-  
-  /* xs = &(buf[3]) ; xt = &(buf[6]) ; */
 
 #ifndef SQT_SINGLE_PRECISION
   gint i3 = 3, nr, i ;
@@ -117,7 +116,7 @@ gint SQT_FUNCTION_NAME(sqt_element_interp_vector)(SQT_REAL *ci, gint nq,
   nr = 3*nst ;
   
   sqt_koornwinder_deriv_nm_vector(Nk, s, t, nst,
-				  K, 1, 3*nq,
+				  K , 1, 3*nq,
 				  Ks, 1, 3*nq,
 				  Kt, 1, 3*nq, nq) ;
   blaswrap_dgemm(FALSE, FALSE, nr, i3, nq, al, K, nq, ci, i3, bt, buf, i3) ;

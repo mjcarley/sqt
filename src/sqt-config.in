@@ -99,7 +99,7 @@ if test "$echo_cflags" = "yes"; then
     glib_cflags="$glib_cflags -I${prefix}/include"
     glib_cflags=`uniquify "$glib_cflags"`
 
-    sqt_cflags="$sqt_cflags $openmp_cflags -I${prefix}/include"
+    sqt_cflags="-I${prefix}/include"
     sqt_cflags=`uniquify "$sqt_cflags"`
     echo $sqt_cppflags $sqt_cflags $glib_cflags
 fi

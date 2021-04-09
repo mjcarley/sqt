@@ -233,7 +233,7 @@ static gint triangle_quad(
       SQT_FUNCTION_NAME(sqt_element_point_3d)(xt, xstr, nt, s1, t1, y, n, &J) ;
       /*quadrature weight*/
       wt = J/J0*rr*qr[2*j+1]*0.5*d*2.0*M_PI/nqt ;
-      func(s1, t1, wt, y, n, Iq, nqi, 0, data) ;
+      func(s1, t1, wt, y, n, NULL, 0, Iq, nqi, 0, data) ;
     }
   }
 
@@ -261,7 +261,7 @@ static gint triangle_quad(
 						y, n, &J) ;
 	/*quadrature weight*/
 	wt = (M*r-d)*qr[2*j+1]*qt[2*i+1]*rr*th0*J/J0 ;
-	func(s1, t1, wt, y, n, Iq, nqi, 0, data) ;
+	func(s1, t1, wt, y, n, NULL, 0, Iq, nqi, 0, data) ;
       }
     }
   }
@@ -446,7 +446,7 @@ static gint triangle_quad_kw(
       /*quadrature weight*/
       /* wt = J/J0*rr*qr[2*j+1]*0.5*d*2.0*M_PI/nqt ; */
       wt = J*rr*qr[2*j+1]*c ;
-      func(s1, t1, wt, y, n, Iq, nqi, 0, data) ;
+      func(s1, t1, wt, y, n, NULL, 0, Iq, nqi, 0, data) ;
     }
     tmp = C ;
     C = C*Cd - S*Sd ;
@@ -494,7 +494,7 @@ static gint triangle_quad_kw(
 	/* wt = (M*r-d)*qr[2*j+1]*qt[2*i+1]*rr*th0*J/J0 ; */
 	/* wt = (M-d)*qr[2*j+1]*qt[2*i+1]*rr*th0*J/J0 ; */
 	wt = (M-d)*qr[2*j+1]*qt[2*i+1]*rr*J*c ;
-	func(s1, t1, wt, y, n, Iq, nqi, 0, data) ;
+	func(s1, t1, wt, y, n, NULL, 0, Iq, nqi, 0, data) ;
       }
     }
   }

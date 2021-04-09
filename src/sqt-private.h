@@ -34,6 +34,8 @@
 #define SQT_DATA_WEIGHTS_S      9 
 #define SQT_DATA_WEIGHTS_D     10 
 #define SQT_DATA_INDICES       11
+#define SQT_DATA_KNM_CACHE     12
+#define SQT_DATA_N_QUAD_POINTS 13
 
 #ifdef SQT_SINGLE_PRECISION
 

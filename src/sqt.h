@@ -5,16 +5,18 @@
 
 #define SQT_ADAPTIVE_BUFFER_SIZE 2048
 
-#define nbi_cache_level_offset(_d)  (((1 << (2*(_d)))-1)/3)
-#define NBI_CACHE_STRIDE 9
+#define sqt_cache_level_offset(_d)  (((1 << (2*(_d)))-1)/3)
+#define SQT_CACHE_STRIDE 9
 
 typedef gint (*sqt_quadrature_func_t)(gdouble s, gdouble t, gdouble w,
 				      gdouble *y, gdouble *n,
+				      gdouble *K, gint nk,
 				      gdouble *quad, gint nc,
 				      gint init,
 				      gpointer data) ;
 typedef gint (*sqt_quadrature_func_f_t)(gfloat s, gfloat t, gfloat w,
 					gfloat *y, gfloat *n,
+					gfloat *K, gint nk,
 					gfloat *quad, gint nc,
 					gint init,
 					gpointer data) ;

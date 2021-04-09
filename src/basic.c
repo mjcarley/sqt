@@ -50,7 +50,7 @@ gint SQT_FUNCTION_NAME(sqt_basic_quad_tri)(SQT_REAL *xe, gint xstr, gint ne,
     s = q[3*i+0] ; t = q[3*i+1] ; w = q[3*i+2] ;
     SQT_FUNCTION_NAME(sqt_element_point_3d)(xe, xstr, ne, s, t, y, n, &J) ;
     w *= J ;
-    func(s, t, w, y, n, quad, nc, 0, data) ;
+    func(s, t, w, y, n, NULL, 0, quad, nc, 0, data) ;
   }
 
   return 0 ;
@@ -76,7 +76,8 @@ gint SQT_FUNCTION_NAME(sqt_basic_quad_kw)(SQT_REAL *xe, gint xstr,
 
   g_assert_not_reached() ;
   for ( i = 0 ; i < ne ; i ++ ) {
-    func(0, 0, wt[i*wstr], &(xe[i*xstr]), &(n [i*nstr]), quad, nc, 0, data) ;
+    func(0, 0, wt[i*wstr], &(xe[i*xstr]), &(n [i*nstr]), NULL, 0,
+	 quad, nc, 0, data) ;
   }
 
   return 0 ;

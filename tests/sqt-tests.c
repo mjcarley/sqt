@@ -567,6 +567,7 @@ static gint blas_tests(gint N)
 
 static gint adaptive_quad_func(gdouble s, gdouble t, gdouble w,
 			       gdouble *y, gdouble *n,
+			       gdouble *K, gint nk,
 			       gdouble *quad, gint nq, gint init,
 			       gpointer data[])
 {
@@ -595,6 +596,7 @@ static gint adaptive_quad_func(gdouble s, gdouble t, gdouble w,
 
 static gint laplace_quad_func(gdouble s, gdouble t, gdouble w,
 			      gdouble *y, gdouble *n,
+			      SQT_REAL *K, gint nk,
 			      gdouble *quad, gint nq,
 			      gint init, gpointer data[])
 
@@ -763,9 +765,9 @@ static gint cached_quad_test(gdouble *xe, gint xstr, gint ne,
 
   data[0] = x ;
 
-  cstr = NBI_CACHE_STRIDE + 7 ;
-  icache = (gint *)g_malloc(nbi_cache_level_offset(depth+1)*sizeof(gint)) ;
-  xcache = (gdouble *)g_malloc(nbi_cache_level_offset(depth+1)*nq*
+  cstr = SQT_CACHE_STRIDE + 7 ;
+  icache = (gint *)g_malloc(sqt_cache_level_offset(depth+1)*sizeof(gint)) ;
+  xcache = (gdouble *)g_malloc(sqt_cache_level_offset(depth+1)*nq*
 			       cstr*sizeof(gdouble)) ;
   work = (gdouble *)g_malloc((4*nc*(depth)+3*nq)*sizeof(gdouble)) ;
   sqt_adaptive_quad_kw(ce, nq, Nk, q, nq, func, qkw, nc, tol, depth,
@@ -1122,7 +1124,7 @@ static gint matrix_indexed_test(gdouble *xse, gint xsstr, gint nse,
 
 {
   gdouble *q, err, erc, time ;
-  gdouble Kq[453*453], *st ;
+  gdouble Kq[453*453], *st, *kcache ;
   gdouble *Ast, *Asti, *Astc, xp[453*3], xt[453*3], *xcache ;
   gdouble *qs, *work ;
   gint oq, i, j, k, nK, nqk, nqt, nqs, pstr, idx[453], ni, *icache, cstr ;
@@ -1156,10 +1158,10 @@ static gint matrix_indexed_test(gdouble *xse, gint xsstr, gint nse,
   sqt_quadrature_select(nqs, &qs, &oq) ;
 
   /*interaction matrix*/
-  cstr = NBI_CACHE_STRIDE + nqs*2 ;
+  cstr = SQT_CACHE_STRIDE + nqs*2 ;
   work = (gdouble *)g_malloc(2*4*2*nqk*nqt*depth*sizeof(gdouble)) ;
-  icache = (gint *)g_malloc(nbi_cache_level_offset(depth+1)*sizeof(gint)) ;
-  xcache = (gdouble *)g_malloc(nbi_cache_level_offset(depth+1)*nqs*cstr*
+  icache = (gint *)g_malloc(sqt_cache_level_offset(depth+1)*sizeof(gint)) ;
+  xcache = (gdouble *)g_malloc(sqt_cache_level_offset(depth+1)*nqs*cstr*
 			       sizeof(gdouble)) ;
   fprintf(stderr, "starting matrix generation, t=%lg\n",
 	  time = g_timer_elapsed(timer, NULL)) ;    
@@ -1177,6 +1179,9 @@ static gint matrix_indexed_test(gdouble *xse, gint xsstr, gint nse,
 
   Asti = (gdouble *)g_malloc(2*nqk*ni*sizeof(gdouble)) ;
   Astc = (gdouble *)g_malloc(2*nqk*ni*sizeof(gdouble)) ;
+
+  kcache = (gdouble *)g_malloc0(sqt_cache_level_offset(depth+1)*nqk*nqs*
+				sizeof(gdouble)) ;
 
   sqt_laplace_source_indexed_kw_adaptive(xp, pstr, nqk, qs, nqs, Kq, nK,
 					 tol, depth, xt, pstr, idx, ni,
@@ -1580,7 +1585,6 @@ gint main(gint argc, gchar **argv)
 
     return 0 ;
   }
-
 
   read_element(input, xe, &ne, &xstr) ;
   fscanf(input, "%lg %lg %lg", &(x0[0]), &(x0[1]), &(x0[2])) ;
