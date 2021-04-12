@@ -508,7 +508,6 @@ static gint laplace_quad_matrix_indexed(SQT_REAL s, SQT_REAL t,
 					gpointer data[])
 
 {
-  /* SQT_REAL *Knm = data[SQT_DATA_KNM] ; */
   SQT_REAL *work = data[SQT_DATA_KNM] ;
   SQT_REAL *x   = data[SQT_DATA_TARGET] ;
   SQT_REAL *Kq  = data[SQT_DATA_MATRIX] ;
@@ -518,7 +517,7 @@ static gint laplace_quad_matrix_indexed(SQT_REAL s, SQT_REAL t,
   gint nx   = *((gint *)data[SQT_DATA_NUMBER]) ;
   gint *idx =           data[SQT_DATA_INDICES] ;
   gint nq   = *((gint *)data[SQT_DATA_N_QUAD_POINTS]) ;
-  SQT_REAL G, dG, d1 = 1.0, d0 = 0.0, r[3] ;
+  SQT_REAL G, dG, d1 = 1.0, d0 = 0.0, r[3], *g ;
   gint i1 = 1, i, j, ns ;
 
   /*Koornwinder polynomials at evaluation point are in input K*/
@@ -530,22 +529,42 @@ static gint laplace_quad_matrix_indexed(SQT_REAL s, SQT_REAL t,
 #endif /*SQT_SINGLE_PRECISION*/
 
   ns = nc/nx ;
+  g = &(work[12*nse]) ;
   for ( j = 0 ; j < nx ; j ++ ) {
+    gdouble r2 ;
     i = idx[j] ;
     sqt_vector_diff(r, &(x[i*xstr]), y) ;
-    dG = sqt_vector_scalar(r, n) ;
-    G = 1.0/sqt_vector_length(r) ;
-    dG *= G*G*G ;
+    /* dG = sqt_vector_scalar(r, n) ; */
+    /* G = 1.0/sqt_vector_length(r) ; */
+    /* dG *= G*G*G ; */
+
+    /* dg[j] = sqt_vector_scalar(r, n) ; */
+    /* g[j] = 1.0/sqt_vector_length(r) ; */
+    /* dg[j] *= g[j]*g[j]*g[j] ; */
+
+    g[2*j+1] = sqt_vector_scalar(r, n) ;
+    r2 = 1.0/sqt_vector_length2(r) ;
+    g[2*j+0] = sqrt(r2) ;
+    g[2*j+1] *= g[2*j+0]*r2 ;
     
 #ifndef SQT_SINGLE_PRECISION  
-    blaswrap_daxpy(nse,  G, work, i1, &(quad[j*ns+   0]), i1) ;
-    blaswrap_daxpy(nse, dG, work, i1, &(quad[j*ns+ns/2]), i1) ;
+    /* blaswrap_daxpy(nse,  G, work, i1, &(quad[j*ns+   0]), i1) ; */
+    /* blaswrap_daxpy(nse, dG, work, i1, &(quad[j*ns+ns/2]), i1) ; */
 #else /*SQT_SINGLE_PRECISION*/
     /*this is to keep the compiler quiet about unused variables*/
     /* wt = 0.0 ; Kq[0] = sin(wt*d1*i1*dG) ; */
     g_assert_not_reached() ;
 #endif /*SQT_SINGLE_PRECISION*/
   }  
+
+#ifndef SQT_SINGLE_PRECISION
+  gint ldc, ncc, na ;
+  
+  ncc = ns/2 ; ldc = ncc ; na = 2*nx ;
+  
+  blaswrap_dgemm(FALSE, FALSE, na, nse, i1, d1, g, i1,
+		 work, nse, d1, quad, ldc) ;
+#endif /*SQT_SINGLE_PRECISION  */
 
   return 0 ;
 }
@@ -565,17 +584,15 @@ SQT_FUNCTION_NAME(sqt_laplace_source_indexed_kw_adaptive)(SQT_REAL *xse,
 							  SQT_REAL *work)
 
 /*
- * work space size: 4*dmax*2*nse*nte + 12*nse + 3*nse
+ * work space size: 4*dmax*2*nse*nte + 12*nse + 3*nse + 2*nte
  */
 
 {
   gint i, i3 = 3, n, wsize ;
-  /* SQT_REAL ce[3*453], al, bt ; */
   SQT_REAL *ce, *Knm, *awork, al, bt ;
-  /* SQT_REAL Knm[3*453] ; */
   gpointer data[SQT_DATA_WIDTH] ;
 
-  ce = work ; Knm = &(ce[3*nse]) ; awork = &(Knm[12*nse]) ;
+  ce = work ; Knm = &(ce[3*nse]) ; awork = &(Knm[12*nse+2*nte]) ;
   
 #ifndef SQT_SINGLE_PRECISION
   /*element geometric interpolation coefficients*/
@@ -591,8 +608,6 @@ SQT_FUNCTION_NAME(sqt_laplace_source_indexed_kw_adaptive)(SQT_REAL *xse,
   data[SQT_DATA_NUMBER]    = &nte ;
   data[SQT_DATA_MATRIX]    = Ks ;
   data[SQT_DATA_KNM]       = Knm ;
-  /* data[SQT_DATA_KNM]       = &(work[48*nse]) ; */
-  /* data[SQT_DATA_KNM]       = work ; */
   data[SQT_DATA_NKNM]      = &nse ;
   data[SQT_DATA_ORDER_K]   = &Ns ;
   data[SQT_DATA_INDICES]   = idx ;

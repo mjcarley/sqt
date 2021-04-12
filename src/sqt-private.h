@@ -89,6 +89,10 @@ do {						\
   (SQRT(((SQT_A)[0])*((SQT_A)[0])+				\
 	((SQT_A)[1])*((SQT_A)[1]) +				\
 	((SQT_A)[2])*((SQT_A)[2])))
+#define sqt_vector_length2(SQT_A)				\
+  (((SQT_A)[0])*((SQT_A)[0]) +					\
+   ((SQT_A)[1])*((SQT_A)[1]) +					\
+   ((SQT_A)[2])*((SQT_A)[2]))
 #define sqt_vector_cross(SQT_C,SQT_A,SQT_B)				\
   ((SQT_C)[0] = (SQT_A)[1]*(SQT_B)[2] - (SQT_A)[2]*(SQT_B)[1],		\
    (SQT_C)[1] = (SQT_A)[2]*(SQT_B)[0] - (SQT_A)[0]*(SQT_B)[2],		\
