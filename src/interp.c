@@ -51,25 +51,29 @@ gint SQT_FUNCTION_NAME(sqt_element_interp)(SQT_REAL *ci, gint nq,
 {
   SQT_REAL *K, *Ks, *Kt, buf[9], *xs, *xt ;
 
+  g_assert(work != NULL) ;
+  
   xs = &(buf[3]) ; xt = &(buf[6]) ;
 
-#ifndef SQT_SINGLE_PRECISION
   gint i3 = 3 ;
   SQT_REAL al = 1.0, bt = 0.0 ;
 
   K = work ; Ks = &(K[nq]) ; Kt = &(Ks[nq]) ;
 
-  sqt_koornwinder_deriv_nm(Nk, s, t, K, 1, Ks, 1, Kt, 1, nq) ;
+  SQT_FUNCTION_NAME(sqt_koornwinder_deriv_nm)(Nk, s, t, K, 1, Ks, 1, Kt, 1,
+					      nq) ;
+#ifndef SQT_SINGLE_PRECISION
   blaswrap_dgemm(FALSE, FALSE, i3, i3, nq, al, K, nq, ci, i3, bt, buf, i3) ;
+#else
+  g_assert_not_reached() ;
+  blaswrap_sgemm(FALSE, FALSE, i3, i3, nq, al, K, nq, ci, i3, bt, buf, i3) ;
+#endif /*SQT_SINGLE_PRECISION*/
 
   x[0] = buf[0] ; x[1] = buf[1] ; x[2] = buf[2] ; 
   
   sqt_vector_cross(n, xs, xt) ;
   *J = sqt_vector_length(n) ;
   n[0] /= (*J) ; n[1] /= (*J) ; n[2] /= (*J) ; 
-#else
-  g_assert_not_reached() ;
-#endif /*SQT_SINGLE_PRECISION*/
 
   if ( dx == NULL ) return 0 ;
 
@@ -106,20 +110,24 @@ gint SQT_FUNCTION_NAME(sqt_element_interp_vector)(SQT_REAL *ci, gint nq,
    */
 
 {
-  SQT_REAL *K, *Ks, *Kt, buf[36], *xs, *xt ;
+  SQT_REAL *K, *Ks, *Kt, buf[36] ;
 
-#ifndef SQT_SINGLE_PRECISION
   gint i3 = 3, nr, i ;
   SQT_REAL al = 1.0, bt = 0.0 ;
 
   K = work ; Ks = &(K[nq]) ; Kt = &(Ks[nq]) ;
   nr = 3*nst ;
   
-  sqt_koornwinder_deriv_nm_vector(Nk, s, t, nst,
-				  K , 1, 3*nq,
-				  Ks, 1, 3*nq,
-				  Kt, 1, 3*nq, nq) ;
+  SQT_FUNCTION_NAME(sqt_koornwinder_deriv_nm_vector)(Nk, s, t, nst,
+						     K , 1, 3*nq,
+						     Ks, 1, 3*nq,
+						     Kt, 1, 3*nq, nq) ;
+#ifndef SQT_SINGLE_PRECISION
   blaswrap_dgemm(FALSE, FALSE, nr, i3, nq, al, K, nq, ci, i3, bt, buf, i3) ;
+#else
+  g_assert_not_reached() ;
+  blaswrap_sgemm(FALSE, FALSE, nr, i3, nq, al, K, nq, ci, i3, bt, buf, i3) ;
+#endif /*SQT_SINGLE_PRECISION*/
 
   for ( i = 0 ; i < nst ; i ++ ) {
     x[i*xstr+0] = buf[9*i+0] ;
@@ -131,9 +139,6 @@ gint SQT_FUNCTION_NAME(sqt_element_interp_vector)(SQT_REAL *ci, gint nq,
     n[i*nstr+1] /= J[i] ;
     n[i*nstr+2] /= J[i] ;
   }
-#else
-  g_assert_not_reached() ;
-#endif /*SQT_SINGLE_PRECISION*/
   
   return 0 ;
 }
@@ -158,6 +163,7 @@ gint SQT_FUNCTION_NAME(sqt_interp_matrix)(SQT_REAL *K, gint nk, gint Nk,
     blaswrap_dgemv(TRUE, nk, nk, al, K, nk, Knm, i1, bt, &(Ki[i*nk]), i1) ;
 #else /*SQT_SINGLE_PRECISION*/
     g_assert_not_reached() ;
+    blaswrap_sgemv(TRUE, nk, nk, al, K, nk, Knm, i1, bt, &(Ki[i*nk]), i1) ;
 #endif /*SQT_SINGLE_PRECISION*/
   }
   

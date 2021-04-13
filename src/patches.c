@@ -25,6 +25,8 @@
 
 #include <sqt.h>
 
+#include "config.h"
+
 #include "sqt-private.h"
 
 gint SQT_FUNCTION_NAME(sqt_patch_nodes_tri)(SQT_REAL *xe, gint xstr, gint ne,

@@ -25,6 +25,8 @@
 
 #include <sqt.h>
 
+#include "config.h"
+
 #include "sqt-private.h"
 
 gint SQT_FUNCTION_NAME(sqt_geometry_stellarator)(SQT_REAL u, SQT_REAL v,

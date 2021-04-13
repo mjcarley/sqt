@@ -93,7 +93,8 @@ util.lo: util.c /usr/include/stdc-predef.h /usr/include/stdio.h \
  /usr/include/sys/select.h /usr/include/bits/select.h \
  /usr/include/sys/sysmacros.h /usr/include/pthread.h /usr/include/sched.h \
  /usr/include/bits/sched.h /usr/include/bits/setjmp.h \
- /usr/include/glib-2.0/glib/glib-autocleanups.h sqt.h sqt-private.h
+ /usr/include/glib-2.0/glib/glib-autocleanups.h sqt.h ../config.h \
+ sqt-private.h
 
 /usr/include/stdc-predef.h:
 
@@ -376,5 +377,7 @@ util.lo: util.c /usr/include/stdc-predef.h /usr/include/stdio.h \
 /usr/include/glib-2.0/glib/glib-autocleanups.h:
 
 sqt.h:
+
+../config.h:
 
 sqt-private.h:

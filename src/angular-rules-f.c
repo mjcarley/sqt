@@ -3,6 +3,9 @@
 
 #include <glib.h>
 
+gint angular_quadrature_select_f(gint N, gfloat r0, gfloat th0,
+				 gfloat **q, gint *nq) ;
+
 #define NRADIUS 14
 #define NTHETA 21
 

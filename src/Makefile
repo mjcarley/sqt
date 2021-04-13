@@ -140,8 +140,9 @@ libsqt_la_DEPENDENCIES = libsub.la
 am_libsqt_la_OBJECTS = sqt.lo newman.lo wandzura.lo xiao.lo \
 	wandzura-f.lo xiao-f.lo util.lo location.lo koornwinder.lo \
 	koornwinder-avx.lo adapt.lo basic.lo singular.lo \
-	angular-rules.lo radial-rules.lo legendre-rules.lo laplace.lo \
-	interp.lo geometries.lo patches.lo cached.lo
+	singular-avx.lo angular-rules.lo radial-rules.lo \
+	legendre-rules.lo laplace.lo interp.lo geometries.lo \
+	patches.lo cached.lo
 libsqt_la_OBJECTS = $(am_libsqt_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
@@ -155,10 +156,11 @@ am_libsub_la_OBJECTS = libsub_la-sqt.lo libsub_la-util.lo \
 	libsub_la-location.lo libsub_la-koornwinder.lo \
 	libsub_la-koornwinder-avx.lo libsub_la-adapt.lo \
 	libsub_la-basic.lo libsub_la-singular.lo \
-	libsub_la-angular-rules-f.lo libsub_la-radial-rules-f.lo \
-	libsub_la-legendre-rules-f.lo libsub_la-laplace.lo \
-	libsub_la-interp.lo libsub_la-geometries.lo \
-	libsub_la-patches.lo libsub_la-cached.lo
+	libsub_la-singular-avx.lo libsub_la-angular-rules-f.lo \
+	libsub_la-radial-rules-f.lo libsub_la-legendre-rules-f.lo \
+	libsub_la-laplace.lo libsub_la-interp.lo \
+	libsub_la-geometries.lo libsub_la-patches.lo \
+	libsub_la-cached.lo
 libsub_la_OBJECTS = $(am_libsub_la_OBJECTS)
 libsub_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(libsub_la_CFLAGS) \
@@ -397,6 +399,7 @@ libsqt_la_SOURCES = \
 	adapt.c \
 	basic.c \
 	singular.c \
+	singular-avx.c \
 	angular-rules.c \
 	radial-rules.c \
 	legendre-rules.c \
@@ -417,6 +420,7 @@ libsub_la_SOURCES = \
 	adapt.c \
 	basic.c \
 	singular.c \
+	singular-avx.c \
 	angular-rules-f.c \
 	radial-rules-f.c \
 	legendre-rules-f.c \
@@ -584,6 +588,7 @@ include ./$(DEPDIR)/libsub_la-legendre-rules-f.Plo
 include ./$(DEPDIR)/libsub_la-location.Plo
 include ./$(DEPDIR)/libsub_la-patches.Plo
 include ./$(DEPDIR)/libsub_la-radial-rules-f.Plo
+include ./$(DEPDIR)/libsub_la-singular-avx.Plo
 include ./$(DEPDIR)/libsub_la-singular.Plo
 include ./$(DEPDIR)/libsub_la-sqt.Plo
 include ./$(DEPDIR)/libsub_la-util.Plo
@@ -591,6 +596,7 @@ include ./$(DEPDIR)/location.Plo
 include ./$(DEPDIR)/newman.Plo
 include ./$(DEPDIR)/patches.Plo
 include ./$(DEPDIR)/radial-rules.Plo
+include ./$(DEPDIR)/singular-avx.Plo
 include ./$(DEPDIR)/singular.Plo
 include ./$(DEPDIR)/sqt.Plo
 include ./$(DEPDIR)/util.Plo
@@ -678,6 +684,13 @@ libsub_la-singular.lo: singular.c
 #	$(AM_V_CC)source='singular.c' object='libsub_la-singular.lo' libtool=yes \
 #	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
 #	$(AM_V_CC_no)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsub_la_CFLAGS) $(CFLAGS) -c -o libsub_la-singular.lo `test -f 'singular.c' || echo '$(srcdir)/'`singular.c
+
+libsub_la-singular-avx.lo: singular-avx.c
+	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsub_la_CFLAGS) $(CFLAGS) -MT libsub_la-singular-avx.lo -MD -MP -MF $(DEPDIR)/libsub_la-singular-avx.Tpo -c -o libsub_la-singular-avx.lo `test -f 'singular-avx.c' || echo '$(srcdir)/'`singular-avx.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/libsub_la-singular-avx.Tpo $(DEPDIR)/libsub_la-singular-avx.Plo
+#	$(AM_V_CC)source='singular-avx.c' object='libsub_la-singular-avx.lo' libtool=yes \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsub_la_CFLAGS) $(CFLAGS) -c -o libsub_la-singular-avx.lo `test -f 'singular-avx.c' || echo '$(srcdir)/'`singular-avx.c
 
 libsub_la-angular-rules-f.lo: angular-rules-f.c
 	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsub_la_CFLAGS) $(CFLAGS) -MT libsub_la-angular-rules-f.lo -MD -MP -MF $(DEPDIR)/libsub_la-angular-rules-f.Tpo -c -o libsub_la-angular-rules-f.lo `test -f 'angular-rules-f.c' || echo '$(srcdir)/'`angular-rules-f.c

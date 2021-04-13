@@ -23,6 +23,8 @@
 
 #include <sqt.h>
 
+#include "config.h"
+
 #include "sqt-private.h"
 
 inline static void shape3(SQT_REAL s, SQT_REAL t, SQT_REAL L[])

@@ -21,6 +21,8 @@
 
 #include <sqt.h>
 
+#include "config.h"
+
 #include "sqt-private.h"
 
 gint SQT_FUNCTION_NAME(sqt_cartesian_to_spherical)(SQT_REAL *x0,

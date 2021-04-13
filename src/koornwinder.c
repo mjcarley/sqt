@@ -25,6 +25,8 @@
 
 #include <sqt.h>
 
+#include "config.h"
+
 #include "sqt-private.h"
 
 static gint koornwinder_deriv_recursion(gint N, gint m,

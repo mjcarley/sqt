@@ -25,9 +25,9 @@
 
 #include <sqt.h>
 
-#include "sqt-private.h"
-
 #include "config.h"
+
+#include "sqt-private.h"
 
 static void cached_quad_kw(SQT_REAL *ce, gint ne, gint Nk,
 			   SQT_REAL *st, SQT_REAL wt,

@@ -25,6 +25,8 @@
 
 #include <sqt.h>
 
+#include "config.h"
+
 #include "sqt-private.h"
 
 /*basic integration routine used for testing and well-separated elements*/

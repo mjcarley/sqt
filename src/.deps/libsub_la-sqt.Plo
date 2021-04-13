@@ -98,7 +98,8 @@ libsub_la-sqt.lo: sqt.c /usr/include/stdc-predef.h /usr/include/stdio.h \
  /usr/include/glib-2.0/glib/deprecated/gthread.h /usr/include/pthread.h \
  /usr/include/sched.h /usr/include/bits/sched.h \
  /usr/include/bits/setjmp.h \
- /usr/include/glib-2.0/glib/glib-autocleanups.h sqt.h sqt-private.h
+ /usr/include/glib-2.0/glib/glib-autocleanups.h sqt.h ../config.h \
+ sqt-private.h
 
 /usr/include/stdc-predef.h:
 
@@ -399,5 +400,7 @@ libsub_la-sqt.lo: sqt.c /usr/include/stdc-predef.h /usr/include/stdio.h \
 /usr/include/glib-2.0/glib/glib-autocleanups.h:
 
 sqt.h:
+
+../config.h:
 
 sqt-private.h:

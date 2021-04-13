@@ -3,6 +3,8 @@
 
 #include <glib.h>
 
+gint radial_quadrature_select_f(gint N, gfloat d, gfloat **q, gint *nq) ;
+
 #define NDELTA 16
 
 gfloat rules4_f[] = {

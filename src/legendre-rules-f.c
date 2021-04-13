@@ -3,6 +3,8 @@
 
 #include <glib.h>
 
+gint legendre_quadrature_select_f(gint N, gfloat **q, gint *nq) ;
+
 gfloat legendre_rule4_f[] = {
 -7.7459666924148340e-01, 5.5555555555555536e-01,
 0.0000000000000000e+00, 8.8888888888888884e-01,

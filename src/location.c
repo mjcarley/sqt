@@ -23,6 +23,8 @@
 
 #include <sqt.h>
 
+#include "config.h"
+
 #include "sqt-private.h"
 
 static gint calc_point(SQT_REAL *xe, gint xstr, gint ne,

@@ -163,13 +163,25 @@ gint sqt_singular_quad_kw(gdouble *ce, gint ne, gint Nk,
 			  gint N,
 			  sqt_quadrature_func_t func,
 			  gdouble *quad, gint nc,
-			  gpointer data) ;
+			  gpointer data, gdouble *work) ;
 gint sqt_singular_quad_kw_f(gfloat *ce, gint ne, gint Nk,
 			    gfloat s0, gfloat t0,
 			    gint N,
 			    sqt_quadrature_func_f_t func,
 			    gfloat *quad, gint nc,
-			    gpointer data) ;
+			    gpointer data, gfloat *work) ;
+gint sqt_singular_quad_kw_vector(gdouble *ce, gint ne, gint Nk,
+				 gdouble s0, gdouble t0,
+				 gint N,
+				 sqt_quadrature_func_t func,
+				 gdouble *quad, gint nc,
+				 gpointer data, gdouble *work) ;
+gint sqt_singular_quad_kw_vector_f(gfloat *ce, gint ne, gint Nk,
+				   gfloat s0, gfloat t0,
+				   gint N,
+				   sqt_quadrature_func_f_t func,
+				   gfloat *quad, gint nc,
+				   gpointer data, gfloat *work) ;
 
 gint sqt_singular_quad_tri(gdouble *xe, gint xstr, gint ne,
 			   gdouble s0, gdouble t0,
@@ -195,6 +207,20 @@ gint sqt_basic_quad_tri_f(gfloat *xe, gint xstr, gint ne,
 			  sqt_quadrature_func_f_t func,
 			  gfloat *quad, gint nc,
 			  gpointer data) ;
+gint sqt_basic_quad_kw(gdouble *xe, gint xstr,
+		       gdouble *n , gint nstr,
+		       gdouble *wt, gint wstr,
+		       gint ne,
+		       sqt_quadrature_func_t func,
+		       gdouble *quad, gint nc,
+		       gpointer data) ;
+gint sqt_basic_quad_kw_f(gfloat *xe, gint xstr,
+			 gfloat *n , gint nstr,
+			 gfloat *wt, gint wstr,
+			 gint ne,
+			 sqt_quadrature_func_f_t func,
+			 gfloat *quad, gint nc,
+			 gpointer data) ;
 
 gint sqt_laplace_weights_tri_basic(gdouble *xe, gint xstr, gint ne,
 				   gdouble *q, gint nq,
@@ -297,13 +323,15 @@ gint sqt_laplace_weights_kw_singular(gdouble *ce, gint ne, gint Nk,
 				     gint N,
 				     gdouble s0,
 				     gdouble t0,
-				     gdouble *w) ;
+				     gdouble *w,
+				     gdouble *work) ;
 gint sqt_laplace_weights_kw_singular_f(gfloat *ce, gint ne, gint Nk,
 				       gfloat *Kq,
 				       gint N,
 				       gfloat s0,
 				       gfloat t0,
-				       gfloat *w) ;
+				       gfloat *w,
+				       gfloat *work) ;
 
 
 gint sqt_laplace_source_target_tri_basic(gdouble *xse, gint xsstr, gint nse,
@@ -389,7 +417,8 @@ gint sqt_laplace_source_target_kw_self(gdouble *xe, gint xstr, gint ne,
 				       gint sstr,
 				       gdouble *t,
 				       gint tstr,
-				       gdouble *Ast) ;
+				       gdouble *Ast,
+				       gdouble *work) ;
 gint sqt_laplace_source_target_kw_self_f(gfloat *xe, gint xstr, gint ne,
 					 gfloat *K,
 					 gint nK,
@@ -398,7 +427,8 @@ gint sqt_laplace_source_target_kw_self_f(gfloat *xe, gint xstr, gint ne,
 					 gint sstr,
 					 gfloat *t,
 					 gint tstr,
-					 gfloat *Ast) ;
+					 gfloat *Ast,
+					 gfloat *work) ;
 
 gint sqt_element_interp(gdouble *ci, gint nq, gint Nk,
 			gdouble s, gdouble t,

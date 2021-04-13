@@ -3,6 +3,8 @@
 
 #include <glib.h>
 
+gint radial_quadrature_select(gint N, gdouble d, gdouble **q, gint *nq) ;
+
 #define NDELTA 16
 
 gdouble rules4[] = {

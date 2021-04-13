@@ -31,6 +31,7 @@ libsqt_la_SOURCES = \
 	adapt.c \
 	basic.c \
 	singular.c \
+	singular-avx.c \
 	angular-rules.c \
 	radial-rules.c \
 	legendre-rules.c \
@@ -62,6 +63,7 @@ libsub_la_SOURCES = \
 	adapt.c \
 	basic.c \
 	singular.c \
+	singular-avx.c \
 	angular-rules-f.c \
 	radial-rules-f.c \
 	legendre-rules-f.c \
