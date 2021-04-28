@@ -98,8 +98,8 @@ singular-avx.lo: singular-avx.c /usr/include/stdc-predef.h \
  /usr/include/glib-2.0/glib/deprecated/gthread.h /usr/include/pthread.h \
  /usr/include/sched.h /usr/include/bits/sched.h \
  /usr/include/bits/setjmp.h \
- /usr/include/glib-2.0/glib/glib-autocleanups.h sqt.h ../config.h \
- sqt-private.h
+ /usr/include/glib-2.0/glib/glib-autocleanups.h \
+ /home/michael/Codes/include/blaswrap.h sqt.h ../config.h sqt-private.h
 
 /usr/include/stdc-predef.h:
 
@@ -398,6 +398,8 @@ singular-avx.lo: singular-avx.c /usr/include/stdc-predef.h \
 /usr/include/bits/setjmp.h:
 
 /usr/include/glib-2.0/glib/glib-autocleanups.h:
+
+/home/michael/Codes/include/blaswrap.h:
 
 sqt.h:
 

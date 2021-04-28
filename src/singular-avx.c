@@ -21,6 +21,8 @@
 
 #include <glib.h>
 
+#include <blaswrap.h>
+
 #include <sqt.h>
 
 #include "config.h"
@@ -251,8 +253,8 @@ static gint triangle_quad_kw(
 */
   
 {
-  SQT_REAL r0, th0, r, th, *qr, *qt, rr, ti, M, sgn ;
-  SQT_REAL sb[8], tb[8], wb[8], C, S, zero[]={0,0} ;
+  SQT_REAL r0, th0, r, th, *qr, *qt, ti, M, sgn ;
+  SQT_REAL sb[64], tb[64], wb[64], C, S, zero[]={0,0} ;
   SQT_REAL Ac, As, Cd, Sd, tmp, c ;
   gint i, j, k, idx[] = {0, 1, 2, 0}, nqr, nqt, nstw, nstmax ;
 
@@ -260,31 +262,34 @@ static gint triangle_quad_kw(
   nqt = 3*(N+2) + 2 ;
   nqr = (N+1)/2 + 1 ;
 
-  nstw = 0 ; nstmax = 8 ;
-  c = d*M_PI/nqt/J0 ;
+  nstw = 0 ; nstmax = 64 ;
+  c = d*d*2.0*M_PI/nqt/J0 ;
   SQT_FUNCTION_NAME(legendre_quadrature_select)(N, &qr, &nqr) ;
   C = 1.0 ; S = 0.0 ;
   Cd = cos(2.0*M_PI/nqt) ; Sd = sin(2.0*M_PI/nqt) ; 
   for ( i = 0 ; i < nqt ; i ++ ) {
     Ac = A[0]*C + A[1]*S ;
     As = A[2]*C + A[3]*S ;
+    Ac *= d ; As *= d ;
     for ( j = 0 ; j < nqr ; j ++ ) {
-      rr = 0.5*d*(1.0 + qr[2*j+0]) ;
-      /*coordinates on unit triangle*/
-      sb[nstw] = s + rr*Ac ; 
-      tb[nstw] = t + rr*As ; 
-      wb[nstw] = rr*qr[2*j+1]*c ;
+      sb[nstw] = s + Ac*qr[2*j+0] ;
+      tb[nstw] = t + As*qr[2*j+0] ;
+      wb[nstw] = c*qr[2*j+1] ;
       nstw ++ ;
-      if ( nstw == nstmax ) {
-	triangle_quad_list_kw(func, data, ce, ne, Nk, A, sb, tb, wb, nstw,
-			      Iq, nqi, work) ;  
-	nstw = 0 ;
-      }
+    }
+
+    if ( nstw >= nstmax - nqr ) {
+      triangle_quad_list_kw(func, data, ce, ne, Nk, A, sb, tb, wb, nstw,
+			    Iq, nqi, work) ;
+      nstw = 0 ;
     }
     tmp = C ;
     C = C*Cd - S*Sd ;
     S = tmp*Sd + S*Cd ;
   }
+  triangle_quad_list_kw(func, data, ce, ne, Nk, A, sb, tb, wb, nstw,
+			    Iq, nqi, work) ;
+  nstw = 0 ;
 
   for ( k = 0 ; k < 3 ; k ++ ) {
     SQT_REAL S0 ;
@@ -294,7 +299,6 @@ static gint triangle_quad_kw(
     sgn = SIGN(th0) ; th0 = fabs(th0) ;
     S0 = sin(th0) ;
 
-    c = th0/J0 ;
     /*select th quadrature*/
     SQT_FUNCTION_NAME(angular_quadrature_select)(N, r0, th0, &qt, &nqt) ;
     for ( i = 0 ; i < nqt ; i ++ ) {
@@ -302,28 +306,21 @@ static gint triangle_quad_kw(
       C = cos(sgn*ti+th) ; S = sin(sgn*ti+th) ;
       Ac = A[0]*C + A[1]*S ;
       As = A[2]*C + A[3]*S ;
+      c = th0/J0*qt[2*i+1] ;
       /*radial limit and quadrature selection*/
       M = r*r0*S0/(r0*sin(th0-ti) + sin(ti)) ;
       SQT_FUNCTION_NAME(radial_quadrature_select)(N, d/M, &qr, &nqr) ;
+      M -= d ;
       for ( j = 0 ; j < nqr ; j ++ ) {
-      	rr = d + (M-d)*qr[2*j+0] ;
-
-	sb[nstw] = s + rr*Ac ; 
-	tb[nstw] = t + rr*As ; 
-	wb[nstw] = (M-d)*qr[2*j+1]*qt[2*i+1]*rr*c ;
-	nstw ++ ;
-	if ( nstw == nstmax ) {
-	  triangle_quad_list_kw(func, data, ce, ne, Nk, A, sb, tb, wb, nstw,
-				Iq, nqi, work) ;
-  
-	  nstw = 0 ;
-	}
+	sb[j] = d + M*qr[2*j+0] ;
+	tb[j] = t + sb[j]*As ; 
+	wb[j] = M*qr[2*j+1]*sb[j]*c ;
+	sb[j] = s + sb[j]*Ac ;
       }
+      triangle_quad_list_kw(func, data, ce, ne, Nk, A, sb, tb, wb, nqr,
+			    Iq, nqi, work) ;  
     }
   }
-
-  triangle_quad_list_kw(func, data, ce, ne, Nk, A, sb, tb, wb, nstw,
-  			Iq, nqi, work) ;
   
   return 0 ;
 }

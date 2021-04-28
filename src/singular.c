@@ -228,13 +228,16 @@ static gint triangle_quad(
     Ac = A[0]*C + A[1]*S ;
     As = A[2]*C + A[3]*S ;
     for ( j = 0 ; j < nqr ; j ++ ) {
-      rr = 0.5*d*(1.0 + qr[2*j+0]) ;
+      /* rr = 0.5*d*(1.0 + qr[2*j+0]) ; */
+      rr = d*qr[2*j+0] ;
       /*coordinates on unit triangle*/
       s1 = s + rr*Ac ; t1 = t + rr*As ;
       /*map to physical triangle*/
       SQT_FUNCTION_NAME(sqt_element_point_3d)(xt, xstr, nt, s1, t1, y, n, &J) ;
       /*quadrature weight*/
-      wt = J/J0*rr*qr[2*j+1]*0.5*d*2.0*M_PI/nqt ;
+      /* wt = J/J0*rr*qr[2*j+1]*0.5*d*2.0*M_PI/nqt ; */
+      /* wt = J/J0*rr*qr[2*j+1]*d*2.0*M_PI/nqt ; */
+      wt = J/J0*d*qr[2*j+1]*d*2.0*M_PI/nqt ;
       func(s1, t1, wt, y, n, NULL, 0, Iq, nqi, 0, data) ;
     }
   }
@@ -429,7 +432,7 @@ static gint triangle_quad_kw(
   nqt = 3*(N+2) + 2 ;
   nqr = (N+1)/2 + 1 ;
 
-  c = d*M_PI/nqt/J0 ;
+  c = d*2.0*M_PI/nqt/J0 ;
   SQT_FUNCTION_NAME(legendre_quadrature_select)(N, &qr, &nqr) ;
   C = 1.0 ; S = 0.0 ;
   Cd = cos(2.0*M_PI/nqt) ; Sd = sin(2.0*M_PI/nqt) ; 
@@ -437,14 +440,16 @@ static gint triangle_quad_kw(
     Ac = A[0]*C + A[1]*S ;
     As = A[2]*C + A[3]*S ;
     for ( j = 0 ; j < nqr ; j ++ ) {
-      rr = 0.5*d*(1.0 + qr[2*j+0]) ;
+      /* rr = 0.5*d*(1.0 + qr[2*j+0]) ; */
+      rr = d*qr[2*j+0] ;
       /*coordinates on unit triangle*/
       s1 = s + rr*Ac ; t1 = t + rr*As ;
       /*map to physical triangle*/
       SQT_FUNCTION_NAME(sqt_element_interp)(ce, ne, Nk, s1, t1, y, n, &J,
 					    NULL, work) ;
       /*quadrature weight*/
-      wt = J*rr*qr[2*j+1]*c ;
+      /* wt = J*rr*qr[2*j+1]*c ; */
+      wt = J*d*qr[2*j+1]*c ;
       func(s1, t1, wt, y, n, work, ne, Iq, nqi, 0, data) ;
     }
     tmp = C ;
