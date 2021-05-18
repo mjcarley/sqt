@@ -196,23 +196,25 @@ gint SQT_FUNCTION_NAME(sqt_koornwinder_nm)(gint N, SQT_REAL u, SQT_REAL v,
   
 {
   gint m ;
-  SQT_REAL x, tmp, w, Pm, Pmm1 ;
+  SQT_REAL tmp, w, Pm, Pmm1 ;
   
   w = 1.0 - 2.0*v ;
-  x = (2.0*u + v - 1.0)/(1.0 - v) ;
+  /* x = (2.0*u + v - 1.0)/(1.0 - v) ; */
 
   m = 0 ;
   Pm = 1.0 ;
   koornwinder_recursion(N, m, Pm, w, Knm, str, nst) ;
 
   m = 1 ;
-  Pmm1 = Pm ; Pm = (1.0 - v)*x ;
+  /* Pmm1 = Pm ; Pm = (1.0 - v)*x ; */
+  Pmm1 = Pm ; Pm = (2.0*u + v - 1.0) ;
   koornwinder_recursion(N, m, Pm, w, Knm, str, nst) ;
 
   /*recursive generation of Legendre polynomials and Jacobi recursion*/
   for ( m = 2 ; m <= N ; m ++ ) {
     tmp = Pm ;
-    Pm = (1.0-v)*((2.0*m-1)*x*Pm - (1.0-v)*(m-1)*Pmm1)/m ;
+    /* Pm = (1.0-v)*((2.0*m-1)*x*Pm - (1.0-v)*(m-1)*Pmm1)/m ; */
+    Pm = ((2.0*m-1)*(2.0*u + v - 1.0)*Pm - (1.0-v)*(1.0-v)*(m-1)*Pmm1)/m ;
     Pmm1 = tmp ;
     koornwinder_recursion(N, m, Pm, w, Knm, str, nst) ;
   }  

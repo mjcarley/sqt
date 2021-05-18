@@ -116,46 +116,6 @@ do {						\
    ((SQT_A)[1]-(SQT_B)[1])*((SQT_C)[1]) +				\
    ((SQT_A)[2]-(SQT_B)[2])*((SQT_C)[2]))
 
-#define sqt_triangle_divide_loop30(_fe,_fl)				\
-  {									\
-    sqt_point_copy((_fl), 0, (_fe), 0) ;				\
-    sqt_point_interp3((_fl), 1, (_fe), 0.5, 0.5, 0.0) ;			\
-    sqt_point_interp3((_fl), 2, (_fe), 0.5, 0.0, 0.5) ;			\
-} while (0)
-
-#define sqt_triangle_divide_loop31(_fe,_fl)				\
-  {									\
-    sqt_point_copy((_fl), 1, (_fe), 1) ;				\
-    sqt_point_interp3((_fl), 0, (_fe), 0.5, 0.5, 0.0) ;			\
-    sqt_point_interp3((_fl), 2, (_fe), 0.0, 0.5, 0.5) ;			\
-} while (0)
-
-#define sqt_triangle_divide_loop32(_fe,_fl)				\
-  {									\
-    sqt_point_copy((_fl), 2, (_fe), 2) ;				\
-    sqt_point_interp3((_fl), 0, (_fe), 0.5, 0.0, 0.5) ;			\
-    sqt_point_interp3((_fl), 1, (_fe), 0.0, 0.5, 0.5) ;			\
-} while (0)
-
-#define sqt_triangle_divide_loop33(_fe,_fl)				\
-  {									\
-    sqt_point_interp3((_fl), 0, (_fe), 0.5, 0.5, 0.0) ;			\
-    sqt_point_interp3((_fl), 1, (_fe), 0.0, 0.5, 0.5) ;			\
-    sqt_point_interp3((_fl), 2, (_fe), 0.5, 0.0, 0.5) ;			\
-} while (0)
-
-#define sqt_point_copy(_fb,_i,_fe,_j)	\
-  do {							\
-    (_fb)[2*(_j)+0] = (_fe)[2*(_i)+0] ;			\
-    (_fb)[2*(_j)+1] = (_fe)[2*(_i)+1] ;			\
-  } while ( 0 ) 
-
-#define sqt_point_interp3(_fb,_i,_fe,_L0,_L1,_L2)			\
-  do  {									\
-  (_fb)[2*(_i)+0] = (_L0)*(_fe)[0] + (_L1)*(_fe)[2] + (_L2)*(_fe)[4] ;	\
-  (_fb)[2*(_i)+1] = (_L0)*(_fe)[1] + (_L1)*(_fe)[3] + (_L2)*(_fe)[5] ;	\
-} while (0)
-
 #define sqt_point_interp_jac3(_xe,_xstr,_L0,_L1,_L2,			\
 			      _Ls0,_Ls1,_Ls2,_Lt0,_Lt1,_Lt2,_y,_n,_J)	\
   {									\
