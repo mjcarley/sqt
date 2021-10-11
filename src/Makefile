@@ -141,8 +141,8 @@ am_libsqt_la_OBJECTS = sqt.lo newman.lo wandzura.lo xiao.lo \
 	wandzura-f.lo xiao-f.lo util.lo location.lo koornwinder.lo \
 	koornwinder-avx.lo adapt.lo basic.lo singular.lo \
 	singular-avx.lo angular-rules.lo radial-rules.lo \
-	legendre-rules.lo laplace.lo interp.lo geometries.lo \
-	patches.lo cached.lo
+	legendre-rules.lo laplace.lo helmholtz.lo interp.lo \
+	geometries.lo patches.lo cached.lo
 libsqt_la_OBJECTS = $(am_libsqt_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
@@ -158,9 +158,9 @@ am_libsub_la_OBJECTS = libsub_la-sqt.lo libsub_la-util.lo \
 	libsub_la-basic.lo libsub_la-singular.lo \
 	libsub_la-singular-avx.lo libsub_la-angular-rules-f.lo \
 	libsub_la-radial-rules-f.lo libsub_la-legendre-rules-f.lo \
-	libsub_la-laplace.lo libsub_la-interp.lo \
-	libsub_la-geometries.lo libsub_la-patches.lo \
-	libsub_la-cached.lo
+	libsub_la-laplace.lo libsub_la-helmholtz.lo \
+	libsub_la-interp.lo libsub_la-geometries.lo \
+	libsub_la-patches.lo libsub_la-cached.lo
 libsub_la_OBJECTS = $(am_libsub_la_OBJECTS)
 libsub_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(libsub_la_CFLAGS) \
@@ -241,7 +241,7 @@ AWK = gawk
 BLAS_LIBS = -lblas
 CC = gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -g -O2 -Wall -Werror-implicit-function-declaration -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -fopenmp  -mavx -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include
+CFLAGS = -O0 -g -Wall -Werror-implicit-function-declaration -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -fopenmp  -mavx -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include
 CPP = gcc -E
 CPPFLAGS = 
 CYGPATH_W = echo
@@ -306,7 +306,7 @@ PACKAGE_VERSION = 0.1
 PATH_SEPARATOR = :
 PKG_CONFIG = /usr/bin/pkg-config
 PKG_CONFIG_LIBDIR = 
-PKG_CONFIG_PATH = /usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig:/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig
+PKG_CONFIG_PATH = /usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig
 RANLIB = ranlib
 SED = /usr/bin/sed
 SET_MAKE = 
@@ -373,7 +373,7 @@ top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
 AM_CPPFLAGS = -I$(top_srcdir) -I$(includedir) -DG_LOG_DOMAIN=\"SQT\" \
-	-DSQT_COMPILER_FLAGS="\"-g -O2 -Wall -Werror-implicit-function-declaration -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -fopenmp  -mavx -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include\""
+	-DSQT_COMPILER_FLAGS="\"-O0 -g -Wall -Werror-implicit-function-declaration -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -fopenmp  -mavx -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include\""
 
 bin_SCRIPTS = sqt-config
 BUILT_SOURCES = \
@@ -404,6 +404,7 @@ libsqt_la_SOURCES = \
 	radial-rules.c \
 	legendre-rules.c \
 	laplace.c \
+	helmholtz.c \
 	interp.c \
 	geometries.c \
 	patches.c \
@@ -425,6 +426,7 @@ libsub_la_SOURCES = \
 	radial-rules-f.c \
 	legendre-rules-f.c \
 	laplace.c \
+	helmholtz.c \
 	interp.c \
 	geometries.c \
 	patches.c \
@@ -570,6 +572,7 @@ include ./$(DEPDIR)/angular-rules.Plo
 include ./$(DEPDIR)/basic.Plo
 include ./$(DEPDIR)/cached.Plo
 include ./$(DEPDIR)/geometries.Plo
+include ./$(DEPDIR)/helmholtz.Plo
 include ./$(DEPDIR)/interp.Plo
 include ./$(DEPDIR)/koornwinder-avx.Plo
 include ./$(DEPDIR)/koornwinder.Plo
@@ -580,6 +583,7 @@ include ./$(DEPDIR)/libsub_la-angular-rules-f.Plo
 include ./$(DEPDIR)/libsub_la-basic.Plo
 include ./$(DEPDIR)/libsub_la-cached.Plo
 include ./$(DEPDIR)/libsub_la-geometries.Plo
+include ./$(DEPDIR)/libsub_la-helmholtz.Plo
 include ./$(DEPDIR)/libsub_la-interp.Plo
 include ./$(DEPDIR)/libsub_la-koornwinder-avx.Plo
 include ./$(DEPDIR)/libsub_la-koornwinder.Plo
@@ -719,6 +723,13 @@ libsub_la-laplace.lo: laplace.c
 #	$(AM_V_CC)source='laplace.c' object='libsub_la-laplace.lo' libtool=yes \
 #	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
 #	$(AM_V_CC_no)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsub_la_CFLAGS) $(CFLAGS) -c -o libsub_la-laplace.lo `test -f 'laplace.c' || echo '$(srcdir)/'`laplace.c
+
+libsub_la-helmholtz.lo: helmholtz.c
+	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsub_la_CFLAGS) $(CFLAGS) -MT libsub_la-helmholtz.lo -MD -MP -MF $(DEPDIR)/libsub_la-helmholtz.Tpo -c -o libsub_la-helmholtz.lo `test -f 'helmholtz.c' || echo '$(srcdir)/'`helmholtz.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/libsub_la-helmholtz.Tpo $(DEPDIR)/libsub_la-helmholtz.Plo
+#	$(AM_V_CC)source='helmholtz.c' object='libsub_la-helmholtz.lo' libtool=yes \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsub_la_CFLAGS) $(CFLAGS) -c -o libsub_la-helmholtz.lo `test -f 'helmholtz.c' || echo '$(srcdir)/'`helmholtz.c
 
 libsub_la-interp.lo: interp.c
 	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsub_la_CFLAGS) $(CFLAGS) -MT libsub_la-interp.lo -MD -MP -MF $(DEPDIR)/libsub_la-interp.Tpo -c -o libsub_la-interp.lo `test -f 'interp.c' || echo '$(srcdir)/'`interp.c

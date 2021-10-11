@@ -36,6 +36,7 @@ libsqt_la_SOURCES = \
 	radial-rules.c \
 	legendre-rules.c \
 	laplace.c \
+	helmholtz.c \
 	interp.c \
 	geometries.c \
 	patches.c \
@@ -68,6 +69,7 @@ libsub_la_SOURCES = \
 	radial-rules-f.c \
 	legendre-rules-f.c \
 	laplace.c \
+	helmholtz.c \
 	interp.c \
 	geometries.c \
 	patches.c \

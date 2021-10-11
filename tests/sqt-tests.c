@@ -47,6 +47,7 @@ gchar *tests[] = {"closest_point",
 		  "koornwinder_vector",
 		  "koornwinder_deriv_vector",
 		  "element_interpolation_vector",
+		  "spherical_helmholtz"
 		  ""} ;
 
 GTimer *timer ;
@@ -389,6 +390,7 @@ static gint element_interpolation_test(gint N, gint nq)
 
 static gint spherical_quad_func(gdouble s, gdouble t, gdouble w,
 				gdouble *y, gdouble *n,
+				gdouble *K, gint nk,
 				gdouble *quad, gint nq, gint init,
 				gpointer data[])
 {
@@ -485,6 +487,132 @@ static gint spherical_patch_test(gint N, gint nq, gint depth, gdouble tol)
   fprintf(stderr, "\n") ;
 
   spherical_test_func(th0, th1, ph0, ph1, rho, nc, qref) ;
+  fprintf(stderr, "ref:     ") ;
+  for ( i = 0 ; i < nc ; i ++ )
+    fprintf(stderr, " %lg", qref[i]) ;
+  fprintf(stderr, "\n") ;
+
+  fprintf(stderr, "err 1: ") ;
+  for ( i = 0 ; i < nc ; i ++ )
+    fprintf(stderr, " %lg", fabs(qref[i] - quad[i])) ;
+  fprintf(stderr, "\n") ;
+
+  fprintf(stderr, "err 2: ") ;
+  for ( i = 0 ; i < nc ; i ++ )
+    fprintf(stderr, " %lg", fabs(qref[i] - qwt[i])) ;
+  fprintf(stderr, "\n") ;
+
+  return 0 ;
+}
+
+static gint spherical_test_helmholtz_func(gdouble th0, gdouble th1,
+					  gdouble ph0, gdouble ph1,
+					  gdouble rho,
+					  gdouble k,
+					  gint nc,
+					  gdouble *quad)
+
+{
+  gdouble a, gm, sc ;
+
+  sc = 0.25*M_1_PI ;
+  gm = (ph1*th1 - ph0*th0)/(th1 - th0) ;
+  a = (ph1 - ph0)/(th1 - th0) ;
+
+  quad[0] = (sin(gm - a*th1) - sin(gm - a*th0))/a
+    + cos(ph0)*(th1 - th0) ;
+  quad[0] *= sc*rho*rho/rho ;
+  quad[1] = quad[0]*sin(k*rho) ;
+  quad[0] *= cos(k*rho) ;
+  /* quad[1]  = quad[0]/rho ; */
+  
+  return 0 ;
+}
+
+static gint spherical_quad_helmholtz_func(gdouble s, gdouble t, gdouble w,
+					  gdouble *y, gdouble *n,
+					  gdouble *K, gint nk,
+					  gdouble *quad, gint nq, gint init,
+					  gpointer data[])
+{
+  gdouble R ;
+  gdouble *x = data[0] ;
+  gdouble k = *((gdouble *)data[1]) ;
+  
+  R = sqt_vector_distance(x, y) ;
+
+  quad[0] += w/R*0.25*M_1_PI*cos(k*R) ;
+  quad[1] += w/R*0.25*M_1_PI*sin(k*R) ;
+  /* quad[1] += w/R/R*0.25*M_1_PI ; */
+  
+  return 0 ;
+}
+
+static gint spherical_patch_helmholtz_test(gdouble k, gint N, gint nq,
+					   gint depth, gdouble tol)
+
+{
+  gint order, i, i3 = 3, i1 = 1, i2 = 2, xstr, nqk, nc, Nk ;
+  gdouble K[454*175], *q, *qk, al, bt ;
+  gdouble xi[175*4], ci[175*3], x[3], wt[175*4], src[175*2] ;
+  gdouble th0, th1, ph0, ph1, rho, quad[1024], qref[1024], qwt[1024] ;
+  gdouble *work ;
+  sqt_quadrature_func_t func =
+    (sqt_quadrature_func_t)spherical_quad_helmholtz_func ;
+  gpointer data[8] ;
+  
+  fprintf(stderr, "Helmholtz spherical patch test\n") ;
+  fprintf(stderr, "==============================\n") ;
+  fprintf(stderr, "nq = %d\n", nq) ;
+  fprintf(stderr, "k  = %lg\n", k) ;
+
+  nqk = 175 ; nc = 2 ; xstr = 4 ;
+  
+  sqt_quadrature_select(nqk, &qk, &order) ;
+  sqt_quadrature_select(nq, &q, &order) ;
+
+  Nk = sqt_koornwinder_interp_matrix(&(qk[0]), 3, &(qk[1]), 3, &(qk[2]), 3,
+				     nqk, K) ;
+
+  fprintf(stderr, "Knm N max: %d\n", Nk) ;
+
+  th0 = 0.4 ; th1 = 0.9 ;
+  ph0 = 0.3 ; ph1 = 0.7 ;
+  rho = 1.9 ;
+  x[0] = x[1] = x[2] = 0.0 ;
+  
+  sqt_patch_nodes_sphere(rho, th0, ph0, th1, ph0, th0, ph1,
+			 &(qk[0]), 3, &(qk[1]), 3, NULL, 1, nqk,
+			 xi, xstr, NULL, 1, NULL, 1) ;
+
+  al = 1.0 ; bt = 0.0 ;
+  blaswrap_dgemm(FALSE, FALSE, nqk, i3, nqk, al, K, nqk, xi, xstr, bt, ci, i3) ;
+
+  data[0] = x ; data[1] = &k ;
+  work = (gdouble *)g_malloc(4*2*nq*depth*sizeof(gdouble)) ;
+  sqt_adaptive_quad_kw(ci, nqk, Nk, q, nq, func, quad, nc, tol, depth,
+		       data, work) ;
+
+  /*integration using pre-computed weights*/
+  sqt_helmholtz_weights_kw_adaptive(ci, nqk, Nk, K, q, nq, tol, depth, k, x,
+				    wt, work) ;
+  
+  for ( i = 0 ; i < nqk ; i ++ ) {
+    src[2*i+0] = 1.0 ; src[2*i+1] = 0.0 ;
+  }
+  blaswrap_zdotu(qwt, nqk, &(wt[0  ]), i1, &(src[0]), i1) ;
+  
+  fprintf(stderr, "KW:      ") ;
+  for ( i = 0 ; i < nc ; i ++ )
+    fprintf(stderr, " %lg", quad[i]) ;
+  fprintf(stderr, "\n") ;
+
+  fprintf(stderr, "weights: ") ;
+  for ( i = 0 ; i < nc ; i ++ )
+    fprintf(stderr, " %lg", qwt[i]) ;
+  fprintf(stderr, "\n") ;
+
+  spherical_test_helmholtz_func(th0, th1, ph0, ph1, rho, k, nc, qref) ;
   fprintf(stderr, "ref:     ") ;
   for ( i = 0 ; i < nc ; i ++ )
     fprintf(stderr, " %lg", qref[i]) ;
@@ -1477,7 +1605,7 @@ static gint element_interpolation_vector_test(gint N, gint nq)
 gint main(gint argc, gchar **argv)
 
 {
-  gdouble xe[256], tol, rc, s0, t0, x0[3], umax, xt[256] ;
+  gdouble xe[256], tol, rc, s0, t0, x0[3], umax, xt[256], k ;
   gint ne, nte, nq, depth, N, nx, xstr, xtstr, test, i ;
   FILE *input ;
   gchar ch, *progname ;
@@ -1491,16 +1619,18 @@ gint main(gint argc, gchar **argv)
   depth = 8 ; tol = 1e-6 ; N = 8 ; nq = 54 ; rc = 0.05 ; nx = 33 ;
   umax = 0.1 ;
   s0 = t0 = G_MAXDOUBLE ;
+  k = 1.0 ;
   
   progname = g_strdup(g_path_get_basename(argv[0])) ;
 
   input = stdin ;
 
-  while ( (ch = getopt(argc, argv, "d:e:n:N:q:r:s:T:t:u:w:")) != EOF ) {
+  while ( (ch = getopt(argc, argv, "d:e:k:n:N:q:r:s:T:t:u:w:")) != EOF ) {
     switch (ch) {
     default: g_assert_not_reached() ; break ;
     case 'd': depth = atoi(optarg) ; break ;
     case 'e': tol   = atof(optarg) ; break ;
+    case 'k': k     = atof(optarg) ; break ;
     case 'n': nx    = atoi(optarg) ; break ;
     case 'N': N     = atoi(optarg) ; break ;
     case 'q': nq    = atoi(optarg) ; break ;
@@ -1583,6 +1713,12 @@ gint main(gint argc, gchar **argv)
   
   if ( test == 18 ) {
     element_interpolation_vector_test(N, nq) ;
+
+    return 0 ;
+  }
+
+  if ( test == 19 ) {
+    spherical_patch_helmholtz_test(k, N, nq, depth, tol) ;
 
     return 0 ;
   }
