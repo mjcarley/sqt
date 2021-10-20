@@ -786,37 +786,44 @@ SQT_FUNCTION_NAME(sqt_laplace_source_target_kw_self)(SQT_REAL *xe,
 #endif
 
 static gint helmholtz_quad_weights(SQT_REAL s, SQT_REAL t,
-				 SQT_REAL w,
-				 SQT_REAL *y, SQT_REAL *n,
-				 SQT_REAL *Knm, gint nk,
-				 SQT_REAL *quad, gint nc,
-				 gint init,
-				 gpointer data[])
+				   SQT_REAL w,
+				   SQT_REAL *y, SQT_REAL *n,
+				   SQT_REAL *Knm, gint nk,
+				   SQT_REAL *quad, gint nc,
+				   gint init,
+				   gpointer data[])
 
 {
   gint nq = *((gint *)(data[SQT_DATA_NKNM])) ;
   SQT_REAL *x  = data[SQT_DATA_TARGET] ;
   SQT_REAL *Kq  = data[SQT_DATA_MATRIX] ;
   SQT_REAL k = *((SQT_REAL *)data[SQT_DATA_WAVENUMBER]) ;
-  SQT_REAL R, G[2], dG[2], wt, d1 = 1.0 ;
+  SQT_REAL R, dR, G[2], dG[2], E[2], wt, d1 = 1.0 ;
   gint i1 = 1, i2 = 2 ;
 
   /*Koornwinder polynomials at evaluation point are in Knm*/
   R = sqt_vector_distance(x, y) ;
-
-  G[0] = 0.25*M_1_PI/R ;
-  G[1] = G[0]*sin(k*R) ;
-  G[0] *= cos(k*R) ;
+  dR = sqt_vector_diff_scalar(x, y, n)/R ;
+  E[0] = cos(k*R) ; E[1] = sin(k*R) ;
   
-  /* dG = sqt_vector_diff_scalar(x, y, n)/R/R*G ; */
+  G[0] = 0.25*M_1_PI/R ;
+  G[1] = G[0]*E[1] ;
+
+  dG[0] = -(E[0] + k*R*E[1])*G[0]*dR/R ;
+  dG[1] = -(E[1] - k*R*E[0])*G[0]*dR/R ;
+
+  G[0] *= E[0] ;
 
 #ifndef SQT_SINGLE_PRECISION
+  /*it should be possible to do this with one matrix multiplication*/
   wt = w*G[0] ;
   blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1, &(quad[   0]), i2) ;
   wt = w*G[1] ;
   blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1, &(quad[   1]), i2) ;
-  /* wt = w*dG ; */
-  /* blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1, &(quad[nc/2]), i1) ; */
+  wt = w*dG[0] ;
+  blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1, &(quad[   nc/2+0]), i2) ;
+  wt = w*dG[1] ;
+  blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1, &(quad[   nc/2+1]), i2) ;
 #else /*SQT_SINGLE_PRECISION*/
   g_assert_not_reached() ; /*untested code*/
   /* wt = w*G ; */

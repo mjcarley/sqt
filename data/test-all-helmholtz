@@ -1,0 +1,13 @@
+../tests/sqt-tests -T spherical_helmholtz -d 1 -k 1 -e 1e-16
+
+../tests/sqt-tests -s 0.5 -t 0.35 -T adaptive_helmholtz -r 0.0 \
+		   -N 6 -q 25 -d 5 -e 0 < planar.dat
+
+../tests/sqt-tests -s 0.5 -t 0.35 -T adaptive_helmholtz -r 0.0 \
+		   -N 6 -q 25 -d 5 -e 0 < planar-second.dat
+
+#../tests/sqt-tests -s 0.5 -t 0.35 -T normal -r 0.018 \
+#		   -N 16 -q 85 -d 7 -e 1e-9 < planar.dat
+
+#../tests/sqt-tests -s 0.5 -t 0.35 -T matrix_adaptive -r 0.018 \
+#		   -N 16 -q 85 -d 7 -e 1e-9 < planar-second.dat
