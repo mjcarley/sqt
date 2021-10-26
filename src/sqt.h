@@ -600,5 +600,23 @@ gint sqt_helmholtz_weights_kw_adaptive_f(gfloat *ce,
 					 gfloat *x,
 					 gfloat *w,
 					 gfloat *work) ;
+gint sqt_helmholtz_weights_kw_singular(gdouble *ce,
+				       gint ne, gint Nk,
+				       gdouble *Kq,
+				       gint N,
+				       gdouble k,
+				       gdouble s0,
+				       gdouble t0,
+				       gdouble *w,
+				       gdouble *work) ;
+gint sqt_helmholtz_weights_kw_singular_f(gfloat *ce,
+					 gint ne, gint Nk,
+					 gfloat *Kq,
+					 gint N,
+					 gfloat k,
+					 gfloat s0,
+					 gfloat t0,
+					 gfloat *w,
+					 gfloat *work) ;
 
 #endif /*SQT_H_INCLUDED*/

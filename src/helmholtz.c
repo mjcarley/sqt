@@ -330,48 +330,6 @@ gint SQT_FUNCTION_NAME(sqt_laplace_weights_tri_singular)(SQT_REAL *xe,
   return 0 ;
 }
 
-gint SQT_FUNCTION_NAME(sqt_laplace_weights_kw_singular)(SQT_REAL *ce,
-							gint ne, gint Nk,
-							SQT_REAL *Kq,
-							gint N,
-							SQT_REAL s0,
-							SQT_REAL t0,
-							SQT_REAL *w,
-							SQT_REAL *work)
-
-/*workspace size 3*ne + 12*ne*/
-
-{
-  /* SQT_REAL Knm[2048], x[3], n[3], J ; */
-  SQT_REAL x[3], n[3], J, *swork ;
-  gpointer data[SQT_DATA_WIDTH] ;
-
-  g_assert(work != NULL) ;
-  swork = &(work[3*ne]) ;
-  SQT_FUNCTION_NAME(sqt_element_interp)(ce, ne, Nk, s0, t0, x, n, &J,
-					NULL, work) ;
-  
-  data[SQT_DATA_TARGET]    = x ; 
-  data[SQT_DATA_MATRIX]    = Kq ;
-  data[SQT_DATA_KNM]       = work ;
-  data[SQT_DATA_NKNM]      = &ne ;
-  data[SQT_DATA_ORDER_K]   = &Nk ;
-  
-#ifdef SQT_SINGLE_PRECISION
-  sqt_quadrature_func_f_t func =
-    (sqt_quadrature_func_f_t)laplace_quad_weights ;
-#else /*SQT_SINGLE_PRECISION*/
-  sqt_quadrature_func_t func =
-    (sqt_quadrature_func_t)laplace_quad_weights ;
-#endif /*SQT_SINGLE_PRECISION*/
-
-  SQT_FUNCTION_NAME(sqt_singular_quad_kw_vector)(ce, ne, Nk, s0, t0, N, func,
-						 w, 2*ne, data, swork) ;
-  
-  return 0 ;
-}
-
-
 gint
 SQT_FUNCTION_NAME(sqt_laplace_source_target_tri_basic)(SQT_REAL *xse,
 						       gint xsstr, gint nse,
@@ -741,48 +699,6 @@ SQT_FUNCTION_NAME(sqt_laplace_source_target_tri_self)(SQT_REAL *xe,
   return 0 ;
 }
 
-gint
-SQT_FUNCTION_NAME(sqt_laplace_source_target_kw_self)(SQT_REAL *xe,
-						     gint xstr, gint ne,
-						     SQT_REAL *K,
-						     gint nK,
-						     gint N,
-						     SQT_REAL *s,
-						     gint sstr,
-						     SQT_REAL *t,
-						     gint tstr,
-						     SQT_REAL *Ast,
-						     SQT_REAL *work)
-
-/*workspace size: 3*ne + ne*/
-  
-{
-  gint i, i3 = 3 ;
-  SQT_REAL *ce, al, bt, *swork ;
-
-  ce = work ; swork = &(ce[3*ne]) ;
-  
-#ifndef SQT_SINGLE_PRECISION
-  /*element geometric interpolation coefficients*/
-  al = 1.0 ; bt = 0.0 ;
-  blaswrap_dgemm(FALSE, FALSE, ne, i3, ne, al, K, ne, xe, xstr, bt, ce, i3) ;
-#else
-  g_assert_not_reached() ; 
-  al = 1.0 ; bt = 0.0 ;
-  blaswrap_sgemm(FALSE, FALSE, ne, i3, ne, al, K, ne, xe, xstr, bt, ce, i3) ;
-#endif /*SQT_SINGLE_PRECISION*/
-
-  memset(Ast, 0, 2*ne*ne*sizeof(SQT_REAL)) ;
-  for ( i = 0 ; i < ne ; i ++ ) {
-    SQT_FUNCTION_NAME(sqt_laplace_weights_kw_singular)(ce, ne, nK, K, N,
-						       s[i*sstr],
-						       t[i*tstr],
-						       &(Ast[i*2*ne]),
-						       swork) ;
-  }
-  
-  return 0 ;
-}
 #endif
 
 static gint helmholtz_quad_weights(SQT_REAL s, SQT_REAL t,
@@ -809,8 +725,8 @@ static gint helmholtz_quad_weights(SQT_REAL s, SQT_REAL t,
   G[0] = 0.25*M_1_PI/R ;
   G[1] = G[0]*E[1] ;
 
-  dG[0] = -(E[0] + k*R*E[1])*G[0]*dR/R ;
-  dG[1] = -(E[1] - k*R*E[0])*G[0]*dR/R ;
+  dG[0] = (E[0] + k*R*E[1])*G[0]*dR/R ;
+  dG[1] = (E[1] - k*R*E[0])*G[0]*dR/R ;
 
   G[0] *= E[0] ;
 
@@ -820,10 +736,13 @@ static gint helmholtz_quad_weights(SQT_REAL s, SQT_REAL t,
   blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1, &(quad[   0]), i2) ;
   wt = w*G[1] ;
   blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1, &(quad[   1]), i2) ;
+  /*and this*/
   wt = w*dG[0] ;
-  blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1, &(quad[   nc/2+0]), i2) ;
+  blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1,
+		 &(quad[   nc/2+0]), i2) ;
   wt = w*dG[1] ;
-  blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1, &(quad[   nc/2+1]), i2) ;
+  blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1,
+		 &(quad[   nc/2+1]), i2) ;
 #else /*SQT_SINGLE_PRECISION*/
   g_assert_not_reached() ; /*untested code*/
   /* wt = w*G ; */
@@ -870,3 +789,93 @@ gint SQT_FUNCTION_NAME(sqt_helmholtz_weights_kw_adaptive)(SQT_REAL *ce,
   
   return 0 ;
 }
+
+gint SQT_FUNCTION_NAME(sqt_helmholtz_weights_kw_singular)(SQT_REAL *ce,
+							  gint ne, gint Nk,
+							  SQT_REAL *Kq,
+							  gint N,
+							  SQT_REAL k,
+							  SQT_REAL s0,
+							  SQT_REAL t0,
+							  SQT_REAL *w,
+							  SQT_REAL *work)
+
+/*workspace size 3*ne + 12*ne*/
+
+{
+  /* SQT_REAL Knm[2048], x[3], n[3], J ; */
+  SQT_REAL x[3], n[3], J, *swork ;
+  gpointer data[SQT_DATA_WIDTH] ;
+
+  g_assert(work != NULL) ;
+  swork = &(work[3*ne]) ;
+  SQT_FUNCTION_NAME(sqt_element_interp)(ce, ne, Nk, s0, t0, x, n, &J,
+					NULL, work) ;
+  
+  data[SQT_DATA_TARGET]     = x ; 
+  data[SQT_DATA_MATRIX]     = Kq ;
+  data[SQT_DATA_KNM]        = work ;
+  data[SQT_DATA_NKNM]       = &ne ;
+  data[SQT_DATA_ORDER_K]    = &Nk ;
+  data[SQT_DATA_WAVENUMBER] = &k ;
+  
+#ifdef SQT_SINGLE_PRECISION
+  sqt_quadrature_func_f_t func =
+    (sqt_quadrature_func_f_t)helmholtz_quad_weights ;
+#else /*SQT_SINGLE_PRECISION*/
+  sqt_quadrature_func_t func =
+    (sqt_quadrature_func_t)helmholtz_quad_weights ;
+#endif /*SQT_SINGLE_PRECISION*/
+
+  memset(w, 0, 4*ne*sizeof(SQT_REAL)) ;
+  SQT_FUNCTION_NAME(sqt_singular_quad_kw_vector)(ce, ne, Nk, s0, t0, N, func,
+						 w, 4*ne, data, swork) ;
+  
+  return 0 ;
+}
+
+#if 0
+gint
+SQT_FUNCTION_NAME(sqt_helmholtz_source_target_kw_self)(SQT_REAL *xe,
+						       gint xstr, gint ne,
+						       SQT_REAL *K,
+						       gint nK,
+						       gint N,
+						       SQT_REAL k,
+						       SQT_REAL *s,
+						       gint sstr,
+						       SQT_REAL *t,
+						       gint tstr,
+						       SQT_REAL *Ast,
+						       SQT_REAL *work)
+
+/*workspace size: 3*ne + ne*/
+  
+{
+  gint i, i3 = 3 ;
+  SQT_REAL *ce, al, bt, *swork ;
+
+  ce = work ; swork = &(ce[3*ne]) ;
+  
+#ifndef SQT_SINGLE_PRECISION
+  /*element geometric interpolation coefficients*/
+  al = 1.0 ; bt = 0.0 ;
+  blaswrap_dgemm(FALSE, FALSE, ne, i3, ne, al, K, ne, xe, xstr, bt, ce, i3) ;
+#else
+  g_assert_not_reached() ; 
+  al = 1.0 ; bt = 0.0 ;
+  blaswrap_sgemm(FALSE, FALSE, ne, i3, ne, al, K, ne, xe, xstr, bt, ce, i3) ;
+#endif /*SQT_SINGLE_PRECISION*/
+
+  memset(Ast, 0, 2*ne*ne*sizeof(SQT_REAL)) ;
+  for ( i = 0 ; i < ne ; i ++ ) {
+    SQT_FUNCTION_NAME(sqt_laplace_weights_kw_singular)(ce, ne, nK, K, N,
+						       s[i*sstr],
+						       t[i*tstr],
+						       &(Ast[i*2*ne]),
+						       swork) ;
+  }
+  
+  return 0 ;
+}
+#endif
