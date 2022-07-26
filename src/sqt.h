@@ -61,6 +61,19 @@ typedef gint (*sqt_quadrature_func_f_t)(gfloat s, gfloat t, gfloat w,
 					gfloat *quad, gint nc,
 					gint init,
 					gpointer data) ;
+typedef gint (*sqt_quadrature_vec_func_t)(gdouble *s, gdouble *t, gdouble *w,
+					  gdouble *y, gdouble *n, gint nst,
+					  gdouble *K, gint nk,
+					  gdouble *quad, gint nc,
+					  gint init,
+					  gpointer data) ;
+typedef gint (*sqt_quadrature_vec_func_f_t)(gfloat *s, gfloat *t, gfloat *w,
+					    gfloat *y, gfloat *n, gint nst,
+					    gfloat *K, gint nk,
+					    gfloat *quad, gint nc,
+					    gint init,
+					    gpointer data) ;
+
 gint sqt_cartesian_to_spherical(gdouble *x0, gdouble *x, gdouble *r,
 				gdouble *th, gdouble *ph) ;
 
@@ -181,6 +194,18 @@ gint sqt_adaptive_quad_kw_f(gfloat *ce, gint ne, gint Nk,
 			    gfloat *quad, gint nc,
 			    gfloat tol, gint dmax,
 			    gpointer data, gfloat *work) ;
+gint sqt_adaptive_quad_vec_kw(gdouble *ce, gint ne, gint Nk,
+			      gdouble *q, gint nq,
+			      sqt_quadrature_vec_func_t func,
+			      gdouble *quad, gint nc,
+			      gdouble tol, gint dmax,
+			      gpointer data, gdouble *work) ;
+gint sqt_adaptive_quad_vec_kw_f(gfloat *ce, gint ne, gint Nk,
+				gfloat *q, gint nq,
+				sqt_quadrature_vec_func_f_t func,
+				gfloat *quad, gint nc,
+				gfloat tol, gint dmax,
+				gpointer data, gfloat *work) ;
 
 gint sqt_cached_quad_kw(gdouble *ce, gint ne, gint Nk,
 			gdouble *q, gint nq,

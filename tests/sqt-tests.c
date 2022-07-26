@@ -28,28 +28,28 @@
 
 #include "sqt-private.h"
 
-gchar *tests[] = {"closest_point",
-		  "koornwinder",
-		  "koornwinder_orthogonality",
-		  "blas",
-		  "koornwinder_interpolation",
-		  "adaptive",
-		  "normal",
-		  "weights",
-		  "matrix_adaptive",
-		  "matrix_self",
-		  "element_interpolation",
-		  "spherical",
-		  "koornwinder_derivatives",
-		  "matrix_indexed",
-		  "cache",
-		  "upsample",
-		  "koornwinder_vector",
-		  "koornwinder_deriv_vector",
-		  "element_interpolation_vector",
-		  "spherical_helmholtz",
-		  "adaptive_helmholtz",
-		  "normal_helmholtz",
+gchar *tests[] = {"closest_point",              /* 0*/
+		  "koornwinder",                /* 1*/
+		  "koornwinder_orthogonality",  /* 2*/
+		  "blas",			/* 3*/
+		  "koornwinder_interpolation",  /* 4*/
+		  "adaptive",			/* 5*/
+		  "normal",                     /* 6*/
+		  "weights",			/* 7*/
+		  "matrix_adaptive",            /* 8*/
+		  "matrix_self",		/* 9*/
+		  "element_interpolation",      /* 0*/
+		  "spherical",			/*11*/
+		  "koornwinder_derivatives",	/*12*/
+		  "matrix_indexed",		/*13*/
+		  "cache",			/*14*/
+		  "upsample",			/*15*/
+		  "koornwinder_vector",		/*16*/
+		  "koornwinder_deriv_vector",	/*17*/
+		  "element_interpolation_vector"/*18*/,
+		  "spherical_helmholtz",	/*19*/
+		  "adaptive_helmholtz",         /*20*/
+		  "normal_helmholtz",           /*21*/
 		  ""} ;
 
 GTimer *timer ;
@@ -730,6 +730,39 @@ static gint adaptive_quad_func(gdouble s, gdouble t, gdouble w,
   return 0 ;
 }
 
+static gint adaptive_quad_vec_func(gdouble *s, gdouble *t, gdouble *w,
+				   gdouble *y, gdouble *n, gint nst,
+				   gdouble *K, gint nk,
+				   gdouble *quad, gint nq, gint init,
+				   gpointer data[])
+{
+  gdouble *x = data[0] ;
+  gdouble R[4], dR[4], L[32] ;
+  gint i, j ;
+
+  g_assert(nst < 5) ;
+  g_assert(nq == 6 || nq == 12) ;
+  g_assert(x != NULL) ;
+
+  for ( j = 0 ; j < nst ; j ++ ) {
+    R[j] = sqt_vector_distance(x, &(y[3*j])) ;
+
+    dR[j] = sqt_vector_diff_scalar(x, &(y[3*j]), &(n[3*j]))/R[j]/R[j] ;  
+    w[j] *= 0.25*M_1_PI/R[j] ;
+    SQT_FUNCTION_NAME(sqt_element_shape_3d)(nq/2, s[j], t[j], &(L[j*nq/2]),
+					    NULL, NULL, NULL, NULL, NULL) ;
+  }
+
+  for ( i = 0 ; i < nq/2 ; i ++ ) {
+    for ( j = 0 ; j < nst ; j ++ ) {
+      quad[     i] += w[j]*L[j*nq/2+i] ;
+      quad[nq/2+i] += w[j]*L[j*nq/2+i]*dR[j] ;
+    }
+  }
+
+  return 0 ;
+}
+
 static gint laplace_quad_func(gdouble s, gdouble t, gdouble w,
 			      gdouble *y, gdouble *n,
 			      SQT_REAL *K, gint nk,
@@ -770,11 +803,13 @@ static gint adaptive_quad_test(gdouble *xe, gint xstr, gint ne,
 			       gint nx)
 
 {
-  gdouble *q, f[512], g[512], *qref, qbas[512], qkw[512] ;
+  gdouble *q, f[512], g[512], *qref, qbas[512], qkw[512], qkv[512] ;
   gdouble xi[4096], ce[4096], K[453*453], al, bt, t ;
   gdouble *work ;
   gint oq, nc, i, nref, Nk, i3 = 3 ;
   sqt_quadrature_func_t func = (sqt_quadrature_func_t)adaptive_quad_func ;
+  sqt_quadrature_vec_func_t vfunc =
+    (sqt_quadrature_vec_func_t)adaptive_quad_vec_func ;
   gpointer data[4] ;
 
   nc = 2*ne ;
@@ -812,6 +847,8 @@ static gint adaptive_quad_test(gdouble *xe, gint xstr, gint ne,
   work = (gdouble *)g_malloc((4*nc*depth+4*3*nq)*sizeof(gdouble)) ;
   sqt_adaptive_quad_kw(ce, nq, Nk, q, nq, func, qkw, nc, tol, depth,
 		       data, work) ;
+  sqt_adaptive_quad_vec_kw(ce, nq, Nk, q, nq, vfunc, qkv, nc, tol, depth,
+			   data, work) ;
   
   for ( i = 0 ; i < 2*ne ; i ++ ) g[i] *= -1.0/4.0/M_PI ;
 
@@ -828,6 +865,9 @@ static gint adaptive_quad_test(gdouble *xe, gint xstr, gint ne,
   fprintf(stderr, "  KW   :   ") ;
   for ( i = 0 ; i < ne ; i ++ ) fprintf(stderr, " %lg", qkw[i]) ;
   fprintf(stderr, "\n") ;
+  fprintf(stderr, "  VKW  :   ") ;
+  for ( i = 0 ; i < ne ; i ++ ) fprintf(stderr, " %lg", qkv[i]) ;
+  fprintf(stderr, "\n") ;
   fprintf(stderr, "  error 1:") ;
   for ( i = 0 ; i < ne ; i ++ ) fprintf(stderr, " %lg", fabs(f[i]-g[i])) ;
   fprintf(stderr, "\n") ;
@@ -836,6 +876,9 @@ static gint adaptive_quad_test(gdouble *xe, gint xstr, gint ne,
   fprintf(stderr, "\n") ;
   fprintf(stderr, "  error 3:") ;
   for ( i = 0 ; i < ne ; i ++ ) fprintf(stderr, " %lg", fabs(f[i]-qkw[i])) ;
+  fprintf(stderr, "\n") ;
+  fprintf(stderr, "  error 4:") ;
+  for ( i = 0 ; i < ne ; i ++ ) fprintf(stderr, " %lg", fabs(f[i]-qkv[i])) ;
   fprintf(stderr, "\n") ;
   fprintf(stderr, "double layer\n") ;
   fprintf(stderr, "  adaptive:") ;
@@ -850,6 +893,9 @@ static gint adaptive_quad_test(gdouble *xe, gint xstr, gint ne,
   fprintf(stderr, "  KW   :   ") ;
   for ( i = 0 ; i < ne ; i ++ ) fprintf(stderr, " %lg", qkw[ne+i]) ;
   fprintf(stderr, "\n") ;
+  fprintf(stderr, "  KWV  :   ") ;
+  for ( i = 0 ; i < ne ; i ++ ) fprintf(stderr, " %lg", qkv[ne+i]) ;
+  fprintf(stderr, "\n") ;
   fprintf(stderr, "  error 1:") ;
   for ( i = 0 ; i < ne ; i ++ ) fprintf(stderr, " %lg",
 					fabs(f[ne+i]-g[ne+i])) ;
@@ -858,9 +904,13 @@ static gint adaptive_quad_test(gdouble *xe, gint xstr, gint ne,
   for ( i = 0 ; i < ne ; i ++ ) fprintf(stderr, " %lg",
 					fabs(f[ne+i]-qbas[ne+i])) ;
   fprintf(stderr, "\n") ;
-  fprintf(stderr, "  error 2:") ;
+  fprintf(stderr, "  error 3:") ;
   for ( i = 0 ; i < ne ; i ++ ) fprintf(stderr, " %lg",
 					fabs(f[ne+i]-qkw[ne+i])) ;
+  fprintf(stderr, "\n") ;
+  fprintf(stderr, "  error 4:") ;
+  for ( i = 0 ; i < ne ; i ++ ) fprintf(stderr, " %lg",
+					fabs(f[ne+i]-qkv[ne+i])) ;
   fprintf(stderr, "\n") ;
   
   return 0 ;

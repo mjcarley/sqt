@@ -558,11 +558,9 @@ static gint laplace_quad_matrix_indexed(SQT_REAL s, SQT_REAL t,
   SQT_REAL *x   = data[SQT_DATA_TARGET] ;
   SQT_REAL *Kq  = data[SQT_DATA_MATRIX] ;
   gint nse  = *((gint *)data[SQT_DATA_NKNM]) ;
-  /* gint Nk   = *((gint *)data[SQT_DATA_ORDER_K]) ; */
   gint xstr = *((gint *)data[SQT_DATA_STRIDE]) ;
   gint nx   = *((gint *)data[SQT_DATA_NUMBER]) ;
   gint *idx =           data[SQT_DATA_INDICES] ;
-  /* gint nq   = *((gint *)data[SQT_DATA_N_QUAD_POINTS]) ; */
   SQT_REAL G, d1 = 1.0, d0 = 0.0, r[3], *g ;
   gint i1 = 1, i, j, ns ;
   gint ncc, na ;
