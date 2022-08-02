@@ -1,4 +1,4 @@
-/* This file is part of SQT, a library for Quadrature By Expansion
+/* This file is part of SQT, a library for Singular Quadrature on Triangles
  *
  * Copyright (C) 2020 Michael Carley
  *
@@ -537,7 +537,8 @@ static gint spherical_test_helmholtz_func(gdouble th0, gdouble th1,
 static gint spherical_quad_helmholtz_func(gdouble s, gdouble t, gdouble w,
 					  gdouble *y, gdouble *n,
 					  gdouble *K, gint nk,
-					  gdouble *quad, gint nq, gint init,
+					  gdouble *quad, gint nq,
+					  gint init,
 					  gpointer data[])
 {
   gdouble R ;
@@ -803,7 +804,7 @@ static gint adaptive_quad_test(gdouble *xe, gint xstr, gint ne,
 			       gint nx)
 
 {
-  gdouble *q, f[512], g[512], *qref, qbas[512], qkw[512], qkv[512] ;
+  gdouble *q, f[512], g[512], *qref, qbas[512], qkw[512], qkv[512], qtr[512] ;
   gdouble xi[4096], ce[4096], K[453*453], al, bt, t ;
   gdouble *work ;
   gint oq, nc, i, nref, Nk, i3 = 3 ;
@@ -837,18 +838,20 @@ static gint adaptive_quad_test(gdouble *xe, gint xstr, gint ne,
   fprintf(stderr, "starting integration, t=%lg\n",
 	  t = g_timer_elapsed(timer, NULL)) ;  
   sqt_adaptive_quad_tri(xe, xstr, ne, q, nq, func,
-			f, nc, tol, depth, data) ;
+			f, nc, tol, depth+2, data) ;
   fprintf(stderr, "integration completed, t=%lg (%lg)\n",
 	  g_timer_elapsed(timer, NULL), g_timer_elapsed(timer,NULL) - t) ;
   newman_tri_shape(x, &(xe[xstr*0]), &(xe[xstr*1]), &(xe[xstr*2]), NULL, 0,
 		   &(g[0]), &(g[ne])) ;
   sqt_basic_quad_tri(xe, xstr, ne, qref, nref, func, qbas, nc, data) ;
 
-  work = (gdouble *)g_malloc((4*nc*depth+4*3*nq)*sizeof(gdouble)) ;
+  work = (gdouble *)g_malloc((4*(nc+6)*(depth+1)+4*3*nq)*sizeof(gdouble)) ;
   sqt_adaptive_quad_kw(ce, nq, Nk, q, nq, func, qkw, nc, tol, depth,
 		       data, work) ;
-  sqt_adaptive_quad_vec_kw(ce, nq, Nk, q, nq, vfunc, qkv, nc, tol, depth,
-			   data, work) ;
+  /* sqt_adaptive_quad_vec_kw(ce, nq, Nk, q, nq, vfunc, qkv, nc, tol, depth, */
+  /* 			   data, work) ; */
+  sqt_tree_quad_kw(ce, nq, Nk, q, nq, func, qtr, nc, tol, depth,
+		   data, work) ;
   
   for ( i = 0 ; i < 2*ne ; i ++ ) g[i] *= -1.0/4.0/M_PI ;
 
@@ -865,8 +868,8 @@ static gint adaptive_quad_test(gdouble *xe, gint xstr, gint ne,
   fprintf(stderr, "  KW   :   ") ;
   for ( i = 0 ; i < ne ; i ++ ) fprintf(stderr, " %lg", qkw[i]) ;
   fprintf(stderr, "\n") ;
-  fprintf(stderr, "  VKW  :   ") ;
-  for ( i = 0 ; i < ne ; i ++ ) fprintf(stderr, " %lg", qkv[i]) ;
+  fprintf(stderr, "  tree :   ") ;
+  for ( i = 0 ; i < ne ; i ++ ) fprintf(stderr, " %lg", qtr[i]) ;
   fprintf(stderr, "\n") ;
   fprintf(stderr, "  error 1:") ;
   for ( i = 0 ; i < ne ; i ++ ) fprintf(stderr, " %lg", fabs(f[i]-g[i])) ;
@@ -878,7 +881,7 @@ static gint adaptive_quad_test(gdouble *xe, gint xstr, gint ne,
   for ( i = 0 ; i < ne ; i ++ ) fprintf(stderr, " %lg", fabs(f[i]-qkw[i])) ;
   fprintf(stderr, "\n") ;
   fprintf(stderr, "  error 4:") ;
-  for ( i = 0 ; i < ne ; i ++ ) fprintf(stderr, " %lg", fabs(f[i]-qkv[i])) ;
+  for ( i = 0 ; i < ne ; i ++ ) fprintf(stderr, " %lg", fabs(f[i]-qtr[i])) ;
   fprintf(stderr, "\n") ;
   fprintf(stderr, "double layer\n") ;
   fprintf(stderr, "  adaptive:") ;
@@ -893,8 +896,8 @@ static gint adaptive_quad_test(gdouble *xe, gint xstr, gint ne,
   fprintf(stderr, "  KW   :   ") ;
   for ( i = 0 ; i < ne ; i ++ ) fprintf(stderr, " %lg", qkw[ne+i]) ;
   fprintf(stderr, "\n") ;
-  fprintf(stderr, "  KWV  :   ") ;
-  for ( i = 0 ; i < ne ; i ++ ) fprintf(stderr, " %lg", qkv[ne+i]) ;
+  fprintf(stderr, "  tree :   ") ;
+  for ( i = 0 ; i < ne ; i ++ ) fprintf(stderr, " %lg", qtr[ne+i]) ;
   fprintf(stderr, "\n") ;
   fprintf(stderr, "  error 1:") ;
   for ( i = 0 ; i < ne ; i ++ ) fprintf(stderr, " %lg",
@@ -910,7 +913,7 @@ static gint adaptive_quad_test(gdouble *xe, gint xstr, gint ne,
   fprintf(stderr, "\n") ;
   fprintf(stderr, "  error 4:") ;
   for ( i = 0 ; i < ne ; i ++ ) fprintf(stderr, " %lg",
-					fabs(f[ne+i]-qkv[ne+i])) ;
+					fabs(f[ne+i]-qtr[ne+i])) ;
   fprintf(stderr, "\n") ;
   
   return 0 ;
@@ -919,7 +922,8 @@ static gint adaptive_quad_test(gdouble *xe, gint xstr, gint ne,
 static gint adaptive_helmholtz_quad_func(gdouble s, gdouble t, gdouble w,
 					 gdouble *y, gdouble *n,
 					 gdouble *K, gint nk,
-					 gdouble *quad, gint nq, gint init,
+					 gdouble *quad, gint nq,
+					 gint init,
 					 gpointer data[])
 {
   gdouble *x = data[0] ;
@@ -1446,8 +1450,8 @@ static gint matrix_indexed_test(gdouble *xse, gint xsstr, gint nse,
 
   Ast  = (gdouble *)g_malloc(2*nqk*nqt*sizeof(gdouble)) ;
   
-  fprintf(stderr, "interaction matrix test\n") ;
-  fprintf(stderr, "=======================\n") ;
+  fprintf(stderr, "indexed interaction matrix test\n") ;
+  fprintf(stderr, "===============================\n") ;
   fprintf(stderr, "tol = %lg\n", tol) ;
   fprintf(stderr, "depth = %d\n", depth) ;
   fprintf(stderr, "nqs = %d\n", nqs) ;
@@ -1494,14 +1498,17 @@ static gint matrix_indexed_test(gdouble *xse, gint xsstr, gint nse,
   sqt_laplace_source_indexed_kw_adaptive(xp, pstr, nqk, qs, nqs, Kq, nK,
 					 tol, depth, xt, pstr, idx, ni,
 					 Asti, iwork) ;
+  
+  /* fprintf(stderr, "%lg\n", Asti[3]) ; */
+  
   fprintf(stderr, "indexed matrix generated, t=%lg\n",
 	  g_timer_elapsed(timer, NULL) - time) ;    
   sqt_laplace_source_indexed_kw_cached(xp, pstr, nqk, qs, nqs, Kq, nK,
-				       tol, depth, xt, pstr, idx, ni,
-				       icache, xcache, cstr,
-				       Astc, work) ;
+  				       tol, depth, xt, pstr, idx, ni,
+  				       icache, xcache, cstr,
+  				       Astc, work) ;
   fprintf(stderr, "indexed matrix generated (cached), t=%lg\n",
-	  g_timer_elapsed(timer, NULL) - time) ;    
+  	  g_timer_elapsed(timer, NULL) - time) ;
 
   err = erc = 0.0 ;
   for ( i = 0 ; i < ni ; i ++ ) {

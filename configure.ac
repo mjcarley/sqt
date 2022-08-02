@@ -105,7 +105,7 @@ else
       AC_MSG_ERROR([GLIB directory ($with_glib) not present or not configured])
     fi
 
-    # For use in wmpi-config
+    # For use in sqt-config
     glib_cflags=`$GLIB_CONFIG --cflags`
     glib_thread_cflags=`$GLIB_CONFIG --cflags gthread`
     glib_module_cflags=`$GLIB_CONFIG --cflags gmodule`

@@ -142,7 +142,7 @@ am_libsqt_la_OBJECTS = sqt.lo newman.lo wandzura.lo xiao.lo \
 	koornwinder-avx.lo adapt.lo basic.lo singular.lo \
 	singular-avx.lo angular-rules.lo radial-rules.lo \
 	legendre-rules.lo laplace.lo helmholtz.lo interp.lo \
-	geometries.lo patches.lo cached.lo
+	geometries.lo patches.lo cached.lo tree.lo
 libsqt_la_OBJECTS = $(am_libsqt_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
@@ -160,7 +160,7 @@ am_libsub_la_OBJECTS = libsub_la-sqt.lo libsub_la-util.lo \
 	libsub_la-radial-rules-f.lo libsub_la-legendre-rules-f.lo \
 	libsub_la-laplace.lo libsub_la-helmholtz.lo \
 	libsub_la-interp.lo libsub_la-geometries.lo \
-	libsub_la-patches.lo libsub_la-cached.lo
+	libsub_la-patches.lo libsub_la-cached.lo libsub_la-tree.lo
 libsub_la_OBJECTS = $(am_libsub_la_OBJECTS)
 libsub_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(libsub_la_CFLAGS) \
@@ -408,7 +408,8 @@ libsqt_la_SOURCES = \
 	interp.c \
 	geometries.c \
 	patches.c \
-	cached.c
+	cached.c \
+	tree.c
 
 libsqt_la_LIBADD = libsub.la
 noinst_LTLIBRARIES = libsub.la
@@ -430,7 +431,8 @@ libsub_la_SOURCES = \
 	interp.c \
 	geometries.c \
 	patches.c \
-	cached.c
+	cached.c \
+	tree.c
 
 libsub_la_CFLAGS = -DSQT_SINGLE_PRECISION
 include_HEADERS = \
@@ -595,6 +597,7 @@ include ./$(DEPDIR)/libsub_la-radial-rules-f.Plo
 include ./$(DEPDIR)/libsub_la-singular-avx.Plo
 include ./$(DEPDIR)/libsub_la-singular.Plo
 include ./$(DEPDIR)/libsub_la-sqt.Plo
+include ./$(DEPDIR)/libsub_la-tree.Plo
 include ./$(DEPDIR)/libsub_la-util.Plo
 include ./$(DEPDIR)/location.Plo
 include ./$(DEPDIR)/newman.Plo
@@ -603,6 +606,7 @@ include ./$(DEPDIR)/radial-rules.Plo
 include ./$(DEPDIR)/singular-avx.Plo
 include ./$(DEPDIR)/singular.Plo
 include ./$(DEPDIR)/sqt.Plo
+include ./$(DEPDIR)/tree.Plo
 include ./$(DEPDIR)/util.Plo
 include ./$(DEPDIR)/wandzura-f.Plo
 include ./$(DEPDIR)/wandzura.Plo
@@ -758,6 +762,13 @@ libsub_la-cached.lo: cached.c
 #	$(AM_V_CC)source='cached.c' object='libsub_la-cached.lo' libtool=yes \
 #	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
 #	$(AM_V_CC_no)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsub_la_CFLAGS) $(CFLAGS) -c -o libsub_la-cached.lo `test -f 'cached.c' || echo '$(srcdir)/'`cached.c
+
+libsub_la-tree.lo: tree.c
+	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsub_la_CFLAGS) $(CFLAGS) -MT libsub_la-tree.lo -MD -MP -MF $(DEPDIR)/libsub_la-tree.Tpo -c -o libsub_la-tree.lo `test -f 'tree.c' || echo '$(srcdir)/'`tree.c
+	$(AM_V_at)$(am__mv) $(DEPDIR)/libsub_la-tree.Tpo $(DEPDIR)/libsub_la-tree.Plo
+#	$(AM_V_CC)source='tree.c' object='libsub_la-tree.lo' libtool=yes \
+#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+#	$(AM_V_CC_no)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libsub_la_CFLAGS) $(CFLAGS) -c -o libsub_la-tree.lo `test -f 'tree.c' || echo '$(srcdir)/'`tree.c
 
 mostlyclean-libtool:
 	-rm -f *.lo

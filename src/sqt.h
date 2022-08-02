@@ -37,7 +37,17 @@
     sqt_point_interp3((_fl), 2, (_fe), 0.5, 0.0, 0.5) ;			\
 } while (0)
 
-#define sqt_point_copy(_fb,_i,_fe,_j)	\
+#define sqt_triangle_divide_loop(_i,_fe,_fl)		 \
+  {							 \
+   switch ((_i)) {					 \
+   case 0: sqt_triangle_divide_loop30(_fe,_fl) ; break ; \
+   case 1: sqt_triangle_divide_loop31(_fe,_fl) ; break ; \
+   case 2: sqt_triangle_divide_loop32(_fe,_fl) ; break ; \
+   case 3: sqt_triangle_divide_loop33(_fe,_fl) ; break ; \
+   }							 \
+  } while(0)
+
+#define sqt_point_copy(_fb,_i,_fe,_j)			\
   do {							\
     (_fb)[2*(_j)+0] = (_fe)[2*(_i)+0] ;			\
     (_fb)[2*(_j)+1] = (_fe)[2*(_i)+1] ;			\
@@ -53,7 +63,7 @@ typedef gint (*sqt_quadrature_func_t)(gdouble s, gdouble t, gdouble w,
 				      gdouble *y, gdouble *n,
 				      gdouble *K, gint nk,
 				      gdouble *quad, gint nc,
-				      gint init,
+				      gint init, 
 				      gpointer data) ;
 typedef gint (*sqt_quadrature_func_f_t)(gfloat s, gfloat t, gfloat w,
 					gfloat *y, gfloat *n,
@@ -643,5 +653,18 @@ gint sqt_helmholtz_weights_kw_singular_f(gfloat *ce,
 					 gfloat t0,
 					 gfloat *w,
 					 gfloat *work) ;
+
+gint sqt_tree_quad_kw(gdouble *ce, gint ne, gint Nk,
+		      gdouble *q, gint nq,
+		      sqt_quadrature_func_t func,
+		      gdouble *quad, gint nc,
+		      gdouble tol, gint dmax,
+		      gpointer data, gdouble *work) ;
+gint sqt_tree_quad_kw_f(gfloat *ce, gint ne, gint Nk,
+			gfloat *q, gint nq,
+			sqt_quadrature_func_f_t func,
+			gfloat *quad, gint nc,
+			gfloat tol, gint dmax,
+			gpointer data, gfloat *work) ;
 
 #endif /*SQT_H_INCLUDED*/

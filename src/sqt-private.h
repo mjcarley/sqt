@@ -37,6 +37,7 @@
 #define SQT_DATA_KNM_CACHE     12
 #define SQT_DATA_N_QUAD_POINTS 13
 #define SQT_DATA_WAVENUMBER    14
+#define SQT_DATA_WORK          15
 
 #ifdef SQT_SINGLE_PRECISION
 
@@ -72,6 +73,8 @@
 
 #endif /*SQT_SINGLE_PRECISION*/
 
+#define sqt_fourpow(_i) (1 << (2*(_i)))
+#define sqt_twopow(_i) (1 << (_i))
 #define SIGN(SQT_x) ((SQT_x) < 0 ? -1 : 1)
 
 #define sqt_invert2x2(_Ai, _A)			\

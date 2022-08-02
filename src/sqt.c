@@ -199,7 +199,10 @@ gint SQT_FUNCTION_NAME(sqt_quadrature_select)(gint nq, SQT_REAL **q,
 {
 #ifdef SQT_SINGLE_PRECISION
   switch ( nq ) {
-  default: g_assert_not_reached() ; break ;
+  default:
+    g_error("%s: %d point quadrature not available "
+	    "(available rules are 7, 25, 54, 85, 126, 175, 453)",
+	    __FUNCTION__, nq) ;
   case   7: *q = WANDZURA_7_F   ; *order =  5 ; break ;
   case  25: *q = WANDZURA_25_F  ; *order = 10 ; break ;
   case  54: *q = WANDZURA_54_F  ; *order = 15 ; break ;
@@ -210,7 +213,11 @@ gint SQT_FUNCTION_NAME(sqt_quadrature_select)(gint nq, SQT_REAL **q,
   }
 #else /*SQT_SINGLE_PRECISION*/
   switch ( nq ) {
-  default: g_assert_not_reached() ; break ;
+  default:
+    g_error("%s: %d point quadrature not available "
+	    "(available rules are 7, 25, 54, 85, 126, 175, 453)",
+	    __FUNCTION__, nq) ;
+    break ;
   case   7: *q = WANDZURA_7   ; *order =  5 ; break ;
   case  25: *q = WANDZURA_25  ; *order = 10 ; break ;
   case  54: *q = WANDZURA_54  ; *order = 15 ; break ;

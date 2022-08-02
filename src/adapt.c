@@ -158,8 +158,11 @@ static void adaptive_quad_kw(SQT_REAL *ce, gint ne, gint Nk,
 {
   gint i, j, ns ;
   SQT_REAL s[4], t[4], w[4], J[4], y[12], n[12], si, ti ;
+  gboolean init ;
 
   ns = 4*(nq/4) ;
+  /* init = TRUE ; */
+  init = FALSE ;
   for ( i = 0 ; i < ns ; i += 4 ) {
     si = q[3*(i+0)+0] ; ti = q[3*(i+0)+1] ; w[0] = q[3*(i+0)+2] ;
     /*interpolating coordinates on unit triangle*/
@@ -186,13 +189,14 @@ static void adaptive_quad_kw(SQT_REAL *ce, gint ne, gint Nk,
 						 y, 3, n, 3, J, work) ;
 
     func(s[0], t[0], w[0]*J[0]*wt, &(y[3*0]), &(n[3*0]), &(work[3*ne*0]), ne,
-	 quad, nc, 0, data) ;
+	 quad, nc, init, data) ;
     func(s[1], t[1], w[1]*J[1]*wt, &(y[3*1]), &(n[3*1]), &(work[3*ne*1]), ne,
-	 quad, nc, 0, data) ;
+	 quad, nc, init, data) ;
     func(s[2], t[2], w[2]*J[2]*wt, &(y[3*2]), &(n[3*2]), &(work[3*ne*2]), ne,
-	 quad, nc, 0, data) ;
+	 quad, nc, init, data) ;
     func(s[3], t[3], w[3]*J[3]*wt, &(y[3*3]), &(n[3*3]), &(work[3*ne*3]), ne,
-	 quad, nc, 0, data) ;
+	 quad, nc, init, data) ;
+    init = FALSE ;
   }
 
   ns = nq % 4 ; i = nq - ns ;
@@ -225,12 +229,11 @@ static gint adaptive_quad_kw_recursion(SQT_REAL *ce, gint ne, gint Nk,
 				       SQT_REAL *work)
 
 {
-  gint i ;
+  gint i, i1 = 1 ;
   SQT_REAL *q0, *q1, *q2, *q3 ;
   SQT_REAL st0[6], st1[6], st2[6], st3[6] ;
   gboolean recurse ;
 
-  /* if ( dmax == 0 ) return 0 ; */
   if ( d == dmax ) return 0 ;
 
   memset(work, 0, 4*nc*sizeof(SQT_REAL)) ;
@@ -277,7 +280,7 @@ static gint adaptive_quad_kw_recursion(SQT_REAL *ce, gint ne, gint Nk,
   for ( i = 0 ; i < nc ; i ++ ) {
     quad[i] = q0[i] + q1[i] + q2[i] + q3[i] ;
   }
-
+  
   return 0 ;
 }
 
@@ -302,6 +305,7 @@ gint SQT_FUNCTION_NAME(sqt_adaptive_quad_kw)(SQT_REAL *ce, gint ne, gint Nk,
   offw = ne ;
   
   memset(quad, 0, nc*sizeof(SQT_REAL)) ;
+  memset(work, 0, 4*(dmax*nc+ne*3)*sizeof(SQT_REAL)) ;
   adaptive_quad_kw(ce, ne, Nk, st, 1.0, 0, 0, q, nq, func, quad, nc,
 		   work, data) ;
 
@@ -403,16 +407,16 @@ static gint adaptive_quad_vec_kw_recursion(SQT_REAL *ce, gint ne, gint Nk,
   
   sqt_triangle_divide_loop30(st, st0) ;
   adaptive_quad_vec_kw(ce, ne, Nk, st0, wt, 4*tri+0, d, q, nq, func, q0, nc,
-		   kwork, data) ;
+		       kwork, data) ;
   sqt_triangle_divide_loop31(st, st1) ;
   adaptive_quad_vec_kw(ce, ne, Nk, st1, wt, 4*tri+1, d, q, nq, func, q1, nc,
-		   kwork, data) ;
+		       kwork, data) ;
   sqt_triangle_divide_loop32(st, st2) ;
   adaptive_quad_vec_kw(ce, ne, Nk, st2, wt, 4*tri+2, d, q, nq, func, q2, nc,
-		   kwork, data) ;
+		       kwork, data) ;
   sqt_triangle_divide_loop33(st, st3) ;
   adaptive_quad_vec_kw(ce, ne, Nk, st3, wt, 4*tri+3, d, q, nq, func, q3, nc,
-		   kwork, data) ;
+		       kwork, data) ;
 
   recurse = FALSE ;
 
@@ -425,17 +429,17 @@ static gint adaptive_quad_vec_kw_recursion(SQT_REAL *ce, gint ne, gint Nk,
   if ( !recurse ) return 0 ;
 
   adaptive_quad_vec_kw_recursion(ce, ne, Nk, st0, wt, q, nq, func,
-			     q0, nc, tol, 4*tri+0, d+1, dmax, data, kwork,
-			     &(work[4*nc])) ;
+				 q0, nc, tol, 4*tri+0, d+1, dmax, data, kwork,
+				 &(work[4*nc])) ;
   adaptive_quad_vec_kw_recursion(ce, ne, Nk, st1, wt, q, nq, func,
-			     q1, nc, tol, 4*tri+1, d+1, dmax, data, kwork,
-			     &(work[4*nc])) ;
+				 q1, nc, tol, 4*tri+1, d+1, dmax, data, kwork,
+				 &(work[4*nc])) ;
   adaptive_quad_vec_kw_recursion(ce, ne, Nk, st2, wt, q, nq, func,
-			     q2, nc, tol, 4*tri+2, d+1, dmax, data, kwork,
-			     &(work[4*nc])) ;
+				 q2, nc, tol, 4*tri+2, d+1, dmax, data, kwork,
+				 &(work[4*nc])) ;
   adaptive_quad_vec_kw_recursion(ce, ne, Nk, st3, wt, q, nq, func,
-			     q3, nc, tol, 4*tri+3, d+1, dmax, data, kwork,
-			     &(work[4*nc])) ;
+				 q3, nc, tol, 4*tri+3, d+1, dmax, data, kwork,
+				 &(work[4*nc])) ;
 
   for ( i = 0 ; i < nc ; i ++ ) {
     quad[i] = q0[i] + q1[i] + q2[i] + q3[i] ;

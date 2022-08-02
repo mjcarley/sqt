@@ -216,7 +216,8 @@ static gint triangle_quad_list_kw(
   for ( j = 0 ; j < nst ; j ++ ) {
     SQT_FUNCTION_NAME(sqt_element_interp)(ce, ne, Nk, sb[i+j], tb[i+j],
 					  y, n, J, NULL, work) ;
-    func(sb[i+j], tb[i+j], wb[i+j]*J[0], y, n, work, ne, Iq, nqi, 0, data) ;    
+    func(sb[i+j], tb[i+j], wb[i+j]*J[0], y, n, work, ne,
+	 Iq, nqi, 0, data) ;    
   }
 
   return 0 ;
