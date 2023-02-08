@@ -614,6 +614,30 @@ gint sqt_patch_nodes_ellipsoid_f(gfloat a, gfloat b, gfloat c,
 				 gfloat *np, gint nstr,
 				 gfloat *wt, gint wtstr) ;
 
+gint sqt_helmholtz_weights_tri_singular(gdouble *xe, gint xstr, gint ne,
+					gdouble *Kq, gint nkq, gint nK,
+					gint N, gdouble k,
+					gdouble s0, gdouble t0,
+					gdouble *gint) ;
+gint sqt_helmholtz_weights_tri_singular_f(gfloat *xe, gint xstr, gint ne,
+					  gfloat *Kq, gint nkq, gint nK,
+					  gint N, gfloat k,
+					  gfloat s0, gfloat t0,
+					  gfloat *gint) ;
+gint sqt_helmholtz_weights_tri_adaptive(gdouble *xe, gint xstr, gint ne,
+					gdouble *q, gint nq,
+					gdouble *Kq, gint nkq, gint nK,
+					gdouble k,
+					gdouble tol, gint dmax,
+					gdouble *x,
+					gdouble *ws) ;
+gint sqt_helmholtz_weights_tri_adaptive_f(gfloat *xe, gint xstr, gint ne,
+					  gfloat *q, gint nq,
+					  gfloat *Kq, gint nkq, gint nK,
+					  gfloat k,
+					  gfloat tol, gint dmax,
+					  gfloat *x,
+					  gfloat *ws) ;
 
 gint sqt_helmholtz_weights_kw_adaptive(gdouble *ce,
 				       gint ne, gint Nk,

@@ -455,7 +455,6 @@ gint SQT_FUNCTION_NAME(sqt_laplace_matrix_kw_adaptive)(SQT_REAL *ce,
   return 0 ;
 }
 
-
 gint SQT_FUNCTION_NAME(sqt_laplace_weights_tri_singular)(SQT_REAL *xe,
 							 gint xstr, gint ne,
 							 SQT_REAL *Kq,

@@ -50,6 +50,7 @@ gchar *tests[] = {"closest_point",              /* 0*/
 		  "spherical_helmholtz",	/*19*/
 		  "adaptive_helmholtz",         /*20*/
 		  "normal_helmholtz",           /*21*/
+		  "weights_helmholtz",          /*22*/
 		  ""} ;
 
 GTimer *timer ;
@@ -919,12 +920,12 @@ static gint adaptive_quad_test(gdouble *xe, gint xstr, gint ne,
   return 0 ;
 }
 
-static gint adaptive_helmholtz_quad_func(gdouble s, gdouble t, gdouble w,
-					 gdouble *y, gdouble *n,
-					 gdouble *K, gint nk,
-					 gdouble *quad, gint nq,
-					 gint init,
-					 gpointer data[])
+static gint helmholtz_quad_func(gdouble s, gdouble t, gdouble w,
+				gdouble *y, gdouble *n,
+				gdouble *K, gint nk,
+				gdouble *quad, gint nq,
+				gint init,
+				gpointer data[])
 {
   gdouble *x = data[0] ;
   gdouble k = *((gdouble *)data[1]) ;
@@ -946,6 +947,8 @@ static gint adaptive_helmholtz_quad_func(gdouble s, gdouble t, gdouble w,
   for ( i = 0 ; i < nq/4 ; i ++ ) {
     quad[     2*i+0] += w*L[i]*E[0] ;
     quad[     2*i+1] += w*L[i]*E[1] ;
+    /* quad[     2*i+0] += w*E[0] ; */
+    /* quad[     2*i+1] += w*E[1] ; */
     quad[nq/2+2*i+0] += w*L[i]*dR*(E[0] + k*R*E[1]) ;
     quad[nq/2+2*i+1] += w*L[i]*dR*(E[1] - k*R*E[0]) ;
   }
@@ -966,7 +969,7 @@ static gint adaptive_quad_helmholtz_test(gdouble k,
   gdouble *work ;
   gint oq, nc, i, nref, Nk, i3 = 3 ;
   sqt_quadrature_func_t
-    func = (sqt_quadrature_func_t)adaptive_helmholtz_quad_func ;
+    func = (sqt_quadrature_func_t)helmholtz_quad_func ;
   gpointer data[4] ;
 
   nc = 4*ne ;
@@ -1804,7 +1807,7 @@ static gint normal_quad_helmholtz_test(gdouble k, gdouble *xe,
   gint oq, nc, i, j, i3 = 3, i1 = 1 ;
   gint nk, Nk, order ;
   sqt_quadrature_func_t
-    func = (sqt_quadrature_func_t)adaptive_helmholtz_quad_func ;
+    func = (sqt_quadrature_func_t)helmholtz_quad_func ;
   gpointer data[4] ;
 
   nk = 175 ;
@@ -1910,6 +1913,143 @@ static gint normal_quad_helmholtz_test(gdouble k, gdouble *xe,
   }
 
   fprintf(stderr, "maximum error: %lg, %lg\n", eimax, ewmax) ;
+  
+  return 0 ;
+}
+
+static void weighted_sum_complex(SQT_REAL *w, gint nw,
+				 SQT_REAL *s, gint ns,
+				 SQT_REAL *f)
+
+{
+  gint i, j ;
+
+  for ( i = 0 ; i < nw ; i ++ ) {
+    for ( j = 0 ; j < ns ; j ++ ) {
+      f[2*j+0] += w[2*i+0]*s[2*ns*i+2*j+0] - w[2*i+1]*s[2*ns*i+2*j+1] ;
+      f[2*j+1] += w[2*i+0]*s[2*ns*i+2*j+1] + w[2*i+1]*s[2*ns*i+2*j+0] ;
+    }
+  }
+  
+  return ;
+}
+
+static gint quad_weight_helmholtz_test(gdouble k,
+				       gdouble *xe, gint xstr, gint ne,
+				       gint nq, gint N, gint depth, gdouble tol,
+				       gdouble s0, gdouble t0, gdouble umax,
+				       gint nu)
+
+{
+  gdouble *q, J, n[3], g[1024], s, t ;
+  gdouble x0[3], x[3], u, Kq[453*453], w[453*2], src[12*453] ;
+  gdouble fs[32], fd[32], wb[453*2], err ;
+  gint oq, nc, i, j, nK, nqk ;
+  gpointer data[4] ;
+  sqt_quadrature_func_t func = (sqt_quadrature_func_t)helmholtz_quad_func ;
+  
+  nc = 4*ne ;
+  sqt_element_point_3d(xe, xstr, ne, s0, t0, x0, n, &J) ;
+
+  nqk = 85 ;
+  
+  fprintf(stderr, "Helmholtz quadrature weight test\n") ;
+  fprintf(stderr, "================================\n") ;
+  fprintf(stderr, "k   = %lg\n", k) ;
+  fprintf(stderr, "x0  = %lg %lg %lg\n", x0[0], x0[1], x0[2]) ;
+  fprintf(stderr, "ne  = %d\n", ne) ;
+  fprintf(stderr, "tol = %lg\n", tol) ;
+  fprintf(stderr, "nq  = %d\n", nq) ;
+  fprintf(stderr, "nqk = %d\n", nqk) ;
+
+  sqt_quadrature_select(nqk, &q, &oq) ;
+  nK = sqt_koornwinder_interp_matrix(&(q[0]), 3, &(q[1]), 3, &(q[2]), 3,
+				     nqk, Kq) ;
+  
+  /*singular integral on surface to start with*/
+  memset(g, 0, ne*2*sizeof(gdouble)) ;
+  sqt_element_shape_3d(ne, s0, t0, &(g[4*ne]), NULL, NULL, NULL, NULL, NULL) ;
+
+  for ( i = 0 ; i < nqk ; i ++ ) {
+    s = q[3*i+0] ; t = q[3*i+1] ;
+    sqt_element_shape_3d(ne, s, t, &(g[4*ne]), NULL, NULL, NULL, NULL, NULL) ;
+    for ( j = 0 ; j < ne ; j ++ ) {
+      src[i*2*ne + 2*j + 0] = g[4*ne+j] ;
+      src[i*2*ne + 2*j + 1] = 0 ;
+    }
+  }
+
+  data[0] = x0 ; data[1] = &k ;
+  sqt_helmholtz_weights_tri_singular(xe, xstr, ne, Kq, nqk, nK, N, k, s0, t0,
+				     w) ;
+  sqt_singular_quad_tri(xe, xstr, ne, s0, t0, N, func, g, nc, data) ;
+
+  memset(fs, 0, 32*sizeof(SQT_REAL)) ;
+  memset(fd, 0, 32*sizeof(SQT_REAL)) ;
+  /* sqt_element_shape_3d(ne, s0, t0, &(g[4*ne]), NULL, NULL, NULL, NULL, NULL) ; */
+  /* for ( i = 0 ; i < ne ; i ++ ) fd[2*i+0] = g[2*ne+i] ; */
+  weighted_sum_complex(&(w[0*nqk]), nqk, src, ne, fs) ;
+  weighted_sum_complex(&(w[2*nqk]), nqk, src, ne, fd) ;
+
+  u = 0.0 ;
+  fprintf(stdout, "%e %e %e %e %e %e\n",
+	  u, fs[0], fs[1], fd[0], fd[1],
+	  sqrt((fs[0] - g[0])*(fs[0] - g[0]) +
+	       (fs[1] - g[1])*(fs[1] - g[1]))) ;
+  /* for ( i = 0 ; i < 2*ne ; i ++ ) { */
+  /*   fprintf(stdout, "%e ", fs[i]) ; */
+  /* } */
+  /* for ( i = 0 ; i < 2*ne ; i ++ ) { */
+  /*   fprintf(stdout, "%e ", fd[i]) ; */
+  /* } */
+  /* fprintf(stdout, "\n") ; */
+  /* for ( i = 0 ; i < 4*ne ; i ++ ) { */
+  /*   fprintf(stdout, "%e ", g[i]) ; */
+  /* } */
+  /* fprintf(stdout, "\n") ; */
+
+  /* return 0 ; */
+  
+  data[0] = x ;
+  
+  sqt_quadrature_select(nq, &q, &oq) ;
+  
+  for ( j = 1 ; j < nu ; j ++ ) {
+    u = umax*j/(nu-1) ;
+    x[0] = x0[0] + n[0]*u ;
+    x[1] = x0[1] + n[1]*u ;
+    x[2] = x0[2] + n[2]*u ;
+
+    memset(w, 0, 2*nqk*sizeof(gdouble)) ;
+    sqt_helmholtz_weights_tri_adaptive(xe, xstr, ne, q, nq,
+				       Kq, nqk, nK, k, tol, depth, x, w) ;
+    g[0] = g[1] = 0.0 ;
+    sqt_adaptive_quad_tri(xe, xstr, ne, q, nq, func, g, nc, tol, depth, data) ;
+
+    memset(fs, 0, 32*sizeof(SQT_REAL)) ;
+    memset(fd, 0, 32*sizeof(SQT_REAL)) ;
+    weighted_sum_complex(&(w[0*nqk]), nqk, src, ne, fs) ;
+    weighted_sum_complex(&(w[2*nqk]), nqk, src, ne, fd) ;
+
+    fprintf(stdout, "%e %e %e %e %e %e\n",
+	    u, fs[0], fs[1], fd[0], fd[1],
+	    sqrt((fs[0] - g[0])*(fs[0] - g[0]) +
+		 (fs[1] - g[1])*(fs[1] - g[1]))) ;
+  }
+
+  /* /\*use last set of adaptively-integrated weights to check basic*\/ */
+  /* memset(wb, 0, 2*nqk*sizeof(gdouble)) ; */
+  /* nq = 175 ; */
+  
+  /* sqt_quadrature_select(nq, &q, &oq) ;   */
+  /* sqt_laplace_weights_tri_basic(xe, xstr, ne, q, nq, Kq, nqk, nK, x, wb) ; */
+
+  /* err = 0.0 ; */
+  /* for ( i = 0 ; i < 2*nqk ; i ++ ) */
+  /*   err = MAX(err, fabs(wb[i] - w[i])) ; */
+
+  /* fprintf(stderr, "weights using %d point quadrature at u = %lg\n", nq, u) ; */
+  /* fprintf(stderr, "maximum error: %lg\n", err) ; */
   
   return 0 ;
 }
@@ -2111,6 +2251,13 @@ gint main(gint argc, gchar **argv)
 
   if ( test == 21 ) {
     normal_quad_helmholtz_test(k, xe, xstr, ne, nq, N, depth, tol, s0, t0,
+			       umax, nx) ;
+
+    return 0 ;
+  }
+
+  if ( test == 22 ) {
+    quad_weight_helmholtz_test(k, xe, xstr, ne, nq, N, depth, tol, s0, t0,
 			       umax, nx) ;
 
     return 0 ;
