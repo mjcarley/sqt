@@ -1,0 +1,5 @@
+The documentation for SQT should be up to date and automatically
+included in the distribution. If you do want to generate it locally, use
+
+doxygen sqt.dxy
+

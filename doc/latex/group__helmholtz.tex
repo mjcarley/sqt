@@ -1,0 +1,626 @@
+\doxysection{Helmholtz potentials}
+\label{group__helmholtz}\index{Helmholtz potentials@{Helmholtz potentials}}
+
+
+Specialized and convenience functions for evaluation of Helmholtz potentials.  
+
+
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+gint \textbf{ sqt\+\_\+helmholtz\+\_\+weights\+\_\+tri\+\_\+basic} (gdouble k, gdouble $\ast$xe, gint xstr, gint ne, gdouble $\ast$q, gint nq, gdouble $\ast$Kq, gint nqk, gint nK, gdouble $\ast$x, gdouble $\ast$w)
+\begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of Helmholtz potentials from triangular element using standard quadrature. \end{DoxyCompactList}\item 
+gint \textbf{ sqt\+\_\+helmholtz\+\_\+weights\+\_\+tri\+\_\+adaptive} (gdouble k, gdouble $\ast$xe, gint xstr, gint ne, gdouble $\ast$q, gint nq, gdouble $\ast$Kq, gint nqk, gint nK, gdouble tol, gint dmax, gdouble $\ast$x, gdouble $\ast$w)
+\begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of Helmholtz potentials from triangular element using adaptive quadrature. \end{DoxyCompactList}\item 
+gint \textbf{ sqt\+\_\+helmholtz\+\_\+weights\+\_\+tri\+\_\+singular} (gdouble k, gdouble $\ast$xe, gint xstr, gint ne, gdouble $\ast$Kq, gint nqk, gint nK, gint N, gdouble s0, gdouble t0, gdouble $\ast$w)
+\begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of self-\/induced Helmholtz potentials on triangular element using singular quadrature. \end{DoxyCompactList}\item 
+gint \textbf{ sqt\+\_\+helmholtz\+\_\+source\+\_\+target\+\_\+tri\+\_\+basic} (gdouble k, gdouble $\ast$xse, gint xsstr, gint nse, gdouble $\ast$q, gint nq, gdouble $\ast$Kq, gint nqk, gint nK, gdouble $\ast$xte, gint xtstr, gint nte, gdouble $\ast$s, gint sstr, gdouble $\ast$t, gint tstr, gint nt, gdouble $\ast$Ast)
+\begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of Helmholtz potential on target triangular element from source triangular element using standard quadrature. \end{DoxyCompactList}\item 
+gint \textbf{ sqt\+\_\+helmholtz\+\_\+weights\+\_\+kw\+\_\+adaptive} (gdouble k, gdouble $\ast$ce, gint ne, gint Nk, gdouble $\ast$Kq, gdouble $\ast$q, gint nq, gdouble tol, gint dmax, gdouble $\ast$x, gdouble $\ast$w, gdouble $\ast$work)
+\begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of Helmholtz potentials on element defined using Koornwinder polynomials using adaptive quadrature. \end{DoxyCompactList}\item 
+gint \textbf{ sqt\+\_\+helmholtz\+\_\+matrix\+\_\+kw\+\_\+adaptive} (gdouble k, gdouble $\ast$ce, gint ne, gint Nk, gdouble $\ast$Kq, gdouble $\ast$q, gint nq, gdouble tol, gint dmax, gdouble $\ast$x, gint xstr, gint nx, gdouble $\ast$Ast, gdouble $\ast$work)
+\begin{DoxyCompactList}\small\item\em Generate matrix for evaluation of Helmholtz potentials from patch defined using Koornwinder polynomials using adaptive quadrature. \end{DoxyCompactList}\item 
+gint \textbf{ sqt\+\_\+helmholtz\+\_\+weights\+\_\+kw\+\_\+singular} (gdouble k, gdouble $\ast$ce, gint ne, gint Nk, gdouble $\ast$Kq, gint N, gdouble s0, gdouble t0, gdouble $\ast$w, gdouble $\ast$work)
+\begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of self-\/induced Helmholtz potential using singular quadrature on patch defined using Koornwinder interpolation. \end{DoxyCompactList}\item 
+gint \textbf{ sqt\+\_\+helmholtz\+\_\+weights\+\_\+tri\+\_\+basic\+\_\+f} (gfloat k, gfloat $\ast$xe, gint xstr, gint ne, gfloat $\ast$q, gint nq, gfloat $\ast$Kq, gint nqk, gint nK, gfloat $\ast$x, gfloat $\ast$w)
+\begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of Helmholtz potentials from triangular element using standard quadrature. \end{DoxyCompactList}\item 
+gint \textbf{ sqt\+\_\+helmholtz\+\_\+weights\+\_\+tri\+\_\+adaptive\+\_\+f} (gfloat k, gfloat $\ast$xe, gint xstr, gint ne, gfloat $\ast$q, gint nq, gfloat $\ast$Kq, gint nqk, gint nK, gfloat tol, gint dmax, gfloat $\ast$x, gfloat $\ast$w)
+\begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of Helmholtz potentials from triangular element using adaptive quadrature. \end{DoxyCompactList}\item 
+gint \textbf{ sqt\+\_\+helmholtz\+\_\+weights\+\_\+tri\+\_\+singular\+\_\+f} (gfloat k, gfloat $\ast$xe, gint xstr, gint ne, gfloat $\ast$Kq, gint nqk, gint nK, gint N, gfloat s0, gfloat t0, gfloat $\ast$w)
+\begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of self-\/induced Helmholtz potentials on triangular element using singular quadrature. \end{DoxyCompactList}\item 
+gint \textbf{ sqt\+\_\+helmholtz\+\_\+source\+\_\+target\+\_\+tri\+\_\+basic\+\_\+f} (gfloat k, gfloat $\ast$xse, gint xsstr, gint nse, gfloat $\ast$q, gint nq, gfloat $\ast$Kq, gint nqk, gint nK, gfloat $\ast$xte, gint xtstr, gint nte, gfloat $\ast$s, gint sstr, gfloat $\ast$t, gint tstr, gint nt, gfloat $\ast$Ast)
+\begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of Helmholtz potential on target triangular element from source triangular element using standard quadrature. \end{DoxyCompactList}\item 
+gint \textbf{ sqt\+\_\+helmholtz\+\_\+weights\+\_\+kw\+\_\+adaptive\+\_\+f} (gfloat k, gfloat $\ast$ce, gint ne, gint Nk, gfloat $\ast$Kq, gfloat $\ast$q, gint nq, gfloat tol, gint dmax, gfloat $\ast$x, gfloat $\ast$w, gfloat $\ast$work)
+\begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of Helmholtz potentials on element defined using Koornwinder polynomials using adaptive quadrature. \end{DoxyCompactList}\item 
+gint \textbf{ sqt\+\_\+helmholtz\+\_\+matrix\+\_\+kw\+\_\+adaptive\+\_\+f} (gfloat k, gfloat $\ast$ce, gint ne, gint Nk, gfloat $\ast$Kq, gfloat $\ast$q, gint nq, gfloat tol, gint dmax, gfloat $\ast$x, gint xstr, gint nx, gfloat $\ast$Ast, gfloat $\ast$work)
+\begin{DoxyCompactList}\small\item\em Generate matrix for evaluation of Helmholtz potentials from patch defined using Koornwinder polynomials using adaptive quadrature. \end{DoxyCompactList}\item 
+gint \textbf{ sqt\+\_\+helmholtz\+\_\+weights\+\_\+kw\+\_\+singular\+\_\+f} (gfloat k, gfloat $\ast$ce, gint ne, gint Nk, gfloat $\ast$Kq, gint N, gfloat s0, gfloat t0, gfloat $\ast$w, gfloat $\ast$work)
+\begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of self-\/induced Helmholtz potential using singular quadrature on patch defined using Koornwinder interpolation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Specialized and convenience functions for evaluation of Helmholtz potentials. 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\label{group__helmholtz_ga8e5f465c4d9a333171a1971bc785490b}} 
+\index{Helmholtz potentials@{Helmholtz potentials}!sqt\_helmholtz\_matrix\_kw\_adaptive@{sqt\_helmholtz\_matrix\_kw\_adaptive}}
+\index{sqt\_helmholtz\_matrix\_kw\_adaptive@{sqt\_helmholtz\_matrix\_kw\_adaptive}!Helmholtz potentials@{Helmholtz potentials}}
+\doxysubsubsection{sqt\_helmholtz\_matrix\_kw\_adaptive()}
+{\footnotesize\ttfamily gint sqt\+\_\+helmholtz\+\_\+matrix\+\_\+kw\+\_\+adaptive (\begin{DoxyParamCaption}\item[{gdouble}]{k,  }\item[{gdouble $\ast$}]{ce,  }\item[{gint}]{ne,  }\item[{gint}]{Nk,  }\item[{gdouble $\ast$}]{Kq,  }\item[{gdouble $\ast$}]{q,  }\item[{gint}]{nq,  }\item[{gdouble}]{tol,  }\item[{gint}]{dmax,  }\item[{gdouble $\ast$}]{x,  }\item[{gint}]{xstr,  }\item[{gint}]{nx,  }\item[{gdouble $\ast$}]{Ast,  }\item[{gdouble $\ast$}]{work }\end{DoxyParamCaption})}
+
+
+
+Generate matrix for evaluation of Helmholtz potentials from patch defined using Koornwinder polynomials using adaptive quadrature. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & wavenumber \\
+\hline
+{\em ce} & interpolation coefficients for patch surface \\
+\hline
+{\em ne} & number of interpolation coefficients \\
+\hline
+{\em Nk} & maximum order of Koornwinder polynomial \\
+\hline
+{\em Kq} & Koornwinder interpolation matrix from sqt\+\_\+koornwinder\+\_\+interp\+\_\+matrix(...) \\
+\hline
+{\em q} & quadrature rule \\
+\hline
+{\em nq} & number of quadrature nodes \\
+\hline
+{\em tol} & tolerance for convergence of adaptive quadrature \\
+\hline
+{\em dmax} & maximum depth of adaptive quadrature \\
+\hline
+{\em x} & array of field points, three elements per point \\
+\hline
+{\em xstr} & stride between field points \\
+\hline
+{\em nx} & number of field points \\
+\hline
+{\em Ast} & on exit, contains matrix for evaluation of Laplace potentials at all points in {\itshape x} \\
+\hline
+{\em work} & workspace\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\mbox{\label{group__helmholtz_gaa370b7eae1126ce48dd4340e894aa1c7}} 
+\index{Helmholtz potentials@{Helmholtz potentials}!sqt\_helmholtz\_matrix\_kw\_adaptive\_f@{sqt\_helmholtz\_matrix\_kw\_adaptive\_f}}
+\index{sqt\_helmholtz\_matrix\_kw\_adaptive\_f@{sqt\_helmholtz\_matrix\_kw\_adaptive\_f}!Helmholtz potentials@{Helmholtz potentials}}
+\doxysubsubsection{sqt\_helmholtz\_matrix\_kw\_adaptive\_f()}
+{\footnotesize\ttfamily gint sqt\+\_\+helmholtz\+\_\+matrix\+\_\+kw\+\_\+adaptive\+\_\+f (\begin{DoxyParamCaption}\item[{gfloat}]{k,  }\item[{gfloat $\ast$}]{ce,  }\item[{gint}]{ne,  }\item[{gint}]{Nk,  }\item[{gfloat $\ast$}]{Kq,  }\item[{gfloat $\ast$}]{q,  }\item[{gint}]{nq,  }\item[{gfloat}]{tol,  }\item[{gint}]{dmax,  }\item[{gfloat $\ast$}]{x,  }\item[{gint}]{xstr,  }\item[{gint}]{nx,  }\item[{gfloat $\ast$}]{Ast,  }\item[{gfloat $\ast$}]{work }\end{DoxyParamCaption})}
+
+
+
+Generate matrix for evaluation of Helmholtz potentials from patch defined using Koornwinder polynomials using adaptive quadrature. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & wavenumber \\
+\hline
+{\em ce} & interpolation coefficients for patch surface \\
+\hline
+{\em ne} & number of interpolation coefficients \\
+\hline
+{\em Nk} & maximum order of Koornwinder polynomial \\
+\hline
+{\em Kq} & Koornwinder interpolation matrix from sqt\+\_\+koornwinder\+\_\+interp\+\_\+matrix\+\_\+f(...) \\
+\hline
+{\em q} & quadrature rule \\
+\hline
+{\em nq} & number of quadrature nodes \\
+\hline
+{\em tol} & tolerance for convergence of adaptive quadrature \\
+\hline
+{\em dmax} & maximum depth of adaptive quadrature \\
+\hline
+{\em x} & array of field points, three elements per point \\
+\hline
+{\em xstr} & stride between field points \\
+\hline
+{\em nx} & number of field points \\
+\hline
+{\em Ast} & on exit, contains matrix for evaluation of Laplace potentials at all points in {\itshape x} \\
+\hline
+{\em work} & workspace\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\mbox{\label{group__helmholtz_ga3ab8dee4dc4d915f325f43c183bea470}} 
+\index{Helmholtz potentials@{Helmholtz potentials}!sqt\_helmholtz\_source\_target\_tri\_basic@{sqt\_helmholtz\_source\_target\_tri\_basic}}
+\index{sqt\_helmholtz\_source\_target\_tri\_basic@{sqt\_helmholtz\_source\_target\_tri\_basic}!Helmholtz potentials@{Helmholtz potentials}}
+\doxysubsubsection{sqt\_helmholtz\_source\_target\_tri\_basic()}
+{\footnotesize\ttfamily gint sqt\+\_\+helmholtz\+\_\+source\+\_\+target\+\_\+tri\+\_\+basic (\begin{DoxyParamCaption}\item[{gdouble}]{k,  }\item[{gdouble $\ast$}]{xse,  }\item[{gint}]{xsstr,  }\item[{gint}]{nse,  }\item[{gdouble $\ast$}]{q,  }\item[{gint}]{nq,  }\item[{gdouble $\ast$}]{Kq,  }\item[{gint}]{nqk,  }\item[{gint}]{nK,  }\item[{gdouble $\ast$}]{xte,  }\item[{gint}]{xtstr,  }\item[{gint}]{nte,  }\item[{gdouble $\ast$}]{s,  }\item[{gint}]{sstr,  }\item[{gdouble $\ast$}]{t,  }\item[{gint}]{tstr,  }\item[{gint}]{nt,  }\item[{gdouble $\ast$}]{Ast }\end{DoxyParamCaption})}
+
+
+
+Calculating weights for evaluation of Helmholtz potential on target triangular element from source triangular element using standard quadrature. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & wavenumber \\
+\hline
+{\em xse} & source element nodes as three packed real numbers \\
+\hline
+{\em xsstr} & stride between source element nodes \\
+\hline
+{\em nse} & number of source element nodes \\
+\hline
+{\em q} & nodes and weights of a triangular quadrature rule \\
+\hline
+{\em nq} & number of nodes in {\itshape q} \\
+\hline
+{\em Kq} & Koornwinder interpolation matrix for {\itshape xse} from sqt\+\_\+koornwinder\+\_\+interp\+\_\+matrix(...) \\
+\hline
+{\em nqk} & number of Koornwinder interpolation nodes \\
+\hline
+{\em nK} & maximum order of Koornwinder polynomial \\
+\hline
+{\em xte} & target element nodes as three packed real numbers \\
+\hline
+{\em xtstr} & stride between target element nodes \\
+\hline
+{\em nte} & number of target element nodes \\
+\hline
+{\em s} & local coordinates of evaluation points on {\itshape xte} \\
+\hline
+{\em sstr} & stride in {\itshape s} \\
+\hline
+{\em t} & local coordinates of evaluation points on {\itshape xte} \\
+\hline
+{\em tstr} & stride in {\itshape t} \\
+\hline
+{\em nt} & number of evaluation points on {\itshape xte} \\
+\hline
+{\em Ast} & on exit contains matrix for evaluation of single and double layer potentials generated by source element on target\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\mbox{\label{group__helmholtz_ga86b4121610d940686b75937896c3203c}} 
+\index{Helmholtz potentials@{Helmholtz potentials}!sqt\_helmholtz\_source\_target\_tri\_basic\_f@{sqt\_helmholtz\_source\_target\_tri\_basic\_f}}
+\index{sqt\_helmholtz\_source\_target\_tri\_basic\_f@{sqt\_helmholtz\_source\_target\_tri\_basic\_f}!Helmholtz potentials@{Helmholtz potentials}}
+\doxysubsubsection{sqt\_helmholtz\_source\_target\_tri\_basic\_f()}
+{\footnotesize\ttfamily gint sqt\+\_\+helmholtz\+\_\+source\+\_\+target\+\_\+tri\+\_\+basic\+\_\+f (\begin{DoxyParamCaption}\item[{gfloat}]{k,  }\item[{gfloat $\ast$}]{xse,  }\item[{gint}]{xsstr,  }\item[{gint}]{nse,  }\item[{gfloat $\ast$}]{q,  }\item[{gint}]{nq,  }\item[{gfloat $\ast$}]{Kq,  }\item[{gint}]{nqk,  }\item[{gint}]{nK,  }\item[{gfloat $\ast$}]{xte,  }\item[{gint}]{xtstr,  }\item[{gint}]{nte,  }\item[{gfloat $\ast$}]{s,  }\item[{gint}]{sstr,  }\item[{gfloat $\ast$}]{t,  }\item[{gint}]{tstr,  }\item[{gint}]{nt,  }\item[{gfloat $\ast$}]{Ast }\end{DoxyParamCaption})}
+
+
+
+Calculating weights for evaluation of Helmholtz potential on target triangular element from source triangular element using standard quadrature. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & wavenumber \\
+\hline
+{\em xse} & source element nodes as three packed real numbers \\
+\hline
+{\em xsstr} & stride between source element nodes \\
+\hline
+{\em nse} & number of source element nodes \\
+\hline
+{\em q} & nodes and weights of a triangular quadrature rule \\
+\hline
+{\em nq} & number of nodes in {\itshape q} \\
+\hline
+{\em Kq} & Koornwinder interpolation matrix for {\itshape xse} from sqt\+\_\+koornwinder\+\_\+interp\+\_\+matrix\+\_\+f(...) \\
+\hline
+{\em nqk} & number of Koornwinder interpolation nodes \\
+\hline
+{\em nK} & maximum order of Koornwinder polynomial \\
+\hline
+{\em xte} & target element nodes as three packed real numbers \\
+\hline
+{\em xtstr} & stride between target element nodes \\
+\hline
+{\em nte} & number of target element nodes \\
+\hline
+{\em s} & local coordinates of evaluation points on {\itshape xte} \\
+\hline
+{\em sstr} & stride in {\itshape s} \\
+\hline
+{\em t} & local coordinates of evaluation points on {\itshape xte} \\
+\hline
+{\em tstr} & stride in {\itshape t} \\
+\hline
+{\em nt} & number of evaluation points on {\itshape xte} \\
+\hline
+{\em Ast} & on exit contains matrix for evaluation of single and double layer potentials generated by source element on target\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\mbox{\label{group__helmholtz_ga11fc78c9f95a6c7d8f4e7c3a650c93bc}} 
+\index{Helmholtz potentials@{Helmholtz potentials}!sqt\_helmholtz\_weights\_kw\_adaptive@{sqt\_helmholtz\_weights\_kw\_adaptive}}
+\index{sqt\_helmholtz\_weights\_kw\_adaptive@{sqt\_helmholtz\_weights\_kw\_adaptive}!Helmholtz potentials@{Helmholtz potentials}}
+\doxysubsubsection{sqt\_helmholtz\_weights\_kw\_adaptive()}
+{\footnotesize\ttfamily gint sqt\+\_\+helmholtz\+\_\+weights\+\_\+kw\+\_\+adaptive (\begin{DoxyParamCaption}\item[{gdouble}]{k,  }\item[{gdouble $\ast$}]{ce,  }\item[{gint}]{ne,  }\item[{gint}]{Nk,  }\item[{gdouble $\ast$}]{Kq,  }\item[{gdouble $\ast$}]{q,  }\item[{gint}]{nq,  }\item[{gdouble}]{tol,  }\item[{gint}]{dmax,  }\item[{gdouble $\ast$}]{x,  }\item[{gdouble $\ast$}]{w,  }\item[{gdouble $\ast$}]{work }\end{DoxyParamCaption})}
+
+
+
+Calculating weights for evaluation of Helmholtz potentials on element defined using Koornwinder polynomials using adaptive quadrature. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & wavenumber \\
+\hline
+{\em ce} & interpolation coefficients for patch surface \\
+\hline
+{\em ne} & number of interpolation coefficients \\
+\hline
+{\em Nk} & maximum order of Koornwinder polynomial \\
+\hline
+{\em Kq} & Koornwinder interpolation matrix from sqt\+\_\+koornwinder\+\_\+interp\+\_\+matrix(...) \\
+\hline
+{\em q} & quadrature rule \\
+\hline
+{\em nq} & number of quadrature nodes \\
+\hline
+{\em tol} & tolerance for convergence of adaptive quadrature \\
+\hline
+{\em dmax} & maximum depth of adaptive quadrature \\
+\hline
+{\em x} & field point \\
+\hline
+{\em w} & on exit, contains weights for evaluation of Helmholtz potentials at {\itshape x} \\
+\hline
+{\em work} & workspace\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\mbox{\label{group__helmholtz_ga62218b01dadf4c260718f8f7bc350b22}} 
+\index{Helmholtz potentials@{Helmholtz potentials}!sqt\_helmholtz\_weights\_kw\_adaptive\_f@{sqt\_helmholtz\_weights\_kw\_adaptive\_f}}
+\index{sqt\_helmholtz\_weights\_kw\_adaptive\_f@{sqt\_helmholtz\_weights\_kw\_adaptive\_f}!Helmholtz potentials@{Helmholtz potentials}}
+\doxysubsubsection{sqt\_helmholtz\_weights\_kw\_adaptive\_f()}
+{\footnotesize\ttfamily gint sqt\+\_\+helmholtz\+\_\+weights\+\_\+kw\+\_\+adaptive\+\_\+f (\begin{DoxyParamCaption}\item[{gfloat}]{k,  }\item[{gfloat $\ast$}]{ce,  }\item[{gint}]{ne,  }\item[{gint}]{Nk,  }\item[{gfloat $\ast$}]{Kq,  }\item[{gfloat $\ast$}]{q,  }\item[{gint}]{nq,  }\item[{gfloat}]{tol,  }\item[{gint}]{dmax,  }\item[{gfloat $\ast$}]{x,  }\item[{gfloat $\ast$}]{w,  }\item[{gfloat $\ast$}]{work }\end{DoxyParamCaption})}
+
+
+
+Calculating weights for evaluation of Helmholtz potentials on element defined using Koornwinder polynomials using adaptive quadrature. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & wavenumber \\
+\hline
+{\em ce} & interpolation coefficients for patch surface \\
+\hline
+{\em ne} & number of interpolation coefficients \\
+\hline
+{\em Nk} & maximum order of Koornwinder polynomial \\
+\hline
+{\em Kq} & Koornwinder interpolation matrix from sqt\+\_\+koornwinder\+\_\+interp\+\_\+matrix\+\_\+f(...) \\
+\hline
+{\em q} & quadrature rule \\
+\hline
+{\em nq} & number of quadrature nodes \\
+\hline
+{\em tol} & tolerance for convergence of adaptive quadrature \\
+\hline
+{\em dmax} & maximum depth of adaptive quadrature \\
+\hline
+{\em x} & field point \\
+\hline
+{\em w} & on exit, contains weights for evaluation of Helmholtz potentials at {\itshape x} \\
+\hline
+{\em work} & workspace\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\mbox{\label{group__helmholtz_ga221889da2b7265e9842a13f198a1401c}} 
+\index{Helmholtz potentials@{Helmholtz potentials}!sqt\_helmholtz\_weights\_kw\_singular@{sqt\_helmholtz\_weights\_kw\_singular}}
+\index{sqt\_helmholtz\_weights\_kw\_singular@{sqt\_helmholtz\_weights\_kw\_singular}!Helmholtz potentials@{Helmholtz potentials}}
+\doxysubsubsection{sqt\_helmholtz\_weights\_kw\_singular()}
+{\footnotesize\ttfamily gint sqt\+\_\+helmholtz\+\_\+weights\+\_\+kw\+\_\+singular (\begin{DoxyParamCaption}\item[{gdouble}]{k,  }\item[{gdouble $\ast$}]{ce,  }\item[{gint}]{ne,  }\item[{gint}]{Nk,  }\item[{gdouble $\ast$}]{Kq,  }\item[{gint}]{N,  }\item[{gdouble}]{s0,  }\item[{gdouble}]{t0,  }\item[{gdouble $\ast$}]{w,  }\item[{gdouble $\ast$}]{work }\end{DoxyParamCaption})}
+
+
+
+Calculating weights for evaluation of self-\/induced Helmholtz potential using singular quadrature on patch defined using Koornwinder interpolation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & wavenumber \\
+\hline
+{\em ce} & interpolation coefficients for patch surface \\
+\hline
+{\em ne} & number of interpolation coefficients \\
+\hline
+{\em Nk} & maximum order of Koornwinder polynomial \\
+\hline
+{\em Kq} & Koornwinder interpolation matrix from \\
+\hline
+{\em N} & order of singular quadrature rule \\
+\hline
+{\em s0} & coordinate in local system of surface evaluation point \\
+\hline
+{\em t0} & coordinate in local system of surface evaluation point \\
+\hline
+{\em w} & on exit contains weights for Helmholtz potential at $\mathbf{x}(s_{0},t_{0})$ \\
+\hline
+{\em work} & workspace\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\mbox{\label{group__helmholtz_gab7f20ae77461f48babbdc9b7d229b055}} 
+\index{Helmholtz potentials@{Helmholtz potentials}!sqt\_helmholtz\_weights\_kw\_singular\_f@{sqt\_helmholtz\_weights\_kw\_singular\_f}}
+\index{sqt\_helmholtz\_weights\_kw\_singular\_f@{sqt\_helmholtz\_weights\_kw\_singular\_f}!Helmholtz potentials@{Helmholtz potentials}}
+\doxysubsubsection{sqt\_helmholtz\_weights\_kw\_singular\_f()}
+{\footnotesize\ttfamily gint sqt\+\_\+helmholtz\+\_\+weights\+\_\+kw\+\_\+singular\+\_\+f (\begin{DoxyParamCaption}\item[{gfloat}]{k,  }\item[{gfloat $\ast$}]{ce,  }\item[{gint}]{ne,  }\item[{gint}]{Nk,  }\item[{gfloat $\ast$}]{Kq,  }\item[{gint}]{N,  }\item[{gfloat}]{s0,  }\item[{gfloat}]{t0,  }\item[{gfloat $\ast$}]{w,  }\item[{gfloat $\ast$}]{work }\end{DoxyParamCaption})}
+
+
+
+Calculating weights for evaluation of self-\/induced Helmholtz potential using singular quadrature on patch defined using Koornwinder interpolation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & wavenumber \\
+\hline
+{\em ce} & interpolation coefficients for patch surface \\
+\hline
+{\em ne} & number of interpolation coefficients \\
+\hline
+{\em Nk} & maximum order of Koornwinder polynomial \\
+\hline
+{\em Kq} & Koornwinder interpolation matrix from \\
+\hline
+{\em N} & order of singular quadrature rule \\
+\hline
+{\em s0} & coordinate in local system of surface evaluation point \\
+\hline
+{\em t0} & coordinate in local system of surface evaluation point \\
+\hline
+{\em w} & on exit contains weights for Helmholtz potential at $\mathbf{x}(s_{0},t_{0})$ \\
+\hline
+{\em work} & workspace\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\mbox{\label{group__helmholtz_gab20e2cbf000250a943ff0eab0011e714}} 
+\index{Helmholtz potentials@{Helmholtz potentials}!sqt\_helmholtz\_weights\_tri\_adaptive@{sqt\_helmholtz\_weights\_tri\_adaptive}}
+\index{sqt\_helmholtz\_weights\_tri\_adaptive@{sqt\_helmholtz\_weights\_tri\_adaptive}!Helmholtz potentials@{Helmholtz potentials}}
+\doxysubsubsection{sqt\_helmholtz\_weights\_tri\_adaptive()}
+{\footnotesize\ttfamily gint sqt\+\_\+helmholtz\+\_\+weights\+\_\+tri\+\_\+adaptive (\begin{DoxyParamCaption}\item[{gdouble}]{k,  }\item[{gdouble $\ast$}]{xe,  }\item[{gint}]{xstr,  }\item[{gint}]{ne,  }\item[{gdouble $\ast$}]{q,  }\item[{gint}]{nq,  }\item[{gdouble $\ast$}]{Kq,  }\item[{gint}]{nqk,  }\item[{gint}]{nK,  }\item[{gdouble}]{tol,  }\item[{gint}]{dmax,  }\item[{gdouble $\ast$}]{x,  }\item[{gdouble $\ast$}]{w }\end{DoxyParamCaption})}
+
+
+
+Calculating weights for evaluation of Helmholtz potentials from triangular element using adaptive quadrature. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & wavenumber \\
+\hline
+{\em xe} & element nodes as three packed real numbers \\
+\hline
+{\em xstr} & stride between nodes \\
+\hline
+{\em ne} & number of nodes \\
+\hline
+{\em q} & nodes and weights of a triangular quadrature rule \\
+\hline
+{\em nq} & number of nodes in {\itshape q} \\
+\hline
+{\em Kq} & Koornwinder interpolation matrix from sqt\+\_\+koornwinder\+\_\+interp\+\_\+matrix(...) \\
+\hline
+{\em nqk} & number of Koornwinder interpolation nodes \\
+\hline
+{\em nK} & maximum order of Koornwinder polynomial \\
+\hline
+{\em tol} & convergence tolerance for adaptive quadrature \\
+\hline
+{\em dmax} & maximum recursion depth for adaptive quadrature \\
+\hline
+{\em x} & field point \\
+\hline
+{\em w} & on exit contains weights for Laplace potential at {\itshape x} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\mbox{\label{group__helmholtz_ga816d9763f4db4f81935d3372b7e2b39f}} 
+\index{Helmholtz potentials@{Helmholtz potentials}!sqt\_helmholtz\_weights\_tri\_adaptive\_f@{sqt\_helmholtz\_weights\_tri\_adaptive\_f}}
+\index{sqt\_helmholtz\_weights\_tri\_adaptive\_f@{sqt\_helmholtz\_weights\_tri\_adaptive\_f}!Helmholtz potentials@{Helmholtz potentials}}
+\doxysubsubsection{sqt\_helmholtz\_weights\_tri\_adaptive\_f()}
+{\footnotesize\ttfamily gint sqt\+\_\+helmholtz\+\_\+weights\+\_\+tri\+\_\+adaptive\+\_\+f (\begin{DoxyParamCaption}\item[{gfloat}]{k,  }\item[{gfloat $\ast$}]{xe,  }\item[{gint}]{xstr,  }\item[{gint}]{ne,  }\item[{gfloat $\ast$}]{q,  }\item[{gint}]{nq,  }\item[{gfloat $\ast$}]{Kq,  }\item[{gint}]{nqk,  }\item[{gint}]{nK,  }\item[{gfloat}]{tol,  }\item[{gint}]{dmax,  }\item[{gfloat $\ast$}]{x,  }\item[{gfloat $\ast$}]{w }\end{DoxyParamCaption})}
+
+
+
+Calculating weights for evaluation of Helmholtz potentials from triangular element using adaptive quadrature. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & wavenumber \\
+\hline
+{\em xe} & element nodes as three packed real numbers \\
+\hline
+{\em xstr} & stride between nodes \\
+\hline
+{\em ne} & number of nodes \\
+\hline
+{\em q} & nodes and weights of a triangular quadrature rule \\
+\hline
+{\em nq} & number of nodes in {\itshape q} \\
+\hline
+{\em Kq} & Koornwinder interpolation matrix from sqt\+\_\+koornwinder\+\_\+interp\+\_\+matrix\+\_\+f(...) \\
+\hline
+{\em nqk} & number of Koornwinder interpolation nodes \\
+\hline
+{\em nK} & maximum order of Koornwinder polynomial \\
+\hline
+{\em tol} & convergence tolerance for adaptive quadrature \\
+\hline
+{\em dmax} & maximum recursion depth for adaptive quadrature \\
+\hline
+{\em x} & field point \\
+\hline
+{\em w} & on exit contains weights for Laplace potential at {\itshape x} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\mbox{\label{group__helmholtz_ga2790246629fd5a596aa3fffb8dd3d04e}} 
+\index{Helmholtz potentials@{Helmholtz potentials}!sqt\_helmholtz\_weights\_tri\_basic@{sqt\_helmholtz\_weights\_tri\_basic}}
+\index{sqt\_helmholtz\_weights\_tri\_basic@{sqt\_helmholtz\_weights\_tri\_basic}!Helmholtz potentials@{Helmholtz potentials}}
+\doxysubsubsection{sqt\_helmholtz\_weights\_tri\_basic()}
+{\footnotesize\ttfamily gint sqt\+\_\+helmholtz\+\_\+weights\+\_\+tri\+\_\+basic (\begin{DoxyParamCaption}\item[{gdouble}]{k,  }\item[{gdouble $\ast$}]{xe,  }\item[{gint}]{xstr,  }\item[{gint}]{ne,  }\item[{gdouble $\ast$}]{q,  }\item[{gint}]{nq,  }\item[{gdouble $\ast$}]{Kq,  }\item[{gint}]{nqk,  }\item[{gint}]{nK,  }\item[{gdouble $\ast$}]{x,  }\item[{gdouble $\ast$}]{w }\end{DoxyParamCaption})}
+
+
+
+Calculating weights for evaluation of Helmholtz potentials from triangular element using standard quadrature. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & wavenumber \\
+\hline
+{\em xe} & element nodes as three packed real numbers \\
+\hline
+{\em xstr} & stride between nodes \\
+\hline
+{\em ne} & number of nodes \\
+\hline
+{\em q} & nodes and weights of a triangular quadrature rule \\
+\hline
+{\em nq} & number of nodes in {\itshape q} \\
+\hline
+{\em Kq} & Koornwinder interpolation matrix from sqt\+\_\+koornwinder\+\_\+interp\+\_\+matrix(...) \\
+\hline
+{\em nqk} & number of Koornwinder interpolation nodes \\
+\hline
+{\em nK} & maximum order of Koornwinder polynomial \\
+\hline
+{\em x} & field point \\
+\hline
+{\em w} & on exit contains weights for Laplace potentials at {\itshape x} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\mbox{\label{group__helmholtz_ga929e72aa0ae8fcf559eab55bb569c29a}} 
+\index{Helmholtz potentials@{Helmholtz potentials}!sqt\_helmholtz\_weights\_tri\_basic\_f@{sqt\_helmholtz\_weights\_tri\_basic\_f}}
+\index{sqt\_helmholtz\_weights\_tri\_basic\_f@{sqt\_helmholtz\_weights\_tri\_basic\_f}!Helmholtz potentials@{Helmholtz potentials}}
+\doxysubsubsection{sqt\_helmholtz\_weights\_tri\_basic\_f()}
+{\footnotesize\ttfamily gint sqt\+\_\+helmholtz\+\_\+weights\+\_\+tri\+\_\+basic\+\_\+f (\begin{DoxyParamCaption}\item[{gfloat}]{k,  }\item[{gfloat $\ast$}]{xe,  }\item[{gint}]{xstr,  }\item[{gint}]{ne,  }\item[{gfloat $\ast$}]{q,  }\item[{gint}]{nq,  }\item[{gfloat $\ast$}]{Kq,  }\item[{gint}]{nqk,  }\item[{gint}]{nK,  }\item[{gfloat $\ast$}]{x,  }\item[{gfloat $\ast$}]{w }\end{DoxyParamCaption})}
+
+
+
+Calculating weights for evaluation of Helmholtz potentials from triangular element using standard quadrature. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & wavenumber \\
+\hline
+{\em xe} & element nodes as three packed real numbers \\
+\hline
+{\em xstr} & stride between nodes \\
+\hline
+{\em ne} & number of nodes \\
+\hline
+{\em q} & nodes and weights of a triangular quadrature rule \\
+\hline
+{\em nq} & number of nodes in {\itshape q} \\
+\hline
+{\em Kq} & Koornwinder interpolation matrix from sqt\+\_\+koornwinder\+\_\+interp\+\_\+matrix\+\_\+f(...) \\
+\hline
+{\em nqk} & number of Koornwinder interpolation nodes \\
+\hline
+{\em nK} & maximum order of Koornwinder polynomial \\
+\hline
+{\em x} & field point \\
+\hline
+{\em w} & on exit contains weights for Laplace potentials at {\itshape x} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\mbox{\label{group__helmholtz_ga3e700d561c15fcb509a2b11e079b3148}} 
+\index{Helmholtz potentials@{Helmholtz potentials}!sqt\_helmholtz\_weights\_tri\_singular@{sqt\_helmholtz\_weights\_tri\_singular}}
+\index{sqt\_helmholtz\_weights\_tri\_singular@{sqt\_helmholtz\_weights\_tri\_singular}!Helmholtz potentials@{Helmholtz potentials}}
+\doxysubsubsection{sqt\_helmholtz\_weights\_tri\_singular()}
+{\footnotesize\ttfamily gint sqt\+\_\+helmholtz\+\_\+weights\+\_\+tri\+\_\+singular (\begin{DoxyParamCaption}\item[{gdouble}]{k,  }\item[{gdouble $\ast$}]{xe,  }\item[{gint}]{xstr,  }\item[{gint}]{ne,  }\item[{gdouble $\ast$}]{Kq,  }\item[{gint}]{nqk,  }\item[{gint}]{nK,  }\item[{gint}]{N,  }\item[{gdouble}]{s0,  }\item[{gdouble}]{t0,  }\item[{gdouble $\ast$}]{w }\end{DoxyParamCaption})}
+
+
+
+Calculating weights for evaluation of self-\/induced Helmholtz potentials on triangular element using singular quadrature. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & wavenumber \\
+\hline
+{\em xe} & element nodes as three packed real numbers \\
+\hline
+{\em xstr} & stride between nodes \\
+\hline
+{\em ne} & number of nodes \\
+\hline
+{\em Kq} & Koornwinder interpolation matrix from sqt\+\_\+koornwinder\+\_\+interp\+\_\+matrix(...) \\
+\hline
+{\em nqk} & number of Koornwinder interpolation nodes \\
+\hline
+{\em nK} & maximum order of Koornwinder polynomial \\
+\hline
+{\em N} & order of integration rules \\
+\hline
+{\em s0} & local coordinate of evaluation point on {\itshape xe} \\
+\hline
+{\em t0} & local coordinate of evaluation point on {\itshape xe} \\
+\hline
+{\em w} & on exit contains weights for Helmholtz potentials at {\itshape x} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\mbox{\label{group__helmholtz_gabe6a59e8d1ce2a590f30e6f9b3899ad6}} 
+\index{Helmholtz potentials@{Helmholtz potentials}!sqt\_helmholtz\_weights\_tri\_singular\_f@{sqt\_helmholtz\_weights\_tri\_singular\_f}}
+\index{sqt\_helmholtz\_weights\_tri\_singular\_f@{sqt\_helmholtz\_weights\_tri\_singular\_f}!Helmholtz potentials@{Helmholtz potentials}}
+\doxysubsubsection{sqt\_helmholtz\_weights\_tri\_singular\_f()}
+{\footnotesize\ttfamily gint sqt\+\_\+helmholtz\+\_\+weights\+\_\+tri\+\_\+singular\+\_\+f (\begin{DoxyParamCaption}\item[{gfloat}]{k,  }\item[{gfloat $\ast$}]{xe,  }\item[{gint}]{xstr,  }\item[{gint}]{ne,  }\item[{gfloat $\ast$}]{Kq,  }\item[{gint}]{nqk,  }\item[{gint}]{nK,  }\item[{gint}]{N,  }\item[{gfloat}]{s0,  }\item[{gfloat}]{t0,  }\item[{gfloat $\ast$}]{w }\end{DoxyParamCaption})}
+
+
+
+Calculating weights for evaluation of self-\/induced Helmholtz potentials on triangular element using singular quadrature. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & wavenumber \\
+\hline
+{\em xe} & element nodes as three packed real numbers \\
+\hline
+{\em xstr} & stride between nodes \\
+\hline
+{\em ne} & number of nodes \\
+\hline
+{\em Kq} & Koornwinder interpolation matrix from sqt\+\_\+koornwinder\+\_\+interp\+\_\+matrix\+\_\+f(...) \\
+\hline
+{\em nqk} & number of Koornwinder interpolation nodes \\
+\hline
+{\em nK} & maximum order of Koornwinder polynomial \\
+\hline
+{\em N} & order of integration rules \\
+\hline
+{\em s0} & local coordinate of evaluation point on {\itshape xe} \\
+\hline
+{\em t0} & local coordinate of evaluation point on {\itshape xe} \\
+\hline
+{\em w} & on exit contains weights for Helmholtz potentials at {\itshape x} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}

@@ -1,6 +1,6 @@
 /* This file is part of SQT, a library for Singular Quadrature on Triangles
  *
- * Copyright (C) 2020 Michael Carley
+ * Copyright (C) 2020, 2023 Michael Carley
  *
  * SQT is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by
@@ -51,6 +51,7 @@ gchar *tests[] = {"closest_point",              /* 0*/
 		  "adaptive_helmholtz",         /*20*/
 		  "normal_helmholtz",           /*21*/
 		  "weights_helmholtz",          /*22*/
+		  "matrix_adaptive_helmholtz",  /*23*/
 		  ""} ;
 
 GTimer *timer ;
@@ -603,7 +604,7 @@ static gint spherical_patch_helmholtz_test(gdouble k, gint N, gint nq,
 		       data, work) ;
 
   /*integration using pre-computed weights*/
-  sqt_helmholtz_weights_kw_adaptive(ci, nqk, Nk, K, q, nq, tol, depth, k, x,
+  sqt_helmholtz_weights_kw_adaptive(k, ci, nqk, Nk, K, q, nq, tol, depth, x,
 				    wt, work) ;
   
   for ( i = 0 ; i < nqk ; i ++ ) {
@@ -1845,14 +1846,14 @@ static gint normal_quad_helmholtz_test(gdouble k, gdouble *xe,
   memset(gw, 0, 4*ne*sizeof(gdouble)) ;
   sqt_element_shape_3d(ne, s0, t0, buf, NULL, NULL, NULL, NULL, NULL) ;
   for ( i = 0 ; i < ne ; i ++ ) {
-    g[2*ne+2*i+0] = 0.5*buf[i] ; g[2*ne+2*i+1] = 0 ;
+    /* g[2*ne+2*i+0] = 0.5*buf[i] ; g[2*ne+2*i+1] = 0 ; */
     gw[2*ne+2*i+0] = gk[2*ne+2*i+0] = g[2*ne+2*i+0] ;
     gw[2*ne+2*i+1] = gk[2*ne+2*i+1] = g[2*ne+2*i+1] ;
   }
   data[0] = x0 ; data[1] = &k ;
   sqt_singular_quad_tri(xe, xstr, ne, s0, t0, N, func, g, nc, data) ;
   sqt_singular_quad_kw_vector(ce, nk, Nk, s0, t0, N, func, gk, nc, data, work) ;
-  sqt_helmholtz_weights_kw_singular(ce, nk, Nk, K, N, k, s0, t0, w, work) ;
+  sqt_helmholtz_weights_kw_singular(k, ce, nk, Nk, K, N, s0, t0, w, work) ;
   for ( i = 0 ; i < nk ; i ++ ) {
     /* sqt_element_shape_3d(ne, qk[3*i+0], qk[3*i+1], &(src[i*ne]), */
     /* 			 NULL, NULL, NULL, NULL, NULL) ; */
@@ -1867,7 +1868,7 @@ static gint normal_quad_helmholtz_test(gdouble k, gdouble *xe,
   for ( i = 0 ; i < ne ; i ++ ) {
     blaswrap_zdotu(&(gw[     2*i]), nk, &(w[0      ]), i1, &(src[2*i]), ne) ;
     blaswrap_zdotu(&(gw[2*ne+2*i]), nk, &(w[2*nk   ]), i1, &(src[2*i]), ne) ;
-    gw[2*ne+2*i+0] += 0.5*buf[i] ;
+    /* gw[2*ne+2*i+0] += 0.5*buf[i] ; */
   }
   
   fprintf(stdout, "0") ; ei = ew = 0.0 ;
@@ -1893,8 +1894,8 @@ static gint normal_quad_helmholtz_test(gdouble k, gdouble *xe,
     sqt_adaptive_quad_tri(xe, xstr, ne, q, nq, func, g, nc, tol, depth, data) ;
     sqt_adaptive_quad_kw(ce, nk, Nk, q, nq, func, gk, nc, tol, depth,
 			 data, work) ;
-    sqt_helmholtz_weights_kw_adaptive(ce, nk, Nk, K, q, nq, tol, depth,
-				      k, x, w, work) ;
+    sqt_helmholtz_weights_kw_adaptive(k, ce, nk, Nk, K, q, nq, tol, depth,
+				      x, w, work) ;
 
     for ( i = 0 ; i < ne ; i ++ ) {
       blaswrap_zdotu(&(gw[     2*i]), nk, &(w[0      ]), i1, &(src[2*i]), ne) ;
@@ -1980,7 +1981,7 @@ static gint quad_weight_helmholtz_test(gdouble k,
   }
 
   data[0] = x0 ; data[1] = &k ;
-  sqt_helmholtz_weights_tri_singular(xe, xstr, ne, Kq, nqk, nK, N, k, s0, t0,
+  sqt_helmholtz_weights_tri_singular(k, xe, xstr, ne, Kq, nqk, nK, N, s0, t0,
 				     w) ;
   sqt_singular_quad_tri(xe, xstr, ne, s0, t0, N, func, g, nc, data) ;
 
@@ -2021,8 +2022,8 @@ static gint quad_weight_helmholtz_test(gdouble k,
     x[2] = x0[2] + n[2]*u ;
 
     memset(w, 0, 2*nqk*sizeof(gdouble)) ;
-    sqt_helmholtz_weights_tri_adaptive(xe, xstr, ne, q, nq,
-				       Kq, nqk, nK, k, tol, depth, x, w) ;
+    sqt_helmholtz_weights_tri_adaptive(k, xe, xstr, ne, q, nq,
+				       Kq, nqk, nK, tol, depth, x, w) ;
     g[0] = g[1] = 0.0 ;
     sqt_adaptive_quad_tri(xe, xstr, ne, q, nq, func, g, nc, tol, depth, data) ;
 
@@ -2031,10 +2032,12 @@ static gint quad_weight_helmholtz_test(gdouble k,
     weighted_sum_complex(&(w[0*nqk]), nqk, src, ne, fs) ;
     weighted_sum_complex(&(w[2*nqk]), nqk, src, ne, fd) ;
 
-    fprintf(stdout, "%e %e %e %e %e %e\n",
+    fprintf(stdout, "%e %e %e %e %e %1.2e %1.2e\n",
 	    u, fs[0], fs[1], fd[0], fd[1],
 	    sqrt((fs[0] - g[0])*(fs[0] - g[0]) +
-		 (fs[1] - g[1])*(fs[1] - g[1]))) ;
+		 (fs[1] - g[1])*(fs[1] - g[1])),
+	    sqrt((fd[0] - g[2*ne+0])*(fd[0] - g[2*ne+0]) +
+		 (fd[1] - g[2*ne+1])*(fd[1] - g[2*ne+1]))) ;
   }
 
   /* /\*use last set of adaptively-integrated weights to check basic*\/ */
@@ -2051,6 +2054,124 @@ static gint quad_weight_helmholtz_test(gdouble k,
   /* fprintf(stderr, "weights using %d point quadrature at u = %lg\n", nq, u) ; */
   /* fprintf(stderr, "maximum error: %lg\n", err) ; */
   
+  return 0 ;
+}
+
+static gint matrix_adaptive_helmholtz_test(gdouble k,
+					   gdouble *xse, gint xsstr, gint nse,
+					   gdouble *xte, gint xtstr, gint nte,
+					   gint nq, gint depth, gdouble tol)
+  
+
+{
+  gdouble *q, J, n[3], s, t, err, time ;
+  gdouble x[3], Kq[175*175], src[175], al[2], bt[2], *st ;
+  gdouble Astb[175*175*4] ;
+  gdouble f[32], Ast[175*175*4], xp[175*3], xt[175*3] ;
+  gdouble *qs, fts[2*175], ftd[2*175], kts[2*175], ktd[2*175] ;
+  gdouble *work ;
+  gint oq, nc, i, j, nK, nqk, one = 1, nqt, nqs, lda, pstr ;
+  gpointer data[4] ;
+  sqt_quadrature_func_t func = (sqt_quadrature_func_t)helmholtz_quad_func ;
+
+  g_assert(nse == 3) ;
+  nc = 4*nse ;
+  pstr = 3 ;
+  
+  nqk = 25 ;
+  nqt = 54 ;
+  nqs = 25 ;
+  
+  fprintf(stderr, "Helmholtz interaction matrix test\n") ;
+  fprintf(stderr, "=================================\n") ;
+  fprintf(stderr, "k   = %lg\n", k) ;
+  fprintf(stderr, "tol = %lg\n", tol) ;
+  fprintf(stderr, "depth = %d\n", depth) ;
+  fprintf(stderr, "nqs = %d\n", nqs) ;
+  fprintf(stderr, "nqk = %d\n", nqk) ;
+  fprintf(stderr, "nqt = %d\n", nqt) ;
+  
+  sqt_quadrature_select(nqt, &st, &oq) ;
+
+  sqt_quadrature_select(nqk, &q, &oq) ;
+  nK = sqt_koornwinder_interp_matrix(&(q[0]), 3, &(q[1]), 3, &(q[2]), 3,
+				     nqk, Kq) ;
+  for ( i = 0 ; i < nqk ; i ++ ) {
+    s = q[3*i+0] ; t = q[3*i+1] ;
+    sqt_element_shape_3d(nse, s, t, f, NULL, NULL, NULL, NULL, NULL) ;
+    for ( j = 0 ; j < nse ; j ++ ) {
+      src[i*2*nse + 2*j + 0] = f[j] ;
+      src[i*2*nse + 2*j + 1] = 0 ;
+    }
+  }
+
+  sqt_patch_nodes_tri(xse, xsstr, nse, &(q[0]), 3, &(q[1]), 3, NULL, 1, nqk,
+  		      xp, pstr, NULL, 1, NULL, 1) ;
+  sqt_patch_nodes_tri(xte, xtstr, nte, &(st[0]), 3, &(st[1]), 3, NULL, 1, nqt,
+  		      xt, pstr, NULL, 1, NULL, 1) ;
+  
+  sqt_quadrature_select(nqs, &qs, &oq) ;
+
+  /*interaction matrix*/
+  sqt_helmholtz_source_target_tri_adaptive(k, xse, xsstr, nse, qs, nqs,
+					   Kq, nqk, nK, tol, depth,
+					   xte, xtstr, nte,
+					   &(st[0]), 3, &(st[1]), 3, nqt,
+					   Ast) ;
+  work = (gdouble *)g_malloc(4*2*nqs*nqt*depth*sizeof(gdouble)) ;
+  fprintf(stderr, "starting matrix generation, t=%lg\n",
+	  time = g_timer_elapsed(timer, NULL)) ;    
+  sqt_helmholtz_source_target_kw_adaptive(k, xp, pstr, nqk, qs, nqs, Kq, nK,
+					  tol, depth, xt, pstr, nqt,
+					  Astb, work) ;
+  fprintf(stderr, "matrix generated, t=%lg\n",
+	  g_timer_elapsed(timer, NULL) - time) ;
+
+  i = 2*nqk + 17 ;
+  fprintf(stderr, "%e %e (%lg)\n", Ast[i], Astb[i],
+	  ABS(Ast[i]-Astb[i])) ;
+  
+  /*calculate single and double layer potentials on target element*/
+  al[0] = 1.0 ; al[1] = 0.0 ;
+  bt[0] = 0.0 ; bt[1] = 0.0 ;
+  lda = 2*nqk ;
+  blaswrap_zgemv(FALSE, nqt, nqk, al, &(Ast[0*nqk]), lda, src, nse, bt,
+		 fts, one) ;
+  blaswrap_zgemv(FALSE, nqt, nqk, al, &(Ast[2*nqk]), lda, src, nse, bt,
+		 ftd, one) ;
+  blaswrap_zgemv(FALSE, nqt, nqk, al, &(Astb[0*nqk]), lda, src, nse, bt,
+		 kts, one) ;
+  blaswrap_zgemv(FALSE, nqt, nqk, al, &(Astb[2*nqk]), lda, src, nse, bt,
+		 ktd, one) ;
+
+  data[0] = x ; data[1] = &k ;
+  for ( i = 0 ; i < nqt ; i ++ ) {
+    sqt_element_point_3d(xte, xtstr, nte, st[3*i+0], st[3*i+1], x, n, &J) ;
+    /* strictly, this is only correct for a three-noded triangle */
+    sqt_adaptive_quad_tri(xse, xsstr, nse, qs, nqs, func, f, nc,
+			  tol, depth, data) ;
+    fprintf(stderr, "%lg %lg %lg %lg %1.2e %1.2e %1.2e %1.2e\n",
+	    f[0], f[1], f[2*nse+0], f[2*nse+1],
+	    fabs(fts[2*i+0]-f[0]), fabs(fts[2*i+1]-f[1]),
+	    fabs(ftd[2*i+0]-f[2*nse+0]), fabs(ftd[2*i+1]-f[2*nse+1])) ;
+  }
+  
+  /*use last set of adaptively-integrated weights to check basic
+   quadrature method for well-separated elements*/  
+  sqt_quadrature_select(nq, &q, &oq) ;
+  memset(Astb, 0, 4*nqk*nqt*sizeof(gdouble)) ;
+  sqt_helmholtz_source_target_tri_basic(k, xse, xsstr, nse, q, nq,
+					Kq, nqk, nK, xte, xtstr, nte,
+					&(st[0]), 3, &(st[1]), 3, nqt,
+					Astb) ;
+
+  err = 0.0 ;
+  for ( i = 0 ; i < 2*nqk*nqt ; i ++ )
+    err = MAX(err, fabs(Ast[i] - Astb[i])) ;
+
+  fprintf(stderr, "weights using %d point quadrature\n", nq) ;
+  fprintf(stderr, "maximum error in basic quadrature: %lg\n", err) ;
+
   return 0 ;
 }
 
@@ -2263,6 +2384,20 @@ gint main(gint argc, gchar **argv)
     return 0 ;
   }
   
+  if ( test == 23 ) {
+    xtstr = xstr + 1 ; nte = ne ;
+    for ( i = 0 ; i < ne ; i ++ ) {
+      xt[xtstr*i+0] = xe[xstr*i+0] + 0.7 ; 
+      xt[xtstr*i+1] = xe[xstr*i+1] + 1.7 ; 
+      xt[xtstr*i+2] = xe[xstr*i+2] + 4.7 ; 
+    }
+
+    matrix_adaptive_helmholtz_test(k, xe, xstr, ne, xt, xtstr, nte, nq, depth,
+				   tol) ;
+
+    return 0 ;
+  }
+
   return 0 ;
 }
 

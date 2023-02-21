@@ -179,9 +179,8 @@ gint SQT_FUNCTION_NAME(sqt_cartesian_to_spherical)(SQT_REAL *x0,
 /**
  * @ingroup laplace
  *
- * @brief Calculating weights for evaluation of Laplace potential from
+ * @brief Calculating weights for evaluation of Laplace potentials from
  * triangular element using standard quadrature
- *
  * 
  * @param xe element nodes as three packed real numbers
  * @param xstr stride between nodes
@@ -193,7 +192,7 @@ gint SQT_FUNCTION_NAME(sqt_cartesian_to_spherical)(SQT_REAL *x0,
  * @param nqk number of Koornwinder interpolation nodes
  * @param nK maximum order of Koornwinder polynomial
  * @param x field point
- * @param w on exit contains weights for Laplace potential at \a x
+ * @param w on exit contains weights for Laplace potentials at \a x
  * 
  * @return 0 on success.
  * 
@@ -207,6 +206,39 @@ gint SQT_FUNCTION_NAME(sqt_laplace_weights_tri_basic)(SQT_REAL *xe,
 						      gint nK,
 						      SQT_REAL *x,
 						      SQT_REAL *w) ;
+/**
+ * @ingroup helmholtz
+ *
+ * @brief Calculating weights for evaluation of Helmholtz potentials from
+ * triangular element using standard quadrature
+ * 
+ * @param k wavenumber
+ * @param xe element nodes as three packed real numbers
+ * @param xstr stride between nodes
+ * @param ne number of nodes 
+ * @param q nodes and weights of a triangular quadrature rule
+ * @param nq number of nodes in \a q
+ * @param Kq Koornwinder interpolation matrix from 
+ * SQT_FUNCTION_NAME(sqt_koornwinder_interp_matrix)(...)
+ * @param nqk number of Koornwinder interpolation nodes
+ * @param nK maximum order of Koornwinder polynomial
+ * @param x field point
+ * @param w on exit contains weights for Laplace potentials at \a x
+ * 
+ * @return 0 on success.
+ * 
+ **/
+
+gint SQT_FUNCTION_NAME(sqt_helmholtz_weights_tri_basic)(SQT_REAL k,
+							SQT_REAL *xe,
+							gint xstr, gint ne,
+							SQT_REAL *q, gint nq,
+							SQT_REAL *Kq,
+							gint nqk,
+							gint nK,
+							SQT_REAL *x,
+							SQT_REAL *w) ;
+
 
 /**
  * @ingroup laplace
@@ -245,6 +277,43 @@ gint SQT_FUNCTION_NAME(sqt_laplace_weights_tri_adaptive)(SQT_REAL *xe,
 							 SQT_REAL *w) ;
 
 /**
+ * @ingroup helmholtz
+ *
+ * @brief Calculating weights for evaluation of Helmholtz potentials from
+ * triangular element using adaptive quadrature
+ *
+ * @param k wavenumber
+ * @param xe element nodes as three packed real numbers
+ * @param xstr stride between nodes
+ * @param ne number of nodes 
+ * @param q nodes and weights of a triangular quadrature rule
+ * @param nq number of nodes in \a q
+ * @param Kq Koornwinder interpolation matrix from 
+ * SQT_FUNCTION_NAME(sqt_koornwinder_interp_matrix)(...)
+ * @param nqk number of Koornwinder interpolation nodes
+ * @param nK maximum order of Koornwinder polynomial
+ * @param tol convergence tolerance for adaptive quadrature
+ * @param dmax maximum recursion depth for adaptive quadrature
+ * @param x field point
+ * @param w on exit contains weights for Laplace potential at \a x
+ * 
+ * @return 0 on success.
+ * 
+ **/
+
+gint SQT_FUNCTION_NAME(sqt_helmholtz_weights_tri_adaptive)(SQT_REAL k,
+							   SQT_REAL *xe,
+							   gint xstr, gint ne,
+							   SQT_REAL *q, gint nq,
+							   SQT_REAL *Kq,
+							   gint nqk,
+							   gint nK,
+							   SQT_REAL tol,
+							   gint dmax,
+							   SQT_REAL *x,
+							   SQT_REAL *w) ;
+
+/**
  * @ingroup laplace
  *
  * @brief Calculating weights for evaluation of self-induced Laplace
@@ -278,12 +347,45 @@ gint SQT_FUNCTION_NAME(sqt_laplace_weights_tri_singular)(SQT_REAL *xe,
 							 SQT_REAL *w) ;
 
 /**
+ * @ingroup helmholtz
+ *
+ * @brief Calculating weights for evaluation of self-induced Helmholtz
+ * potentials on triangular element using singular quadrature
+ * 
+ * @param k wavenumber
+ * @param xe element nodes as three packed real numbers
+ * @param xstr stride between nodes
+ * @param ne number of nodes 
+ * @param Kq Koornwinder interpolation matrix from 
+ * SQT_FUNCTION_NAME(sqt_koornwinder_interp_matrix)(...)
+ * @param nqk number of Koornwinder interpolation nodes
+ * @param nK maximum order of Koornwinder polynomial
+ * @param N order of integration rules
+ * @param s0 local coordinate of evaluation point on \a xe
+ * @param t0 local coordinate of evaluation point on \a xe
+ * @param w on exit contains weights for Helmholtz potentials at \a x
+ * 
+ * @return 0 on success.
+ * 
+ **/
+
+gint SQT_FUNCTION_NAME(sqt_helmholtz_weights_tri_singular)(SQT_REAL k,
+							   SQT_REAL *xe,
+							 gint xstr, gint ne,
+							 SQT_REAL *Kq,
+							 gint nqk,
+							 gint nK,
+							 gint N,
+							 SQT_REAL s0,
+							 SQT_REAL t0,
+							 SQT_REAL *w) ;
+
+/**
  * @ingroup laplace
  *
  * @brief Calculating weights for evaluation of Laplace potential on
  * target triangular element from source triangular element using
  * standard quadrature
- *
  * 
  * @param xse source element nodes as three packed real numbers
  * @param xsstr stride between source element nodes
@@ -311,6 +413,54 @@ gint SQT_FUNCTION_NAME(sqt_laplace_weights_tri_singular)(SQT_REAL *xe,
 
 gint
 SQT_FUNCTION_NAME(sqt_laplace_source_target_tri_basic)(SQT_REAL *xse,
+						       gint xsstr, gint nse,
+						       SQT_REAL *q, gint nq,
+						       SQT_REAL *Kq,
+						       gint nqk, gint nK,
+						       SQT_REAL *xte,
+						       gint xtstr, gint nte,
+						       SQT_REAL *s,
+						       gint sstr,
+						       SQT_REAL *t,
+						       gint tstr,
+						       gint nt,
+						       SQT_REAL *Ast) ;
+
+/**
+ * @ingroup helmholtz
+ *
+ * @brief Calculating weights for evaluation of Helmholtz potential on
+ * target triangular element from source triangular element using
+ * standard quadrature
+ * 
+ * @param k wavenumber
+ * @param xse source element nodes as three packed real numbers
+ * @param xsstr stride between source element nodes
+ * @param nse number of source element nodes 
+ * @param q nodes and weights of a triangular quadrature rule
+ * @param nq number of nodes in \a q
+ * @param Kq Koornwinder interpolation matrix for \a xse from 
+ * SQT_FUNCTION_NAME(sqt_koornwinder_interp_matrix)(...)
+ * @param nqk number of Koornwinder interpolation nodes
+ * @param nK maximum order of Koornwinder polynomial
+ * @param xte target element nodes as three packed real numbers
+ * @param xtstr stride between target element nodes
+ * @param nte number of target element nodes 
+ * @param s local coordinates of evaluation points on \a xte
+ * @param sstr stride in \a s
+ * @param t local coordinates of evaluation points on \a xte
+ * @param tstr stride in \a t
+ * @param nt number of evaluation points on \a xte
+ * @param Ast on exit contains matrix for evaluation of single and double
+ * layer potentials generated by source element on target
+ * 
+ * @return 0 on success.
+ * 
+ **/
+
+gint
+SQT_FUNCTION_NAME(sqt_helmholtz_source_target_tri_basic)(SQT_REAL k,
+						       SQT_REAL *xse,
 						       gint xsstr, gint nse,
 						       SQT_REAL *q, gint nq,
 						       SQT_REAL *Kq,
@@ -377,6 +527,78 @@ SQT_FUNCTION_NAME(sqt_laplace_source_target_tri_adaptive)(SQT_REAL *xse,
 /**
  * @ingroup laplace
  *
+ * @brief Calculating weights for evaluation of Laplace potentials on
+ * element defined using Koornwinder polynomials using adaptive
+ * quadrature
+ * 
+ * @param ce interpolation coefficients for patch surface
+ * @param ne number of interpolation coefficients
+ * @param Nk maximum order of Koornwinder polynomial
+ * @param Kq Koornwinder interpolation matrix from 
+ * SQT_FUNCTION_NAME(sqt_koornwinder_interp_matrix)(...)
+ * @param q quadrature rule
+ * @param nq number of quadrature nodes
+ * @param tol tolerance for convergence of adaptive quadrature
+ * @param dmax maximum depth of adaptive quadrature
+ * @param x field point
+ * @param w on exit, contains weights for evaluation of Laplace potentials at 
+ * \a x
+ * @param work workspace
+ * 
+ * @return 0 on success.
+ * 
+ **/
+
+gint SQT_FUNCTION_NAME(sqt_laplace_weights_kw_adaptive)(SQT_REAL *ce,
+							gint ne, gint Nk,
+							SQT_REAL *Kq,
+							SQT_REAL *q, gint nq,
+							SQT_REAL tol,
+							gint dmax,
+							SQT_REAL *x,
+							SQT_REAL *w,
+							SQT_REAL *work) ;
+
+/**
+ * @ingroup helmholtz
+ *
+ * @brief Calculating weights for evaluation of Helmholtz potentials on
+ * element defined using Koornwinder polynomials using adaptive
+ * quadrature
+ * 
+ * @param k wavenumber
+ * @param ce interpolation coefficients for patch surface
+ * @param ne number of interpolation coefficients
+ * @param Nk maximum order of Koornwinder polynomial
+ * @param Kq Koornwinder interpolation matrix from 
+ * SQT_FUNCTION_NAME(sqt_koornwinder_interp_matrix)(...)
+ * @param q quadrature rule
+ * @param nq number of quadrature nodes
+ * @param tol tolerance for convergence of adaptive quadrature
+ * @param dmax maximum depth of adaptive quadrature
+ * @param x field point
+ * @param w on exit, contains weights for evaluation of Helmholtz potentials
+ * at \a x
+ * @param work workspace
+ * 
+ * @return 0 on success.
+ * 
+ **/
+
+gint SQT_FUNCTION_NAME(sqt_helmholtz_weights_kw_adaptive)(SQT_REAL k,
+							  SQT_REAL *ce,
+							  gint ne, gint Nk,
+							  SQT_REAL *Kq,
+							  SQT_REAL *q, gint nq,
+							  SQT_REAL tol,
+							  gint dmax,
+							  SQT_REAL *x,
+							  SQT_REAL *w,
+							  SQT_REAL *work) ;
+
+/**
+ * @ingroup laplace
+ *
  * @brief Calculating weights for evaluation of self-induced Laplace
  * potential on triangular element using singular integral rules
  * 
@@ -414,13 +636,145 @@ SQT_FUNCTION_NAME(sqt_laplace_source_target_tri_self)(SQT_REAL *xe,
 						      SQT_REAL *Ast) ;
 
 /**
- * @ingroup
+ * @ingroup laplace
  *
- * @brief
+ * @brief Generate matrix for evaluation of Laplace potentials from
+ * patch defined using Koornwinder polynomials using adaptive
+ * quadrature
  * 
- * @param 
+ * @param ce interpolation coefficients for patch surface
+ * @param ne number of interpolation coefficients
+ * @param Nk maximum order of Koornwinder polynomial
+ * @param Kq Koornwinder interpolation matrix from 
+ * SQT_FUNCTION_NAME(sqt_koornwinder_interp_matrix)(...)
+ * @param q quadrature rule
+ * @param nq number of quadrature nodes
+ * @param tol tolerance for convergence of adaptive quadrature
+ * @param dmax maximum depth of adaptive quadrature
+ * @param x array of field points, three elements per point
+ * @param xstr stride between field points
+ * @param nx number of field points
+ * @param Ast on exit, contains matrix for evaluation of Laplace potentials at 
+ * all points in \a x
+ * @param work workspace
  * 
  * @return 0 on success.
  * 
  **/
 
+gint SQT_FUNCTION_NAME(sqt_laplace_matrix_kw_adaptive)(SQT_REAL *ce,
+						       gint ne, gint Nk,
+						       SQT_REAL *Kq,
+						       SQT_REAL *q, gint nq,
+						       SQT_REAL tol,
+						       gint dmax,
+						       SQT_REAL *x,
+						       gint xstr, gint nx,
+						       SQT_REAL *Ast,
+						       SQT_REAL *work) ;
+
+
+
+/**
+ * @ingroup helmholtz
+ *
+ * @brief Generate matrix for evaluation of Helmholtz potentials from
+ * patch defined using Koornwinder polynomials using adaptive
+ * quadrature
+ * 
+ * @param k wavenumber
+ * @param ce interpolation coefficients for patch surface
+ * @param ne number of interpolation coefficients
+ * @param Nk maximum order of Koornwinder polynomial
+ * @param Kq Koornwinder interpolation matrix from 
+ * SQT_FUNCTION_NAME(sqt_koornwinder_interp_matrix)(...)
+ * @param q quadrature rule
+ * @param nq number of quadrature nodes
+ * @param tol tolerance for convergence of adaptive quadrature
+ * @param dmax maximum depth of adaptive quadrature
+ * @param x array of field points, three elements per point
+ * @param xstr stride between field points
+ * @param nx number of field points
+ * @param Ast on exit, contains matrix for evaluation of Laplace potentials at 
+ * all points in \a x
+ * @param work workspace
+ * 
+ * @return 0 on success.
+ * 
+ **/
+
+gint SQT_FUNCTION_NAME(sqt_helmholtz_matrix_kw_adaptive)(SQT_REAL k,
+							 SQT_REAL *ce,
+							 gint ne, gint Nk,
+							 SQT_REAL *Kq,
+							 SQT_REAL *q, gint nq,
+							 SQT_REAL tol,
+							 gint dmax,
+							 SQT_REAL *x,
+							 gint xstr, gint nx,
+							 SQT_REAL *Ast,
+							 SQT_REAL *work) ;
+
+/**
+ * @ingroup laplace
+ *
+ * @brief Calculating weights for evaluation of self-induced Laplace
+ * potential using singular quadrature on patch defined using
+ * Koornwinder interpolation.
+ *
+ * @param ce interpolation coefficients for patch surface
+ * @param ne number of interpolation coefficients
+ * @param Nk maximum order of Koornwinder polynomial
+ * @param Kq Koornwinder interpolation matrix from 
+ * @param N order of singular quadrature rule
+ * @param s0 coordinate in local system of surface evaluation point
+ * @param t0 coordinate in local system of surface evaluation point
+ * @param w on exit contains weights for Laplace potential at 
+ * \f$\mathbf{x}(s_{0},t_{0})\f$
+ * @param work workspace
+ * 
+ * @return 0 on success.
+ * 
+ **/
+
+gint SQT_FUNCTION_NAME(sqt_laplace_weights_kw_singular)(SQT_REAL *ce,
+							gint ne, gint Nk,
+							SQT_REAL *Kq,
+							gint N,
+							SQT_REAL s0,
+							SQT_REAL t0,
+							SQT_REAL *w,
+							SQT_REAL *work) ;
+
+/**
+ * @ingroup helmholtz
+ *
+ * @brief Calculating weights for evaluation of self-induced Helmholtz
+ * potential using singular quadrature on patch defined using
+ * Koornwinder interpolation.
+ *
+ * @param k wavenumber
+ * @param ce interpolation coefficients for patch surface
+ * @param ne number of interpolation coefficients
+ * @param Nk maximum order of Koornwinder polynomial
+ * @param Kq Koornwinder interpolation matrix from 
+ * @param N order of singular quadrature rule
+ * @param s0 coordinate in local system of surface evaluation point
+ * @param t0 coordinate in local system of surface evaluation point
+ * @param w on exit contains weights for Helmholtz potential at
+ * \f$\mathbf{x}(s_{0},t_{0})\f$
+ * @param work workspace
+ * 
+ * @return 0 on success.
+ * 
+ **/
+
+gint SQT_FUNCTION_NAME(sqt_helmholtz_weights_kw_singular)(SQT_REAL k,
+							  SQT_REAL *ce,
+							  gint ne, gint Nk,
+							  SQT_REAL *Kq,
+							  gint N,
+							  SQT_REAL s0,
+							  SQT_REAL t0,
+							  SQT_REAL *w,
+							  SQT_REAL *work) ;

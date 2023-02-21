@@ -1,7 +1,8 @@
-\form#0:$x$
-\form#1:$\partial L_{i}/\partial s$
-\form#2:$\partial L_{i}/\partial t$
-\form#3:$\partial^{2} L_{i}/\partial s^{2}$
-\form#4:$\partial^{2} L_{i}/\partial s\partial t$
-\form#5:$\partial^{2} L_{i}/\partial t^{2}$
-\form#6:$(s,t)$
+\_form#0=8x6:$x$
+\_form#1=39x14:$\partial L_{i}/\partial s$
+\_form#2=38x14:$\partial L_{i}/\partial t$
+\_form#3=50x15:$\partial^{2} L_{i}/\partial s^{2}$
+\_form#4=56x15:$\partial^{2} L_{i}/\partial s\partial t$
+\_form#5=49x15:$\partial^{2} L_{i}/\partial t^{2}$
+\_form#6=25x14:$(s,t)$
+\_form#7=45x14:$\mathbf{x}(s_{0},t_{0})$

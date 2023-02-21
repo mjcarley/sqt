@@ -25,7 +25,16 @@
 /**
  * @defgroup laplace Laplace potentials
  *
- * @brief Specialized functions for Laplace evaluation
+ * @brief Specialized and convenience functions for evaluation of
+ *  Laplace potentials 
+ *
+ */
+
+/**
+ * @defgroup helmholtz Helmholtz potentials
+ *
+ * @brief Specialized and convenience functions for evaluation of
+ *  Helmholtz potentials 
  *
  */
 

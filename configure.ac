@@ -187,9 +187,9 @@ Makefile
 src/Makefile
 src/sqt-config
 tests/Makefile
-doc/Makefile
-doc/html/Makefile
 ])
+
+##doc/html/Makefile doc/Makefile
 
 AC_OUTPUT
 

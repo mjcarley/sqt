@@ -229,7 +229,7 @@ static gint adaptive_quad_kw_recursion(SQT_REAL *ce, gint ne, gint Nk,
 				       SQT_REAL *work)
 
 {
-  gint i, i1 = 1 ;
+  gint i ;
   SQT_REAL *q0, *q1, *q2, *q3 ;
   SQT_REAL st0[6], st1[6], st2[6], st3[6] ;
   gboolean recurse ;

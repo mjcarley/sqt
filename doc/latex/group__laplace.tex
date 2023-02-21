@@ -1,70 +1,147 @@
-\section{Laplace potentials}
+\doxysection{Laplace potentials}
 \label{group__laplace}\index{Laplace potentials@{Laplace potentials}}
 
 
-Specialized functions for Laplace evaluation.  
+Specialized and convenience functions for evaluation of Laplace potentials.  
 
 
-\subsection*{Functions}
+\doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-gint {\bf sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+basic} (gdouble $\ast$xe, gint xstr, gint ne, gdouble $\ast$q, gint nq, gdouble $\ast$Kq, gint nqk, gint n\+K, gdouble $\ast$x, gdouble $\ast$w)
-\begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of Laplace potential from triangular element using standard quadrature. \end{DoxyCompactList}\item 
-gint {\bf sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+adaptive} (gdouble $\ast$xe, gint xstr, gint ne, gdouble $\ast$q, gint nq, gdouble $\ast$Kq, gint nqk, gint n\+K, gdouble tol, gint dmax, gdouble $\ast$x, gdouble $\ast$w)
+gint \textbf{ sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+basic} (gdouble $\ast$xe, gint xstr, gint ne, gdouble $\ast$q, gint nq, gdouble $\ast$Kq, gint nqk, gint nK, gdouble $\ast$x, gdouble $\ast$w)
+\begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of Laplace potentials from triangular element using standard quadrature. \end{DoxyCompactList}\item 
+gint \textbf{ sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+adaptive} (gdouble $\ast$xe, gint xstr, gint ne, gdouble $\ast$q, gint nq, gdouble $\ast$Kq, gint nqk, gint nK, gdouble tol, gint dmax, gdouble $\ast$x, gdouble $\ast$w)
 \begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of Laplace potential from triangular element using adaptive quadrature. \end{DoxyCompactList}\item 
-gint {\bf sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+singular} (gdouble $\ast$xe, gint xstr, gint ne, gdouble $\ast$Kq, gint nqk, gint n\+K, gint N, gdouble s0, gdouble t0, gdouble $\ast$w)
+gint \textbf{ sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+singular} (gdouble $\ast$xe, gint xstr, gint ne, gdouble $\ast$Kq, gint nqk, gint nK, gint N, gdouble s0, gdouble t0, gdouble $\ast$w)
 \begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of self-\/induced Laplace potential on triangular element using singular quadrature. \end{DoxyCompactList}\item 
-gint {\bf sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+basic} (gdouble $\ast$xse, gint xsstr, gint nse, gdouble $\ast$q, gint nq, gdouble $\ast$Kq, gint nqk, gint n\+K, gdouble $\ast$xte, gint xtstr, gint nte, gdouble $\ast$s, gint sstr, gdouble $\ast$t, gint tstr, gint nt, gdouble $\ast$Ast)
+gint \textbf{ sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+basic} (gdouble $\ast$xse, gint xsstr, gint nse, gdouble $\ast$q, gint nq, gdouble $\ast$Kq, gint nqk, gint nK, gdouble $\ast$xte, gint xtstr, gint nte, gdouble $\ast$s, gint sstr, gdouble $\ast$t, gint tstr, gint nt, gdouble $\ast$Ast)
 \begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of Laplace potential on target triangular element from source triangular element using standard quadrature. \end{DoxyCompactList}\item 
-gint {\bf sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+adaptive} (gdouble $\ast$xse, gint xsstr, gint nse, gdouble $\ast$q, gint nq, gdouble $\ast$Kq, gint nqk, gint n\+K, gdouble tol, gint dmax, gdouble $\ast$xte, gint xtstr, gint nte, gdouble $\ast$s, gint sstr, gdouble $\ast$t, gint tstr, gint nt, gdouble $\ast$Ast)
+gint \textbf{ sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+adaptive} (gdouble $\ast$xse, gint xsstr, gint nse, gdouble $\ast$q, gint nq, gdouble $\ast$Kq, gint nqk, gint nK, gdouble tol, gint dmax, gdouble $\ast$xte, gint xtstr, gint nte, gdouble $\ast$s, gint sstr, gdouble $\ast$t, gint tstr, gint nt, gdouble $\ast$Ast)
 \begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of Laplace potential on target triangular element from source triangular element using adaptive quadrature. \end{DoxyCompactList}\item 
-gint {\bf sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+self} (gdouble $\ast$xe, gint xstr, gint ne, gdouble $\ast$Kq, gint nqk, gint n\+K, gint N, gdouble $\ast$s, gint sstr, gdouble $\ast$t, gint tstr, gint nt, gdouble $\ast$Ast)
+gint \textbf{ sqt\+\_\+laplace\+\_\+weights\+\_\+kw\+\_\+adaptive} (gdouble $\ast$ce, gint ne, gint Nk, gdouble $\ast$Kq, gdouble $\ast$q, gint nq, gdouble tol, gint dmax, gdouble $\ast$x, gdouble $\ast$w, gdouble $\ast$work)
+\begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of Laplace potentials on element defined using Koornwinder polynomials using adaptive quadrature. \end{DoxyCompactList}\item 
+gint \textbf{ sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+self} (gdouble $\ast$xe, gint xstr, gint ne, gdouble $\ast$Kq, gint nqk, gint nK, gint N, gdouble $\ast$s, gint sstr, gdouble $\ast$t, gint tstr, gint nt, gdouble $\ast$Ast)
 \begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of self-\/induced Laplace potential on triangular element using singular integral rules. \end{DoxyCompactList}\item 
-gint {\bf sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+basic\+\_\+f} (gfloat $\ast$xe, gint xstr, gint ne, gfloat $\ast$q, gint nq, gfloat $\ast$Kq, gint nqk, gint n\+K, gfloat $\ast$x, gfloat $\ast$w)
-\begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of Laplace potential from triangular element using standard quadrature. \end{DoxyCompactList}\item 
-gint {\bf sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+adaptive\+\_\+f} (gfloat $\ast$xe, gint xstr, gint ne, gfloat $\ast$q, gint nq, gfloat $\ast$Kq, gint nqk, gint n\+K, gfloat tol, gint dmax, gfloat $\ast$x, gfloat $\ast$w)
+gint \textbf{ sqt\+\_\+laplace\+\_\+matrix\+\_\+kw\+\_\+adaptive} (gdouble $\ast$ce, gint ne, gint Nk, gdouble $\ast$Kq, gdouble $\ast$q, gint nq, gdouble tol, gint dmax, gdouble $\ast$x, gint xstr, gint nx, gdouble $\ast$Ast, gdouble $\ast$work)
+\begin{DoxyCompactList}\small\item\em Generate matrix for evaluation of Laplace potentials from patch defined using Koornwinder polynomials using adaptive quadrature. \end{DoxyCompactList}\item 
+gint \textbf{ sqt\+\_\+laplace\+\_\+weights\+\_\+kw\+\_\+singular} (gdouble $\ast$ce, gint ne, gint Nk, gdouble $\ast$Kq, gint N, gdouble s0, gdouble t0, gdouble $\ast$w, gdouble $\ast$work)
+\begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of self-\/induced Laplace potential using singular quadrature on patch defined using Koornwinder interpolation. \end{DoxyCompactList}\item 
+gint \textbf{ sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+basic\+\_\+f} (gfloat $\ast$xe, gint xstr, gint ne, gfloat $\ast$q, gint nq, gfloat $\ast$Kq, gint nqk, gint nK, gfloat $\ast$x, gfloat $\ast$w)
+\begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of Laplace potentials from triangular element using standard quadrature. \end{DoxyCompactList}\item 
+gint \textbf{ sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+adaptive\+\_\+f} (gfloat $\ast$xe, gint xstr, gint ne, gfloat $\ast$q, gint nq, gfloat $\ast$Kq, gint nqk, gint nK, gfloat tol, gint dmax, gfloat $\ast$x, gfloat $\ast$w)
 \begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of Laplace potential from triangular element using adaptive quadrature. \end{DoxyCompactList}\item 
-gint {\bf sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+singular\+\_\+f} (gfloat $\ast$xe, gint xstr, gint ne, gfloat $\ast$Kq, gint nqk, gint n\+K, gint N, gfloat s0, gfloat t0, gfloat $\ast$w)
+gint \textbf{ sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+singular\+\_\+f} (gfloat $\ast$xe, gint xstr, gint ne, gfloat $\ast$Kq, gint nqk, gint nK, gint N, gfloat s0, gfloat t0, gfloat $\ast$w)
 \begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of self-\/induced Laplace potential on triangular element using singular quadrature. \end{DoxyCompactList}\item 
-gint {\bf sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+basic\+\_\+f} (gfloat $\ast$xse, gint xsstr, gint nse, gfloat $\ast$q, gint nq, gfloat $\ast$Kq, gint nqk, gint n\+K, gfloat $\ast$xte, gint xtstr, gint nte, gfloat $\ast$s, gint sstr, gfloat $\ast$t, gint tstr, gint nt, gfloat $\ast$Ast)
+gint \textbf{ sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+basic\+\_\+f} (gfloat $\ast$xse, gint xsstr, gint nse, gfloat $\ast$q, gint nq, gfloat $\ast$Kq, gint nqk, gint nK, gfloat $\ast$xte, gint xtstr, gint nte, gfloat $\ast$s, gint sstr, gfloat $\ast$t, gint tstr, gint nt, gfloat $\ast$Ast)
 \begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of Laplace potential on target triangular element from source triangular element using standard quadrature. \end{DoxyCompactList}\item 
-gint {\bf sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+adaptive\+\_\+f} (gfloat $\ast$xse, gint xsstr, gint nse, gfloat $\ast$q, gint nq, gfloat $\ast$Kq, gint nqk, gint n\+K, gfloat tol, gint dmax, gfloat $\ast$xte, gint xtstr, gint nte, gfloat $\ast$s, gint sstr, gfloat $\ast$t, gint tstr, gint nt, gfloat $\ast$Ast)
+gint \textbf{ sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+adaptive\+\_\+f} (gfloat $\ast$xse, gint xsstr, gint nse, gfloat $\ast$q, gint nq, gfloat $\ast$Kq, gint nqk, gint nK, gfloat tol, gint dmax, gfloat $\ast$xte, gint xtstr, gint nte, gfloat $\ast$s, gint sstr, gfloat $\ast$t, gint tstr, gint nt, gfloat $\ast$Ast)
 \begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of Laplace potential on target triangular element from source triangular element using adaptive quadrature. \end{DoxyCompactList}\item 
-gint {\bf sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+self\+\_\+f} (gfloat $\ast$xe, gint xstr, gint ne, gfloat $\ast$Kq, gint nqk, gint n\+K, gint N, gfloat $\ast$s, gint sstr, gfloat $\ast$t, gint tstr, gint nt, gfloat $\ast$Ast)
-\begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of self-\/induced Laplace potential on triangular element using singular integral rules. \end{DoxyCompactList}\end{DoxyCompactItemize}
+gint \textbf{ sqt\+\_\+laplace\+\_\+weights\+\_\+kw\+\_\+adaptive\+\_\+f} (gfloat $\ast$ce, gint ne, gint Nk, gfloat $\ast$Kq, gfloat $\ast$q, gint nq, gfloat tol, gint dmax, gfloat $\ast$x, gfloat $\ast$w, gfloat $\ast$work)
+\begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of Laplace potentials on element defined using Koornwinder polynomials using adaptive quadrature. \end{DoxyCompactList}\item 
+gint \textbf{ sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+self\+\_\+f} (gfloat $\ast$xe, gint xstr, gint ne, gfloat $\ast$Kq, gint nqk, gint nK, gint N, gfloat $\ast$s, gint sstr, gfloat $\ast$t, gint tstr, gint nt, gfloat $\ast$Ast)
+\begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of self-\/induced Laplace potential on triangular element using singular integral rules. \end{DoxyCompactList}\item 
+gint \textbf{ sqt\+\_\+laplace\+\_\+matrix\+\_\+kw\+\_\+adaptive\+\_\+f} (gfloat $\ast$ce, gint ne, gint Nk, gfloat $\ast$Kq, gfloat $\ast$q, gint nq, gfloat tol, gint dmax, gfloat $\ast$x, gint xstr, gint nx, gfloat $\ast$Ast, gfloat $\ast$work)
+\begin{DoxyCompactList}\small\item\em Generate matrix for evaluation of Laplace potentials from patch defined using Koornwinder polynomials using adaptive quadrature. \end{DoxyCompactList}\item 
+gint \textbf{ sqt\+\_\+laplace\+\_\+weights\+\_\+kw\+\_\+singular\+\_\+f} (gfloat $\ast$ce, gint ne, gint Nk, gfloat $\ast$Kq, gint N, gfloat s0, gfloat t0, gfloat $\ast$w, gfloat $\ast$work)
+\begin{DoxyCompactList}\small\item\em Calculating weights for evaluation of self-\/induced Laplace potential using singular quadrature on patch defined using Koornwinder interpolation. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
-\subsection{Detailed Description}
-Specialized functions for Laplace evaluation. 
+\doxysubsection{Detailed Description}
+Specialized and convenience functions for evaluation of Laplace potentials. 
 
 
 
-\subsection{Function Documentation}
-\index{Laplace potentials@{Laplace potentials}!sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+adaptive@{sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+adaptive}}
-\index{sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+adaptive@{sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+adaptive}!Laplace potentials@{Laplace potentials}}
-\subsubsection[{sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+adaptive}]{\setlength{\rightskip}{0pt plus 5cm}gint sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+adaptive (
-\begin{DoxyParamCaption}
-\item[{gdouble $\ast$}]{xse, }
-\item[{gint}]{xsstr, }
-\item[{gint}]{nse, }
-\item[{gdouble $\ast$}]{q, }
-\item[{gint}]{nq, }
-\item[{gdouble $\ast$}]{Kq, }
-\item[{gint}]{nqk, }
-\item[{gint}]{n\+K, }
-\item[{gdouble}]{tol, }
-\item[{gint}]{dmax, }
-\item[{gdouble $\ast$}]{xte, }
-\item[{gint}]{xtstr, }
-\item[{gint}]{nte, }
-\item[{gdouble $\ast$}]{s, }
-\item[{gint}]{sstr, }
-\item[{gdouble $\ast$}]{t, }
-\item[{gint}]{tstr, }
-\item[{gint}]{nt, }
-\item[{gdouble $\ast$}]{Ast}
-\end{DoxyParamCaption}
-)}\label{group__laplace_ga8c7a065afad372a4f7d2cd75fdb504a9}
+\doxysubsection{Function Documentation}
+\mbox{\label{group__laplace_ga1d1dde713f57b9c6d31a63fff2d4784c}} 
+\index{Laplace potentials@{Laplace potentials}!sqt\_laplace\_matrix\_kw\_adaptive@{sqt\_laplace\_matrix\_kw\_adaptive}}
+\index{sqt\_laplace\_matrix\_kw\_adaptive@{sqt\_laplace\_matrix\_kw\_adaptive}!Laplace potentials@{Laplace potentials}}
+\doxysubsubsection{sqt\_laplace\_matrix\_kw\_adaptive()}
+{\footnotesize\ttfamily gint sqt\+\_\+laplace\+\_\+matrix\+\_\+kw\+\_\+adaptive (\begin{DoxyParamCaption}\item[{gdouble $\ast$}]{ce,  }\item[{gint}]{ne,  }\item[{gint}]{Nk,  }\item[{gdouble $\ast$}]{Kq,  }\item[{gdouble $\ast$}]{q,  }\item[{gint}]{nq,  }\item[{gdouble}]{tol,  }\item[{gint}]{dmax,  }\item[{gdouble $\ast$}]{x,  }\item[{gint}]{xstr,  }\item[{gint}]{nx,  }\item[{gdouble $\ast$}]{Ast,  }\item[{gdouble $\ast$}]{work }\end{DoxyParamCaption})}
+
+
+
+Generate matrix for evaluation of Laplace potentials from patch defined using Koornwinder polynomials using adaptive quadrature. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ce} & interpolation coefficients for patch surface \\
+\hline
+{\em ne} & number of interpolation coefficients \\
+\hline
+{\em Nk} & maximum order of Koornwinder polynomial \\
+\hline
+{\em Kq} & Koornwinder interpolation matrix from sqt\+\_\+koornwinder\+\_\+interp\+\_\+matrix(...) \\
+\hline
+{\em q} & quadrature rule \\
+\hline
+{\em nq} & number of quadrature nodes \\
+\hline
+{\em tol} & tolerance for convergence of adaptive quadrature \\
+\hline
+{\em dmax} & maximum depth of adaptive quadrature \\
+\hline
+{\em x} & array of field points, three elements per point \\
+\hline
+{\em xstr} & stride between field points \\
+\hline
+{\em nx} & number of field points \\
+\hline
+{\em Ast} & on exit, contains matrix for evaluation of Laplace potentials at all points in {\itshape x} \\
+\hline
+{\em work} & workspace\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\mbox{\label{group__laplace_gaf1c0b3e39d2d7c1c6c1e651e7eb2f5dd}} 
+\index{Laplace potentials@{Laplace potentials}!sqt\_laplace\_matrix\_kw\_adaptive\_f@{sqt\_laplace\_matrix\_kw\_adaptive\_f}}
+\index{sqt\_laplace\_matrix\_kw\_adaptive\_f@{sqt\_laplace\_matrix\_kw\_adaptive\_f}!Laplace potentials@{Laplace potentials}}
+\doxysubsubsection{sqt\_laplace\_matrix\_kw\_adaptive\_f()}
+{\footnotesize\ttfamily gint sqt\+\_\+laplace\+\_\+matrix\+\_\+kw\+\_\+adaptive\+\_\+f (\begin{DoxyParamCaption}\item[{gfloat $\ast$}]{ce,  }\item[{gint}]{ne,  }\item[{gint}]{Nk,  }\item[{gfloat $\ast$}]{Kq,  }\item[{gfloat $\ast$}]{q,  }\item[{gint}]{nq,  }\item[{gfloat}]{tol,  }\item[{gint}]{dmax,  }\item[{gfloat $\ast$}]{x,  }\item[{gint}]{xstr,  }\item[{gint}]{nx,  }\item[{gfloat $\ast$}]{Ast,  }\item[{gfloat $\ast$}]{work }\end{DoxyParamCaption})}
+
+
+
+Generate matrix for evaluation of Laplace potentials from patch defined using Koornwinder polynomials using adaptive quadrature. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ce} & interpolation coefficients for patch surface \\
+\hline
+{\em ne} & number of interpolation coefficients \\
+\hline
+{\em Nk} & maximum order of Koornwinder polynomial \\
+\hline
+{\em Kq} & Koornwinder interpolation matrix from sqt\+\_\+koornwinder\+\_\+interp\+\_\+matrix\+\_\+f(...) \\
+\hline
+{\em q} & quadrature rule \\
+\hline
+{\em nq} & number of quadrature nodes \\
+\hline
+{\em tol} & tolerance for convergence of adaptive quadrature \\
+\hline
+{\em dmax} & maximum depth of adaptive quadrature \\
+\hline
+{\em x} & array of field points, three elements per point \\
+\hline
+{\em xstr} & stride between field points \\
+\hline
+{\em nx} & number of field points \\
+\hline
+{\em Ast} & on exit, contains matrix for evaluation of Laplace potentials at all points in {\itshape x} \\
+\hline
+{\em work} & workspace\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\mbox{\label{group__laplace_ga8c7a065afad372a4f7d2cd75fdb504a9}} 
+\index{Laplace potentials@{Laplace potentials}!sqt\_laplace\_source\_target\_tri\_adaptive@{sqt\_laplace\_source\_target\_tri\_adaptive}}
+\index{sqt\_laplace\_source\_target\_tri\_adaptive@{sqt\_laplace\_source\_target\_tri\_adaptive}!Laplace potentials@{Laplace potentials}}
+\doxysubsubsection{sqt\_laplace\_source\_target\_tri\_adaptive()}
+{\footnotesize\ttfamily gint sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+adaptive (\begin{DoxyParamCaption}\item[{gdouble $\ast$}]{xse,  }\item[{gint}]{xsstr,  }\item[{gint}]{nse,  }\item[{gdouble $\ast$}]{q,  }\item[{gint}]{nq,  }\item[{gdouble $\ast$}]{Kq,  }\item[{gint}]{nqk,  }\item[{gint}]{nK,  }\item[{gdouble}]{tol,  }\item[{gint}]{dmax,  }\item[{gdouble $\ast$}]{xte,  }\item[{gint}]{xtstr,  }\item[{gint}]{nte,  }\item[{gdouble $\ast$}]{s,  }\item[{gint}]{sstr,  }\item[{gdouble $\ast$}]{t,  }\item[{gint}]{tstr,  }\item[{gint}]{nt,  }\item[{gdouble $\ast$}]{Ast }\end{DoxyParamCaption})}
+
 
 
 Calculating weights for evaluation of Laplace potential on target triangular element from source triangular element using adaptive quadrature. 
@@ -85,7 +162,7 @@ Calculating weights for evaluation of Laplace potential on target triangular ele
 \hline
 {\em nqk} & number of Koornwinder interpolation nodes \\
 \hline
-{\em n\+K} & maximum order of Koornwinder polynomial \\
+{\em nK} & maximum order of Koornwinder polynomial \\
 \hline
 {\em tol} & convergence tolerance for adaptive quadrature \\
 \hline
@@ -113,31 +190,12 @@ Calculating weights for evaluation of Laplace potential on target triangular ele
 \begin{DoxyReturn}{Returns}
 0 on success. 
 \end{DoxyReturn}
-\index{Laplace potentials@{Laplace potentials}!sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+adaptive\+\_\+f@{sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+adaptive\+\_\+f}}
-\index{sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+adaptive\+\_\+f@{sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+adaptive\+\_\+f}!Laplace potentials@{Laplace potentials}}
-\subsubsection[{sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+adaptive\+\_\+f}]{\setlength{\rightskip}{0pt plus 5cm}gint sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+adaptive\+\_\+f (
-\begin{DoxyParamCaption}
-\item[{gfloat $\ast$}]{xse, }
-\item[{gint}]{xsstr, }
-\item[{gint}]{nse, }
-\item[{gfloat $\ast$}]{q, }
-\item[{gint}]{nq, }
-\item[{gfloat $\ast$}]{Kq, }
-\item[{gint}]{nqk, }
-\item[{gint}]{n\+K, }
-\item[{gfloat}]{tol, }
-\item[{gint}]{dmax, }
-\item[{gfloat $\ast$}]{xte, }
-\item[{gint}]{xtstr, }
-\item[{gint}]{nte, }
-\item[{gfloat $\ast$}]{s, }
-\item[{gint}]{sstr, }
-\item[{gfloat $\ast$}]{t, }
-\item[{gint}]{tstr, }
-\item[{gint}]{nt, }
-\item[{gfloat $\ast$}]{Ast}
-\end{DoxyParamCaption}
-)}\label{group__laplace_ga7c7fd2e9365b6c10a28632ff935ded82}
+\mbox{\label{group__laplace_ga7c7fd2e9365b6c10a28632ff935ded82}} 
+\index{Laplace potentials@{Laplace potentials}!sqt\_laplace\_source\_target\_tri\_adaptive\_f@{sqt\_laplace\_source\_target\_tri\_adaptive\_f}}
+\index{sqt\_laplace\_source\_target\_tri\_adaptive\_f@{sqt\_laplace\_source\_target\_tri\_adaptive\_f}!Laplace potentials@{Laplace potentials}}
+\doxysubsubsection{sqt\_laplace\_source\_target\_tri\_adaptive\_f()}
+{\footnotesize\ttfamily gint sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+adaptive\+\_\+f (\begin{DoxyParamCaption}\item[{gfloat $\ast$}]{xse,  }\item[{gint}]{xsstr,  }\item[{gint}]{nse,  }\item[{gfloat $\ast$}]{q,  }\item[{gint}]{nq,  }\item[{gfloat $\ast$}]{Kq,  }\item[{gint}]{nqk,  }\item[{gint}]{nK,  }\item[{gfloat}]{tol,  }\item[{gint}]{dmax,  }\item[{gfloat $\ast$}]{xte,  }\item[{gint}]{xtstr,  }\item[{gint}]{nte,  }\item[{gfloat $\ast$}]{s,  }\item[{gint}]{sstr,  }\item[{gfloat $\ast$}]{t,  }\item[{gint}]{tstr,  }\item[{gint}]{nt,  }\item[{gfloat $\ast$}]{Ast }\end{DoxyParamCaption})}
+
 
 
 Calculating weights for evaluation of Laplace potential on target triangular element from source triangular element using adaptive quadrature. 
@@ -158,7 +216,7 @@ Calculating weights for evaluation of Laplace potential on target triangular ele
 \hline
 {\em nqk} & number of Koornwinder interpolation nodes \\
 \hline
-{\em n\+K} & maximum order of Koornwinder polynomial \\
+{\em nK} & maximum order of Koornwinder polynomial \\
 \hline
 {\em tol} & convergence tolerance for adaptive quadrature \\
 \hline
@@ -186,29 +244,12 @@ Calculating weights for evaluation of Laplace potential on target triangular ele
 \begin{DoxyReturn}{Returns}
 0 on success. 
 \end{DoxyReturn}
-\index{Laplace potentials@{Laplace potentials}!sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+basic@{sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+basic}}
-\index{sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+basic@{sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+basic}!Laplace potentials@{Laplace potentials}}
-\subsubsection[{sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+basic}]{\setlength{\rightskip}{0pt plus 5cm}gint sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+basic (
-\begin{DoxyParamCaption}
-\item[{gdouble $\ast$}]{xse, }
-\item[{gint}]{xsstr, }
-\item[{gint}]{nse, }
-\item[{gdouble $\ast$}]{q, }
-\item[{gint}]{nq, }
-\item[{gdouble $\ast$}]{Kq, }
-\item[{gint}]{nqk, }
-\item[{gint}]{n\+K, }
-\item[{gdouble $\ast$}]{xte, }
-\item[{gint}]{xtstr, }
-\item[{gint}]{nte, }
-\item[{gdouble $\ast$}]{s, }
-\item[{gint}]{sstr, }
-\item[{gdouble $\ast$}]{t, }
-\item[{gint}]{tstr, }
-\item[{gint}]{nt, }
-\item[{gdouble $\ast$}]{Ast}
-\end{DoxyParamCaption}
-)}\label{group__laplace_ga86adbd2998687ec1e656d7d4f7cae9f2}
+\mbox{\label{group__laplace_ga86adbd2998687ec1e656d7d4f7cae9f2}} 
+\index{Laplace potentials@{Laplace potentials}!sqt\_laplace\_source\_target\_tri\_basic@{sqt\_laplace\_source\_target\_tri\_basic}}
+\index{sqt\_laplace\_source\_target\_tri\_basic@{sqt\_laplace\_source\_target\_tri\_basic}!Laplace potentials@{Laplace potentials}}
+\doxysubsubsection{sqt\_laplace\_source\_target\_tri\_basic()}
+{\footnotesize\ttfamily gint sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+basic (\begin{DoxyParamCaption}\item[{gdouble $\ast$}]{xse,  }\item[{gint}]{xsstr,  }\item[{gint}]{nse,  }\item[{gdouble $\ast$}]{q,  }\item[{gint}]{nq,  }\item[{gdouble $\ast$}]{Kq,  }\item[{gint}]{nqk,  }\item[{gint}]{nK,  }\item[{gdouble $\ast$}]{xte,  }\item[{gint}]{xtstr,  }\item[{gint}]{nte,  }\item[{gdouble $\ast$}]{s,  }\item[{gint}]{sstr,  }\item[{gdouble $\ast$}]{t,  }\item[{gint}]{tstr,  }\item[{gint}]{nt,  }\item[{gdouble $\ast$}]{Ast }\end{DoxyParamCaption})}
+
 
 
 Calculating weights for evaluation of Laplace potential on target triangular element from source triangular element using standard quadrature. 
@@ -229,7 +270,7 @@ Calculating weights for evaluation of Laplace potential on target triangular ele
 \hline
 {\em nqk} & number of Koornwinder interpolation nodes \\
 \hline
-{\em n\+K} & maximum order of Koornwinder polynomial \\
+{\em nK} & maximum order of Koornwinder polynomial \\
 \hline
 {\em xte} & target element nodes as three packed real numbers \\
 \hline
@@ -253,29 +294,12 @@ Calculating weights for evaluation of Laplace potential on target triangular ele
 \begin{DoxyReturn}{Returns}
 0 on success. 
 \end{DoxyReturn}
-\index{Laplace potentials@{Laplace potentials}!sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+basic\+\_\+f@{sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+basic\+\_\+f}}
-\index{sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+basic\+\_\+f@{sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+basic\+\_\+f}!Laplace potentials@{Laplace potentials}}
-\subsubsection[{sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+basic\+\_\+f}]{\setlength{\rightskip}{0pt plus 5cm}gint sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+basic\+\_\+f (
-\begin{DoxyParamCaption}
-\item[{gfloat $\ast$}]{xse, }
-\item[{gint}]{xsstr, }
-\item[{gint}]{nse, }
-\item[{gfloat $\ast$}]{q, }
-\item[{gint}]{nq, }
-\item[{gfloat $\ast$}]{Kq, }
-\item[{gint}]{nqk, }
-\item[{gint}]{n\+K, }
-\item[{gfloat $\ast$}]{xte, }
-\item[{gint}]{xtstr, }
-\item[{gint}]{nte, }
-\item[{gfloat $\ast$}]{s, }
-\item[{gint}]{sstr, }
-\item[{gfloat $\ast$}]{t, }
-\item[{gint}]{tstr, }
-\item[{gint}]{nt, }
-\item[{gfloat $\ast$}]{Ast}
-\end{DoxyParamCaption}
-)}\label{group__laplace_gaab052a7e665fe37b09bfaa67c8bfefe4}
+\mbox{\label{group__laplace_gaab052a7e665fe37b09bfaa67c8bfefe4}} 
+\index{Laplace potentials@{Laplace potentials}!sqt\_laplace\_source\_target\_tri\_basic\_f@{sqt\_laplace\_source\_target\_tri\_basic\_f}}
+\index{sqt\_laplace\_source\_target\_tri\_basic\_f@{sqt\_laplace\_source\_target\_tri\_basic\_f}!Laplace potentials@{Laplace potentials}}
+\doxysubsubsection{sqt\_laplace\_source\_target\_tri\_basic\_f()}
+{\footnotesize\ttfamily gint sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+basic\+\_\+f (\begin{DoxyParamCaption}\item[{gfloat $\ast$}]{xse,  }\item[{gint}]{xsstr,  }\item[{gint}]{nse,  }\item[{gfloat $\ast$}]{q,  }\item[{gint}]{nq,  }\item[{gfloat $\ast$}]{Kq,  }\item[{gint}]{nqk,  }\item[{gint}]{nK,  }\item[{gfloat $\ast$}]{xte,  }\item[{gint}]{xtstr,  }\item[{gint}]{nte,  }\item[{gfloat $\ast$}]{s,  }\item[{gint}]{sstr,  }\item[{gfloat $\ast$}]{t,  }\item[{gint}]{tstr,  }\item[{gint}]{nt,  }\item[{gfloat $\ast$}]{Ast }\end{DoxyParamCaption})}
+
 
 
 Calculating weights for evaluation of Laplace potential on target triangular element from source triangular element using standard quadrature. 
@@ -296,7 +320,7 @@ Calculating weights for evaluation of Laplace potential on target triangular ele
 \hline
 {\em nqk} & number of Koornwinder interpolation nodes \\
 \hline
-{\em n\+K} & maximum order of Koornwinder polynomial \\
+{\em nK} & maximum order of Koornwinder polynomial \\
 \hline
 {\em xte} & target element nodes as three packed real numbers \\
 \hline
@@ -320,25 +344,12 @@ Calculating weights for evaluation of Laplace potential on target triangular ele
 \begin{DoxyReturn}{Returns}
 0 on success. 
 \end{DoxyReturn}
-\index{Laplace potentials@{Laplace potentials}!sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+self@{sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+self}}
-\index{sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+self@{sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+self}!Laplace potentials@{Laplace potentials}}
-\subsubsection[{sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+self}]{\setlength{\rightskip}{0pt plus 5cm}gint sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+self (
-\begin{DoxyParamCaption}
-\item[{gdouble $\ast$}]{xe, }
-\item[{gint}]{xstr, }
-\item[{gint}]{ne, }
-\item[{gdouble $\ast$}]{Kq, }
-\item[{gint}]{nqk, }
-\item[{gint}]{n\+K, }
-\item[{gint}]{N, }
-\item[{gdouble $\ast$}]{s, }
-\item[{gint}]{sstr, }
-\item[{gdouble $\ast$}]{t, }
-\item[{gint}]{tstr, }
-\item[{gint}]{nt, }
-\item[{gdouble $\ast$}]{Ast}
-\end{DoxyParamCaption}
-)}\label{group__laplace_ga81ac92eba9c819dce05fa2ee460817f2}
+\mbox{\label{group__laplace_ga81ac92eba9c819dce05fa2ee460817f2}} 
+\index{Laplace potentials@{Laplace potentials}!sqt\_laplace\_source\_target\_tri\_self@{sqt\_laplace\_source\_target\_tri\_self}}
+\index{sqt\_laplace\_source\_target\_tri\_self@{sqt\_laplace\_source\_target\_tri\_self}!Laplace potentials@{Laplace potentials}}
+\doxysubsubsection{sqt\_laplace\_source\_target\_tri\_self()}
+{\footnotesize\ttfamily gint sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+self (\begin{DoxyParamCaption}\item[{gdouble $\ast$}]{xe,  }\item[{gint}]{xstr,  }\item[{gint}]{ne,  }\item[{gdouble $\ast$}]{Kq,  }\item[{gint}]{nqk,  }\item[{gint}]{nK,  }\item[{gint}]{N,  }\item[{gdouble $\ast$}]{s,  }\item[{gint}]{sstr,  }\item[{gdouble $\ast$}]{t,  }\item[{gint}]{tstr,  }\item[{gint}]{nt,  }\item[{gdouble $\ast$}]{Ast }\end{DoxyParamCaption})}
+
 
 
 Calculating weights for evaluation of self-\/induced Laplace potential on triangular element using singular integral rules. 
@@ -355,7 +366,7 @@ Calculating weights for evaluation of self-\/induced Laplace potential on triang
 \hline
 {\em nqk} & number of Koornwinder interpolation nodes \\
 \hline
-{\em n\+K} & maximum order of Koornwinder polynomial \\
+{\em nK} & maximum order of Koornwinder polynomial \\
 \hline
 {\em N} & order of integration method \\
 \hline
@@ -375,25 +386,12 @@ Calculating weights for evaluation of self-\/induced Laplace potential on triang
 \begin{DoxyReturn}{Returns}
 0 on success. 
 \end{DoxyReturn}
-\index{Laplace potentials@{Laplace potentials}!sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+self\+\_\+f@{sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+self\+\_\+f}}
-\index{sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+self\+\_\+f@{sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+self\+\_\+f}!Laplace potentials@{Laplace potentials}}
-\subsubsection[{sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+self\+\_\+f}]{\setlength{\rightskip}{0pt plus 5cm}gint sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+self\+\_\+f (
-\begin{DoxyParamCaption}
-\item[{gfloat $\ast$}]{xe, }
-\item[{gint}]{xstr, }
-\item[{gint}]{ne, }
-\item[{gfloat $\ast$}]{Kq, }
-\item[{gint}]{nqk, }
-\item[{gint}]{n\+K, }
-\item[{gint}]{N, }
-\item[{gfloat $\ast$}]{s, }
-\item[{gint}]{sstr, }
-\item[{gfloat $\ast$}]{t, }
-\item[{gint}]{tstr, }
-\item[{gint}]{nt, }
-\item[{gfloat $\ast$}]{Ast}
-\end{DoxyParamCaption}
-)}\label{group__laplace_gad78ef75b266ae6829edd76b4e0b95c51}
+\mbox{\label{group__laplace_gad78ef75b266ae6829edd76b4e0b95c51}} 
+\index{Laplace potentials@{Laplace potentials}!sqt\_laplace\_source\_target\_tri\_self\_f@{sqt\_laplace\_source\_target\_tri\_self\_f}}
+\index{sqt\_laplace\_source\_target\_tri\_self\_f@{sqt\_laplace\_source\_target\_tri\_self\_f}!Laplace potentials@{Laplace potentials}}
+\doxysubsubsection{sqt\_laplace\_source\_target\_tri\_self\_f()}
+{\footnotesize\ttfamily gint sqt\+\_\+laplace\+\_\+source\+\_\+target\+\_\+tri\+\_\+self\+\_\+f (\begin{DoxyParamCaption}\item[{gfloat $\ast$}]{xe,  }\item[{gint}]{xstr,  }\item[{gint}]{ne,  }\item[{gfloat $\ast$}]{Kq,  }\item[{gint}]{nqk,  }\item[{gint}]{nK,  }\item[{gint}]{N,  }\item[{gfloat $\ast$}]{s,  }\item[{gint}]{sstr,  }\item[{gfloat $\ast$}]{t,  }\item[{gint}]{tstr,  }\item[{gint}]{nt,  }\item[{gfloat $\ast$}]{Ast }\end{DoxyParamCaption})}
+
 
 
 Calculating weights for evaluation of self-\/induced Laplace potential on triangular element using singular integral rules. 
@@ -410,7 +408,7 @@ Calculating weights for evaluation of self-\/induced Laplace potential on triang
 \hline
 {\em nqk} & number of Koornwinder interpolation nodes \\
 \hline
-{\em n\+K} & maximum order of Koornwinder polynomial \\
+{\em nK} & maximum order of Koornwinder polynomial \\
 \hline
 {\em N} & order of integration method \\
 \hline
@@ -430,24 +428,156 @@ Calculating weights for evaluation of self-\/induced Laplace potential on triang
 \begin{DoxyReturn}{Returns}
 0 on success. 
 \end{DoxyReturn}
-\index{Laplace potentials@{Laplace potentials}!sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+adaptive@{sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+adaptive}}
-\index{sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+adaptive@{sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+adaptive}!Laplace potentials@{Laplace potentials}}
-\subsubsection[{sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+adaptive}]{\setlength{\rightskip}{0pt plus 5cm}gint sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+adaptive (
-\begin{DoxyParamCaption}
-\item[{gdouble $\ast$}]{xe, }
-\item[{gint}]{xstr, }
-\item[{gint}]{ne, }
-\item[{gdouble $\ast$}]{q, }
-\item[{gint}]{nq, }
-\item[{gdouble $\ast$}]{Kq, }
-\item[{gint}]{nqk, }
-\item[{gint}]{n\+K, }
-\item[{gdouble}]{tol, }
-\item[{gint}]{dmax, }
-\item[{gdouble $\ast$}]{x, }
-\item[{gdouble $\ast$}]{w}
-\end{DoxyParamCaption}
-)}\label{group__laplace_ga132329beff6a564ba45533ccbfdb97e4}
+\mbox{\label{group__laplace_gaf937201fd1585c1173aab011da3cfff5}} 
+\index{Laplace potentials@{Laplace potentials}!sqt\_laplace\_weights\_kw\_adaptive@{sqt\_laplace\_weights\_kw\_adaptive}}
+\index{sqt\_laplace\_weights\_kw\_adaptive@{sqt\_laplace\_weights\_kw\_adaptive}!Laplace potentials@{Laplace potentials}}
+\doxysubsubsection{sqt\_laplace\_weights\_kw\_adaptive()}
+{\footnotesize\ttfamily gint sqt\+\_\+laplace\+\_\+weights\+\_\+kw\+\_\+adaptive (\begin{DoxyParamCaption}\item[{gdouble $\ast$}]{ce,  }\item[{gint}]{ne,  }\item[{gint}]{Nk,  }\item[{gdouble $\ast$}]{Kq,  }\item[{gdouble $\ast$}]{q,  }\item[{gint}]{nq,  }\item[{gdouble}]{tol,  }\item[{gint}]{dmax,  }\item[{gdouble $\ast$}]{x,  }\item[{gdouble $\ast$}]{w,  }\item[{gdouble $\ast$}]{work }\end{DoxyParamCaption})}
+
+
+
+Calculating weights for evaluation of Laplace potentials on element defined using Koornwinder polynomials using adaptive quadrature. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ce} & interpolation coefficients for patch surface \\
+\hline
+{\em ne} & number of interpolation coefficients \\
+\hline
+{\em Nk} & maximum order of Koornwinder polynomial \\
+\hline
+{\em Kq} & Koornwinder interpolation matrix from sqt\+\_\+koornwinder\+\_\+interp\+\_\+matrix(...) \\
+\hline
+{\em q} & quadrature rule \\
+\hline
+{\em nq} & number of quadrature nodes \\
+\hline
+{\em tol} & tolerance for convergence of adaptive quadrature \\
+\hline
+{\em dmax} & maximum depth of adaptive quadrature \\
+\hline
+{\em x} & field point \\
+\hline
+{\em w} & on exit, contains weights for evaluation of Laplace potentials at {\itshape x} \\
+\hline
+{\em work} & workspace\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\mbox{\label{group__laplace_ga3f07e82132f9d509e0e0b046a4716ec9}} 
+\index{Laplace potentials@{Laplace potentials}!sqt\_laplace\_weights\_kw\_adaptive\_f@{sqt\_laplace\_weights\_kw\_adaptive\_f}}
+\index{sqt\_laplace\_weights\_kw\_adaptive\_f@{sqt\_laplace\_weights\_kw\_adaptive\_f}!Laplace potentials@{Laplace potentials}}
+\doxysubsubsection{sqt\_laplace\_weights\_kw\_adaptive\_f()}
+{\footnotesize\ttfamily gint sqt\+\_\+laplace\+\_\+weights\+\_\+kw\+\_\+adaptive\+\_\+f (\begin{DoxyParamCaption}\item[{gfloat $\ast$}]{ce,  }\item[{gint}]{ne,  }\item[{gint}]{Nk,  }\item[{gfloat $\ast$}]{Kq,  }\item[{gfloat $\ast$}]{q,  }\item[{gint}]{nq,  }\item[{gfloat}]{tol,  }\item[{gint}]{dmax,  }\item[{gfloat $\ast$}]{x,  }\item[{gfloat $\ast$}]{w,  }\item[{gfloat $\ast$}]{work }\end{DoxyParamCaption})}
+
+
+
+Calculating weights for evaluation of Laplace potentials on element defined using Koornwinder polynomials using adaptive quadrature. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ce} & interpolation coefficients for patch surface \\
+\hline
+{\em ne} & number of interpolation coefficients \\
+\hline
+{\em Nk} & maximum order of Koornwinder polynomial \\
+\hline
+{\em Kq} & Koornwinder interpolation matrix from sqt\+\_\+koornwinder\+\_\+interp\+\_\+matrix\+\_\+f(...) \\
+\hline
+{\em q} & quadrature rule \\
+\hline
+{\em nq} & number of quadrature nodes \\
+\hline
+{\em tol} & tolerance for convergence of adaptive quadrature \\
+\hline
+{\em dmax} & maximum depth of adaptive quadrature \\
+\hline
+{\em x} & field point \\
+\hline
+{\em w} & on exit, contains weights for evaluation of Laplace potentials at {\itshape x} \\
+\hline
+{\em work} & workspace\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\mbox{\label{group__laplace_gaf3420f8079bd842dcdc4df6a7f2c4b3b}} 
+\index{Laplace potentials@{Laplace potentials}!sqt\_laplace\_weights\_kw\_singular@{sqt\_laplace\_weights\_kw\_singular}}
+\index{sqt\_laplace\_weights\_kw\_singular@{sqt\_laplace\_weights\_kw\_singular}!Laplace potentials@{Laplace potentials}}
+\doxysubsubsection{sqt\_laplace\_weights\_kw\_singular()}
+{\footnotesize\ttfamily gint sqt\+\_\+laplace\+\_\+weights\+\_\+kw\+\_\+singular (\begin{DoxyParamCaption}\item[{gdouble $\ast$}]{ce,  }\item[{gint}]{ne,  }\item[{gint}]{Nk,  }\item[{gdouble $\ast$}]{Kq,  }\item[{gint}]{N,  }\item[{gdouble}]{s0,  }\item[{gdouble}]{t0,  }\item[{gdouble $\ast$}]{w,  }\item[{gdouble $\ast$}]{work }\end{DoxyParamCaption})}
+
+
+
+Calculating weights for evaluation of self-\/induced Laplace potential using singular quadrature on patch defined using Koornwinder interpolation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ce} & interpolation coefficients for patch surface \\
+\hline
+{\em ne} & number of interpolation coefficients \\
+\hline
+{\em Nk} & maximum order of Koornwinder polynomial \\
+\hline
+{\em Kq} & Koornwinder interpolation matrix from \\
+\hline
+{\em N} & order of singular quadrature rule \\
+\hline
+{\em s0} & coordinate in local system of surface evaluation point \\
+\hline
+{\em t0} & coordinate in local system of surface evaluation point \\
+\hline
+{\em w} & on exit contains weights for Laplace potential at $\mathbf{x}(s_{0},t_{0})$ \\
+\hline
+{\em work} & workspace\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\mbox{\label{group__laplace_ga37c7f3a46bb75dfdf43de3695d2cf51f}} 
+\index{Laplace potentials@{Laplace potentials}!sqt\_laplace\_weights\_kw\_singular\_f@{sqt\_laplace\_weights\_kw\_singular\_f}}
+\index{sqt\_laplace\_weights\_kw\_singular\_f@{sqt\_laplace\_weights\_kw\_singular\_f}!Laplace potentials@{Laplace potentials}}
+\doxysubsubsection{sqt\_laplace\_weights\_kw\_singular\_f()}
+{\footnotesize\ttfamily gint sqt\+\_\+laplace\+\_\+weights\+\_\+kw\+\_\+singular\+\_\+f (\begin{DoxyParamCaption}\item[{gfloat $\ast$}]{ce,  }\item[{gint}]{ne,  }\item[{gint}]{Nk,  }\item[{gfloat $\ast$}]{Kq,  }\item[{gint}]{N,  }\item[{gfloat}]{s0,  }\item[{gfloat}]{t0,  }\item[{gfloat $\ast$}]{w,  }\item[{gfloat $\ast$}]{work }\end{DoxyParamCaption})}
+
+
+
+Calculating weights for evaluation of self-\/induced Laplace potential using singular quadrature on patch defined using Koornwinder interpolation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ce} & interpolation coefficients for patch surface \\
+\hline
+{\em ne} & number of interpolation coefficients \\
+\hline
+{\em Nk} & maximum order of Koornwinder polynomial \\
+\hline
+{\em Kq} & Koornwinder interpolation matrix from \\
+\hline
+{\em N} & order of singular quadrature rule \\
+\hline
+{\em s0} & coordinate in local system of surface evaluation point \\
+\hline
+{\em t0} & coordinate in local system of surface evaluation point \\
+\hline
+{\em w} & on exit contains weights for Laplace potential at $\mathbf{x}(s_{0},t_{0})$ \\
+\hline
+{\em work} & workspace\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}
+\mbox{\label{group__laplace_ga132329beff6a564ba45533ccbfdb97e4}} 
+\index{Laplace potentials@{Laplace potentials}!sqt\_laplace\_weights\_tri\_adaptive@{sqt\_laplace\_weights\_tri\_adaptive}}
+\index{sqt\_laplace\_weights\_tri\_adaptive@{sqt\_laplace\_weights\_tri\_adaptive}!Laplace potentials@{Laplace potentials}}
+\doxysubsubsection{sqt\_laplace\_weights\_tri\_adaptive()}
+{\footnotesize\ttfamily gint sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+adaptive (\begin{DoxyParamCaption}\item[{gdouble $\ast$}]{xe,  }\item[{gint}]{xstr,  }\item[{gint}]{ne,  }\item[{gdouble $\ast$}]{q,  }\item[{gint}]{nq,  }\item[{gdouble $\ast$}]{Kq,  }\item[{gint}]{nqk,  }\item[{gint}]{nK,  }\item[{gdouble}]{tol,  }\item[{gint}]{dmax,  }\item[{gdouble $\ast$}]{x,  }\item[{gdouble $\ast$}]{w }\end{DoxyParamCaption})}
+
 
 
 Calculating weights for evaluation of Laplace potential from triangular element using adaptive quadrature. 
@@ -468,7 +598,7 @@ Calculating weights for evaluation of Laplace potential from triangular element 
 \hline
 {\em nqk} & number of Koornwinder interpolation nodes \\
 \hline
-{\em n\+K} & maximum order of Koornwinder polynomial \\
+{\em nK} & maximum order of Koornwinder polynomial \\
 \hline
 {\em tol} & convergence tolerance for adaptive quadrature \\
 \hline
@@ -482,24 +612,12 @@ Calculating weights for evaluation of Laplace potential from triangular element 
 \begin{DoxyReturn}{Returns}
 0 on success. 
 \end{DoxyReturn}
-\index{Laplace potentials@{Laplace potentials}!sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+adaptive\+\_\+f@{sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+adaptive\+\_\+f}}
-\index{sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+adaptive\+\_\+f@{sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+adaptive\+\_\+f}!Laplace potentials@{Laplace potentials}}
-\subsubsection[{sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+adaptive\+\_\+f}]{\setlength{\rightskip}{0pt plus 5cm}gint sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+adaptive\+\_\+f (
-\begin{DoxyParamCaption}
-\item[{gfloat $\ast$}]{xe, }
-\item[{gint}]{xstr, }
-\item[{gint}]{ne, }
-\item[{gfloat $\ast$}]{q, }
-\item[{gint}]{nq, }
-\item[{gfloat $\ast$}]{Kq, }
-\item[{gint}]{nqk, }
-\item[{gint}]{n\+K, }
-\item[{gfloat}]{tol, }
-\item[{gint}]{dmax, }
-\item[{gfloat $\ast$}]{x, }
-\item[{gfloat $\ast$}]{w}
-\end{DoxyParamCaption}
-)}\label{group__laplace_ga80d50608dcd59d5ebd0c7bd45c02c4fb}
+\mbox{\label{group__laplace_ga80d50608dcd59d5ebd0c7bd45c02c4fb}} 
+\index{Laplace potentials@{Laplace potentials}!sqt\_laplace\_weights\_tri\_adaptive\_f@{sqt\_laplace\_weights\_tri\_adaptive\_f}}
+\index{sqt\_laplace\_weights\_tri\_adaptive\_f@{sqt\_laplace\_weights\_tri\_adaptive\_f}!Laplace potentials@{Laplace potentials}}
+\doxysubsubsection{sqt\_laplace\_weights\_tri\_adaptive\_f()}
+{\footnotesize\ttfamily gint sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+adaptive\+\_\+f (\begin{DoxyParamCaption}\item[{gfloat $\ast$}]{xe,  }\item[{gint}]{xstr,  }\item[{gint}]{ne,  }\item[{gfloat $\ast$}]{q,  }\item[{gint}]{nq,  }\item[{gfloat $\ast$}]{Kq,  }\item[{gint}]{nqk,  }\item[{gint}]{nK,  }\item[{gfloat}]{tol,  }\item[{gint}]{dmax,  }\item[{gfloat $\ast$}]{x,  }\item[{gfloat $\ast$}]{w }\end{DoxyParamCaption})}
+
 
 
 Calculating weights for evaluation of Laplace potential from triangular element using adaptive quadrature. 
@@ -520,7 +638,7 @@ Calculating weights for evaluation of Laplace potential from triangular element 
 \hline
 {\em nqk} & number of Koornwinder interpolation nodes \\
 \hline
-{\em n\+K} & maximum order of Koornwinder polynomial \\
+{\em nK} & maximum order of Koornwinder polynomial \\
 \hline
 {\em tol} & convergence tolerance for adaptive quadrature \\
 \hline
@@ -534,25 +652,15 @@ Calculating weights for evaluation of Laplace potential from triangular element 
 \begin{DoxyReturn}{Returns}
 0 on success. 
 \end{DoxyReturn}
-\index{Laplace potentials@{Laplace potentials}!sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+basic@{sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+basic}}
-\index{sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+basic@{sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+basic}!Laplace potentials@{Laplace potentials}}
-\subsubsection[{sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+basic}]{\setlength{\rightskip}{0pt plus 5cm}gint sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+basic (
-\begin{DoxyParamCaption}
-\item[{gdouble $\ast$}]{xe, }
-\item[{gint}]{xstr, }
-\item[{gint}]{ne, }
-\item[{gdouble $\ast$}]{q, }
-\item[{gint}]{nq, }
-\item[{gdouble $\ast$}]{Kq, }
-\item[{gint}]{nqk, }
-\item[{gint}]{n\+K, }
-\item[{gdouble $\ast$}]{x, }
-\item[{gdouble $\ast$}]{w}
-\end{DoxyParamCaption}
-)}\label{group__laplace_gaa6affb713e6d19b1eedfae17e5033c86}
+\mbox{\label{group__laplace_gaa6affb713e6d19b1eedfae17e5033c86}} 
+\index{Laplace potentials@{Laplace potentials}!sqt\_laplace\_weights\_tri\_basic@{sqt\_laplace\_weights\_tri\_basic}}
+\index{sqt\_laplace\_weights\_tri\_basic@{sqt\_laplace\_weights\_tri\_basic}!Laplace potentials@{Laplace potentials}}
+\doxysubsubsection{sqt\_laplace\_weights\_tri\_basic()}
+{\footnotesize\ttfamily gint sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+basic (\begin{DoxyParamCaption}\item[{gdouble $\ast$}]{xe,  }\item[{gint}]{xstr,  }\item[{gint}]{ne,  }\item[{gdouble $\ast$}]{q,  }\item[{gint}]{nq,  }\item[{gdouble $\ast$}]{Kq,  }\item[{gint}]{nqk,  }\item[{gint}]{nK,  }\item[{gdouble $\ast$}]{x,  }\item[{gdouble $\ast$}]{w }\end{DoxyParamCaption})}
 
 
-Calculating weights for evaluation of Laplace potential from triangular element using standard quadrature. 
+
+Calculating weights for evaluation of Laplace potentials from triangular element using standard quadrature. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -570,35 +678,25 @@ Calculating weights for evaluation of Laplace potential from triangular element 
 \hline
 {\em nqk} & number of Koornwinder interpolation nodes \\
 \hline
-{\em n\+K} & maximum order of Koornwinder polynomial \\
+{\em nK} & maximum order of Koornwinder polynomial \\
 \hline
 {\em x} & field point \\
 \hline
-{\em w} & on exit contains weights for Laplace potential at {\itshape x} \\
+{\em w} & on exit contains weights for Laplace potentials at {\itshape x} \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 0 on success. 
 \end{DoxyReturn}
-\index{Laplace potentials@{Laplace potentials}!sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+basic\+\_\+f@{sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+basic\+\_\+f}}
-\index{sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+basic\+\_\+f@{sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+basic\+\_\+f}!Laplace potentials@{Laplace potentials}}
-\subsubsection[{sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+basic\+\_\+f}]{\setlength{\rightskip}{0pt plus 5cm}gint sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+basic\+\_\+f (
-\begin{DoxyParamCaption}
-\item[{gfloat $\ast$}]{xe, }
-\item[{gint}]{xstr, }
-\item[{gint}]{ne, }
-\item[{gfloat $\ast$}]{q, }
-\item[{gint}]{nq, }
-\item[{gfloat $\ast$}]{Kq, }
-\item[{gint}]{nqk, }
-\item[{gint}]{n\+K, }
-\item[{gfloat $\ast$}]{x, }
-\item[{gfloat $\ast$}]{w}
-\end{DoxyParamCaption}
-)}\label{group__laplace_gac091fc7b0a79abfce87f0f85962f0114}
+\mbox{\label{group__laplace_gac091fc7b0a79abfce87f0f85962f0114}} 
+\index{Laplace potentials@{Laplace potentials}!sqt\_laplace\_weights\_tri\_basic\_f@{sqt\_laplace\_weights\_tri\_basic\_f}}
+\index{sqt\_laplace\_weights\_tri\_basic\_f@{sqt\_laplace\_weights\_tri\_basic\_f}!Laplace potentials@{Laplace potentials}}
+\doxysubsubsection{sqt\_laplace\_weights\_tri\_basic\_f()}
+{\footnotesize\ttfamily gint sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+basic\+\_\+f (\begin{DoxyParamCaption}\item[{gfloat $\ast$}]{xe,  }\item[{gint}]{xstr,  }\item[{gint}]{ne,  }\item[{gfloat $\ast$}]{q,  }\item[{gint}]{nq,  }\item[{gfloat $\ast$}]{Kq,  }\item[{gint}]{nqk,  }\item[{gint}]{nK,  }\item[{gfloat $\ast$}]{x,  }\item[{gfloat $\ast$}]{w }\end{DoxyParamCaption})}
 
 
-Calculating weights for evaluation of Laplace potential from triangular element using standard quadrature. 
+
+Calculating weights for evaluation of Laplace potentials from triangular element using standard quadrature. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -616,32 +714,22 @@ Calculating weights for evaluation of Laplace potential from triangular element 
 \hline
 {\em nqk} & number of Koornwinder interpolation nodes \\
 \hline
-{\em n\+K} & maximum order of Koornwinder polynomial \\
+{\em nK} & maximum order of Koornwinder polynomial \\
 \hline
 {\em x} & field point \\
 \hline
-{\em w} & on exit contains weights for Laplace potential at {\itshape x} \\
+{\em w} & on exit contains weights for Laplace potentials at {\itshape x} \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 0 on success. 
 \end{DoxyReturn}
-\index{Laplace potentials@{Laplace potentials}!sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+singular@{sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+singular}}
-\index{sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+singular@{sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+singular}!Laplace potentials@{Laplace potentials}}
-\subsubsection[{sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+singular}]{\setlength{\rightskip}{0pt plus 5cm}gint sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+singular (
-\begin{DoxyParamCaption}
-\item[{gdouble $\ast$}]{xe, }
-\item[{gint}]{xstr, }
-\item[{gint}]{ne, }
-\item[{gdouble $\ast$}]{Kq, }
-\item[{gint}]{nqk, }
-\item[{gint}]{n\+K, }
-\item[{gint}]{N, }
-\item[{gdouble}]{s0, }
-\item[{gdouble}]{t0, }
-\item[{gdouble $\ast$}]{w}
-\end{DoxyParamCaption}
-)}\label{group__laplace_ga4d2ce7fcee04d5237e180beeb900cd19}
+\mbox{\label{group__laplace_ga4d2ce7fcee04d5237e180beeb900cd19}} 
+\index{Laplace potentials@{Laplace potentials}!sqt\_laplace\_weights\_tri\_singular@{sqt\_laplace\_weights\_tri\_singular}}
+\index{sqt\_laplace\_weights\_tri\_singular@{sqt\_laplace\_weights\_tri\_singular}!Laplace potentials@{Laplace potentials}}
+\doxysubsubsection{sqt\_laplace\_weights\_tri\_singular()}
+{\footnotesize\ttfamily gint sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+singular (\begin{DoxyParamCaption}\item[{gdouble $\ast$}]{xe,  }\item[{gint}]{xstr,  }\item[{gint}]{ne,  }\item[{gdouble $\ast$}]{Kq,  }\item[{gint}]{nqk,  }\item[{gint}]{nK,  }\item[{gint}]{N,  }\item[{gdouble}]{s0,  }\item[{gdouble}]{t0,  }\item[{gdouble $\ast$}]{w }\end{DoxyParamCaption})}
+
 
 
 Calculating weights for evaluation of self-\/induced Laplace potential on triangular element using singular quadrature. 
@@ -658,7 +746,7 @@ Calculating weights for evaluation of self-\/induced Laplace potential on triang
 \hline
 {\em nqk} & number of Koornwinder interpolation nodes \\
 \hline
-{\em n\+K} & maximum order of Koornwinder polynomial \\
+{\em nK} & maximum order of Koornwinder polynomial \\
 \hline
 {\em N} & order of integration rules \\
 \hline
@@ -672,22 +760,12 @@ Calculating weights for evaluation of self-\/induced Laplace potential on triang
 \begin{DoxyReturn}{Returns}
 0 on success. 
 \end{DoxyReturn}
-\index{Laplace potentials@{Laplace potentials}!sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+singular\+\_\+f@{sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+singular\+\_\+f}}
-\index{sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+singular\+\_\+f@{sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+singular\+\_\+f}!Laplace potentials@{Laplace potentials}}
-\subsubsection[{sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+singular\+\_\+f}]{\setlength{\rightskip}{0pt plus 5cm}gint sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+singular\+\_\+f (
-\begin{DoxyParamCaption}
-\item[{gfloat $\ast$}]{xe, }
-\item[{gint}]{xstr, }
-\item[{gint}]{ne, }
-\item[{gfloat $\ast$}]{Kq, }
-\item[{gint}]{nqk, }
-\item[{gint}]{n\+K, }
-\item[{gint}]{N, }
-\item[{gfloat}]{s0, }
-\item[{gfloat}]{t0, }
-\item[{gfloat $\ast$}]{w}
-\end{DoxyParamCaption}
-)}\label{group__laplace_ga47009af7ed32148350cebea1cf7f631f}
+\mbox{\label{group__laplace_ga47009af7ed32148350cebea1cf7f631f}} 
+\index{Laplace potentials@{Laplace potentials}!sqt\_laplace\_weights\_tri\_singular\_f@{sqt\_laplace\_weights\_tri\_singular\_f}}
+\index{sqt\_laplace\_weights\_tri\_singular\_f@{sqt\_laplace\_weights\_tri\_singular\_f}!Laplace potentials@{Laplace potentials}}
+\doxysubsubsection{sqt\_laplace\_weights\_tri\_singular\_f()}
+{\footnotesize\ttfamily gint sqt\+\_\+laplace\+\_\+weights\+\_\+tri\+\_\+singular\+\_\+f (\begin{DoxyParamCaption}\item[{gfloat $\ast$}]{xe,  }\item[{gint}]{xstr,  }\item[{gint}]{ne,  }\item[{gfloat $\ast$}]{Kq,  }\item[{gint}]{nqk,  }\item[{gint}]{nK,  }\item[{gint}]{N,  }\item[{gfloat}]{s0,  }\item[{gfloat}]{t0,  }\item[{gfloat $\ast$}]{w }\end{DoxyParamCaption})}
+
 
 
 Calculating weights for evaluation of self-\/induced Laplace potential on triangular element using singular quadrature. 
@@ -704,7 +782,7 @@ Calculating weights for evaluation of self-\/induced Laplace potential on triang
 \hline
 {\em nqk} & number of Koornwinder interpolation nodes \\
 \hline
-{\em n\+K} & maximum order of Koornwinder polynomial \\
+{\em nK} & maximum order of Koornwinder polynomial \\
 \hline
 {\em N} & order of integration rules \\
 \hline

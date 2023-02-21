@@ -2,6 +2,6 @@
 
 # AUTOMAKE_OPTIONS = readme-alpha
 
-SUBDIRS = src tests doc
+SUBDIRS = src tests
+EXTRA_DIST = doc
 
-##@DX_RULES@
