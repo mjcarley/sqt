@@ -175,22 +175,6 @@ static gint helmholtz_quad_weights_tri(SQT_REAL s, SQT_REAL t,
   /* wt = w*dG ; */
   /* blaswrap_sgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1, &(quad[nc/2]), i1) ; */
 #endif
-/*   G = 0.25*M_1_PI/R ; */
-
-/*   dG = sqt_vector_diff_scalar(x, y, n)/R/R*G ; */
-
-/* #ifndef SQT_SINGLE_PRECISION   */
-/*   wt = w*G ; */
-/*   blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1, &(quad[   0]), i1) ; */
-/*   wt = w*dG ; */
-/*   blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1, &(quad[nc/2]), i1) ; */
-/* #else /\*SQT_SINGLE_PRECISION*\/ */
-/*   g_assert_not_reached() ; */
-/*   wt = w*G ; */
-/*   blaswrap_sgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1, &(quad[   0]), i1) ; */
-/*   wt = w*dG ; */
-/*   blaswrap_sgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1, &(quad[nc/2]), i1) ; */
-/* #endif */
   
   return 0 ;
 }
@@ -417,7 +401,6 @@ static gint helmholtz_quad_matrix(SQT_REAL s, SQT_REAL t,
   SQT_REAL *work  = data[SQT_DATA_WORK] ;
   SQT_REAL k = *((SQT_REAL *)data[SQT_DATA_WAVENUMBER]) ;
   SQT_REAL G[2], dG[2], E[2], d0 = 0.0, d1 = 1.0, R, dR ;
-  /* SQT_REAL work[453], r[3] ; */
   SQT_REAL r[500], wt ;
   gint i1 = 1, i2 = 2, i3 = 3, i, j, ns ;
 
@@ -597,14 +580,153 @@ SQT_FUNCTION_NAME(sqt_helmholtz_source_target_tri_basic)(SQT_REAL k,
   return 0 ;
 }
 
-#if 0
+static gint helmholtz_quad_matrix_indexed(SQT_REAL s, SQT_REAL t,
+					  SQT_REAL w,
+					  SQT_REAL *y, SQT_REAL *n,
+					  SQT_REAL *Knm, gint nk,
+					  SQT_REAL *quad, gint nc,
+					  gint init,
+					  gpointer data[])
+
+{
+  gint nq = *((gint *)(data[SQT_DATA_NKNM])) ;
+  SQT_REAL *x  = data[SQT_DATA_TARGET] ;
+  gint xstr = *((gint *)data[SQT_DATA_STRIDE]) ;
+  gint nx = *((gint *)data[SQT_DATA_NUMBER]) ;
+  SQT_REAL *Kq  = data[SQT_DATA_MATRIX] ;
+  SQT_REAL *work  = data[SQT_DATA_KNM] ;
+  SQT_REAL k = *((SQT_REAL *)data[SQT_DATA_WAVENUMBER]) ;
+  gint *idx =           data[SQT_DATA_INDICES] ;
+  SQT_REAL G[2], dG[2], E[2], d0 = 0.0, d1 = 1.0, R, dR ;
+  SQT_REAL r[3*500], wt ;
+  gint i1 = 1, i2 = 2, i3 = 3, i, j, ns ;
+
+#ifndef SQT_SINGLE_PRECISION
+  blaswrap_dgemv(TRUE, nq, nq, d1, Kq, nq, Knm, i1, d0, work, i1) ;
+#else /*SQT_SINGLE_PRECISION*/
+  g_assert_not_reached() ;
+  blaswrap_sgemv(TRUE, nq, nq, d1, Kq, nq, Knm, i1, d0, work, i1) ;
+#endif /*SQT_SINGLE_PRECISION*/
+  
+  ns = nc/nx ;
+  g_assert(nx < 3*500) ;
+  for ( j = 0 ; j < nx ; j ++ ) {
+    i = idx[j] ;
+    sqt_vector_diff(r, &(x[i*xstr]), y) ;
+    R = sqrt(r[0]*r[0] + r[1]*r[1] + r[2]*r[2]) ;
+    dR = sqt_vector_diff_scalar(&(x[i*xstr]), y, n)/R ;
+    E[0] = cos(k*R) ; E[1] = sin(k*R) ;
+    G[0] = 0.25*M_1_PI/R ;
+    G[1] = G[0]*E[1] ;
+
+    dG[0] = (E[0] + k*R*E[1])*G[0]*dR/R ;
+    dG[1] = (E[1] - k*R*E[0])*G[0]*dR/R ;
+
+    G[0] *= E[0] ;
+#ifndef SQT_SINGLE_PRECISION
+  /*it should be possible to do this with one matrix multiplication*/
+  wt = w*G[0] ;
+  blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1,
+		 &(quad[j*ns +  0]), i2) ;
+  wt = w*G[1] ;
+  blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1,
+		 &(quad[j*ns +  1]), i2) ;
+  /*and this*/
+  wt = w*dG[0] ;
+  blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1,
+		 &(quad[j*ns + ns/2 +  0]), i2) ;
+  wt = w*dG[1] ;
+  blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1,
+		 &(quad[j*ns + ns/2 +  1]), i2) ;
+
+#else /*SQT_SINGLE_PRECISION*/
+  g_assert_not_reached() ; /*untested code*/
+  /* wt = w*G ; */
+  /* blaswrap_sgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1, &(quad[   0]), i1) ; */
+  /* wt = w*dG ; */
+  /* blaswrap_sgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1, &(quad[nc/2]), i1) ; */
+#endif
+  }
+  
+  return 0 ;
+}
+
 gint
-SQT_FUNCTION_NAME(sqt_helmholtz_source_target_kw_self)(SQT_REAL *xe,
+SQT_FUNCTION_NAME(sqt_helmholtz_source_indexed_kw_adaptive)(SQT_REAL k,
+							    SQT_REAL *xse,
+							    gint sstr, gint nse,
+							    SQT_REAL *q,
+							    gint nq,
+							    SQT_REAL *Ks,
+							    gint Ns,
+							    SQT_REAL tol,
+							    gint dmax,
+							    SQT_REAL *xte,
+							    gint tstr,
+							    gint *idx,
+							    gint nte,
+							    SQT_REAL *Ast,
+							    SQT_REAL *work)
+
+/*
+ * work space size: 4*dmax*2*nse*nte + 12*nse + 3*nse + 2*nte
+ */
+
+{
+  gint i3 = 3 ;
+  SQT_REAL *ce, *Knm, *awork, al, bt ;
+  gpointer data[SQT_DATA_WIDTH] ;
+
+  ce = work ; Knm = &(ce[3*nse]) ; awork = &(Knm[12*nse+2*nte]) ;
+  
+  al = 1.0 ; bt = 0.0 ;
+#ifndef SQT_SINGLE_PRECISION
+  /*element geometric interpolation coefficients*/
+  blaswrap_dgemm(FALSE, FALSE, nse, i3, nse, al, Ks, nse,
+		 xse, sstr, bt, ce, i3) ;
+#else
+  g_assert_not_reached() ; 
+  blaswrap_sgemm(FALSE, FALSE, nse, i3, nse, al, Ks, nse,
+		 xse, sstr, bt, ce, i3) ;
+#endif /*SQT_SINGLE_PRECISION*/
+
+  data[SQT_DATA_TARGET]    = xte ; 
+  data[SQT_DATA_STRIDE]    = &tstr ; 
+  data[SQT_DATA_NUMBER]    = &nte ;
+  data[SQT_DATA_MATRIX]    = Ks ;
+  data[SQT_DATA_KNM]       = Knm ;
+  data[SQT_DATA_NKNM]      = &nse ;
+  data[SQT_DATA_ORDER_K]   = &Ns ;
+  data[SQT_DATA_INDICES]   = idx ;
+  data[SQT_DATA_N_QUAD_POINTS] = &nq ;
+  data[SQT_DATA_WAVENUMBER] = &k ;
+  
+#ifdef SQT_SINGLE_PRECISION
+  sqt_quadrature_func_f_t func =
+    (sqt_quadrature_func_f_t)helmholtz_quad_matrix_indexed ;
+#else /*SQT_SINGLE_PRECISION*/
+  sqt_quadrature_func_t func =
+    (sqt_quadrature_func_t)helmholtz_quad_matrix_indexed ;
+#endif /*SQT_SINGLE_PRECISION*/
+
+  memset(Ast, 0, 4*nse*nte*sizeof(SQT_REAL)) ;
+  /* SQT_FUNCTION_NAME(sqt_adaptive_quad_kw)(ce, nse, Ns, q, nq, func, */
+  /* 					  Ast, 2*nse*nte, tol, dmax, */
+  /* 					  data, awork) ; */
+  SQT_FUNCTION_NAME(sqt_tree_quad_kw)(ce, nse, Ns, q, nq, func,
+  				      Ast, 4*nse*nte, tol, dmax,
+  				      data, awork) ;
+
+  return 0 ;
+}
+
+gint
+SQT_FUNCTION_NAME(sqt_helmholtz_source_target_kw_self)(SQT_REAL k,
+						       SQT_REAL *xe,
 						       gint xstr, gint ne,
 						       SQT_REAL *K,
 						       gint nK,
 						       gint N,
-						       SQT_REAL k,
 						       SQT_REAL *s,
 						       gint sstr,
 						       SQT_REAL *t,
@@ -630,15 +752,17 @@ SQT_FUNCTION_NAME(sqt_helmholtz_source_target_kw_self)(SQT_REAL *xe,
   blaswrap_sgemm(FALSE, FALSE, ne, i3, ne, al, K, ne, xe, xstr, bt, ce, i3) ;
 #endif /*SQT_SINGLE_PRECISION*/
 
-  memset(Ast, 0, 2*ne*ne*sizeof(SQT_REAL)) ;
+  memset(Ast, 0, 4*ne*ne*sizeof(SQT_REAL)) ;
   for ( i = 0 ; i < ne ; i ++ ) {
-    SQT_FUNCTION_NAME(sqt_laplace_weights_kw_singular)(ce, ne, nK, K, N,
-						       s[i*sstr],
-						       t[i*tstr],
-						       &(Ast[i*2*ne]),
-						       swork) ;
+    SQT_FUNCTION_NAME(sqt_helmholtz_weights_kw_singular)(k,
+							 ce, ne, nK, K, N,
+							 s[i*sstr],
+							 t[i*tstr],
+							 &(Ast[i*4*ne]),
+							 swork) ;
   }
   
   return 0 ;
 }
-#endif
+
+

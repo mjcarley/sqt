@@ -52,6 +52,7 @@ gchar *tests[] = {"closest_point",              /* 0*/
 		  "normal_helmholtz",           /*21*/
 		  "weights_helmholtz",          /*22*/
 		  "matrix_adaptive_helmholtz",  /*23*/
+		  "matrix_indexed_helmholtz",	/*24*/
 		  ""} ;
 
 GTimer *timer ;
@@ -2175,6 +2176,106 @@ static gint matrix_adaptive_helmholtz_test(gdouble k,
   return 0 ;
 }
 
+static gint matrix_indexed_helmholtz_test(gdouble kw,
+					  gdouble *xse, gint xsstr, gint nse,
+					  gdouble *xte, gint xtstr, gint nte,
+					  gint nq, gint depth, gdouble tol)
+  
+
+{
+  gdouble *q, err, erc, time ;
+  gdouble Kq[453*453], *st ;
+  gdouble *Ast, *Asti, *Astc, xp[453*3], xt[453*3] ;
+  /* , *xcache ; */
+  gdouble *qs, *work, *iwork ;
+  gint oq, i, j, k, nK, nqk, nqt, nqs, pstr, idx[2*453], ni ;
+  gint wsize ;
+  
+  pstr = 3 ;
+  
+  nqk = 7 ;
+  nqt = 85 ;
+  nqs = 25 ;
+
+  Ast  = (gdouble *)g_malloc(4*nqk*nqt*sizeof(gdouble)) ;
+  
+  fprintf(stderr, "indexed Helmholtz interaction matrix test\n") ;
+  fprintf(stderr, "=========================================\n") ;
+  fprintf(stderr, "k   = %lg\n", kw) ;
+  fprintf(stderr, "tol = %lg\n", tol) ;
+  fprintf(stderr, "depth = %d\n", depth) ;
+  fprintf(stderr, "nqs = %d\n", nqs) ;
+  fprintf(stderr, "nqk = %d\n", nqk) ;
+  fprintf(stderr, "nqt = %d\n", nqt) ;
+  
+  sqt_quadrature_select(nqt, &st, &oq) ;
+
+  sqt_quadrature_select(nqk, &q, &oq) ;
+  nK = sqt_koornwinder_interp_matrix(&(q[0]), 3, &(q[1]), 3, &(q[2]), 3,
+				     nqk, Kq) ;
+  sqt_patch_nodes_tri(xse, xsstr, nse, &(q[0]), 3, &(q[1]), 3, NULL, 1, nqk,
+  		      xp, pstr, NULL, 1, NULL, 1) ;
+  sqt_patch_nodes_tri(xte, xtstr, nte, &(st[0]), 3, &(st[1]), 3, NULL, 1, nqt,
+  		      xt, pstr, NULL, 1, NULL, 1) ;
+  
+  sqt_quadrature_select(nqs, &qs, &oq) ;
+
+  /*interaction matrix*/
+  /* cstr = SQT_CACHE_STRIDE + nqs*2 ; */
+  work = (gdouble *)g_malloc(2*4*2*nqk*nqt*depth*sizeof(gdouble)) ;
+  /* icache = (gint *)g_malloc(sqt_cache_level_offset(depth+1)*sizeof(gint)) ; */
+  /* xcache = (gdouble *)g_malloc(sqt_cache_level_offset(depth+1)*nqs*cstr* */
+  /* 			       sizeof(gdouble)) ; */
+  fprintf(stderr, "starting matrix generation, t=%lg\n",
+	  time = g_timer_elapsed(timer, NULL)) ;    
+  sqt_helmholtz_source_target_kw_adaptive(kw, xp, pstr, nqk, qs, nqs, Kq, nK,
+					  tol, depth, xt, pstr, nqt,
+					  Ast, work) ;
+  fprintf(stderr, "matrix generated, t=%lg\n",
+	  g_timer_elapsed(timer, NULL) - time) ;    
+
+  /*shuffle the indices*/
+  ni = 2*nqt ;
+  for ( i = 0 ; i < nqt ; i ++ ) {
+    idx[i] = i ; idx[nqt+i] = nqt-i-1 ;
+  }
+  /* for ( i = 0 ; i < ni ; i ++ ) idx[i] = i ; */
+  
+  Asti = (gdouble *)g_malloc(4*nqk*ni*sizeof(gdouble)) ;
+  Astc = (gdouble *)g_malloc(4*nqk*ni*sizeof(gdouble)) ;
+
+  wsize = depth*4*2*nqk*ni + 12*nqk + 3*nqk ;
+  iwork = (gdouble *)g_malloc(wsize*sizeof(gdouble)) ;
+  sqt_helmholtz_source_indexed_kw_adaptive(kw, xp, pstr, nqk, qs, nqs, Kq, nK,
+					   tol, depth, xt, pstr, idx, ni,
+					   Asti, iwork) ;
+  
+  /* fprintf(stderr, "%lg\n", Asti[3]) ; */
+  
+  /* fprintf(stderr, "indexed matrix generated, t=%lg\n", */
+  /* 	  g_timer_elapsed(timer, NULL) - time) ;     */
+  /* sqt_laplace_source_indexed_kw_cached(xp, pstr, nqk, qs, nqs, Kq, nK, */
+  /* 				       tol, depth, xt, pstr, idx, ni, */
+  /* 				       icache, xcache, cstr, */
+  /* 				       Astc, work) ; */
+  /* fprintf(stderr, "indexed matrix generated (cached), t=%lg\n", */
+  /* 	  g_timer_elapsed(timer, NULL) - time) ; */
+
+  err = erc = 0.0 ;
+  for ( i = 0 ; i < ni ; i ++ ) {
+    j = idx[i] ;
+    for ( k = 0 ; k < 4*nqk ; k ++ ) {
+      err = MAX(fabs(Ast[j*4*nqk+k] - Asti[i*4*nqk+k]), err) ;
+      erc = MAX(fabs(Ast[j*4*nqk+k] - Astc[i*4*nqk+k]), erc) ;
+    }
+  }    
+  
+  fprintf(stderr, "%d indexed rows, error = %lg\n", ni, err) ;
+  /* fprintf(stderr, "%d indexed rows, cached error = %lg\n", ni, erc) ; */
+
+  return 0 ;
+}
+
 gint main(gint argc, gchar **argv)
 
 {
@@ -2398,6 +2499,20 @@ gint main(gint argc, gchar **argv)
     return 0 ;
   }
 
+  if ( test == 24 ) {
+    xtstr = xstr + 1 ; nte = ne ;
+    for ( i = 0 ; i < ne ; i ++ ) {
+      xt[xtstr*i+0] = xe[xstr*i+0] + 0.7 ; 
+      xt[xtstr*i+1] = xe[xstr*i+1] + 1.7 ; 
+      xt[xtstr*i+2] = xe[xstr*i+2] + 0.7 ; 
+    }
+
+    matrix_indexed_helmholtz_test(k, xe, xstr, ne, xt, xtstr, nte, nq,
+				  depth, tol) ;
+
+    return 0 ;
+  }
+  
   return 0 ;
 }
 
