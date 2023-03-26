@@ -134,6 +134,23 @@ else
   fi
 fi
 
+AC_CHECK_PROG(BLASWRAP, blaswrap-config, yes, no)
+if test x$BLASWRAP = xyes ; then
+   AC_DEFINE(HAVE_BLASWRAP, 1, [BLAS wrapper header available])
+   blaswrap_cflags=`blaswrap-config --cflags`
+   blaswrap_libs=`blaswrap-config --libs`
+else
+  echo \#################################################################
+  echo \#
+  echo \# BLAS wrapper library not installed or not properly installed.
+  echo \# You can get it from
+  echo \#
+  echo \# https://github.com/mjcarley/blaswrap
+  echo \#
+  echo \#################################################################
+  exit
+fi
+
 AX_GCC_X86_CPU_SUPPORTS(avx, hasavx=yes) 
 AX_GCC_X86_CPU_SUPPORTS(avx2, hasavx2=yes) 
 AX_GCC_X86_CPU_SUPPORTS(fma, hasfma=yes) 
@@ -153,11 +170,6 @@ AC_PROG_F77
 AC_F77_LIBRARY_LDFLAGS
 AC_F77_DUMMY_MAIN
 AC_F77_WRAPPERS
-ACX_BLAS
-ACX_LAPACK
-
-blas_libs="$BLAS_LIBS"
-lapack_libs="$LAPACK_LIBS"
 
 #DX_DOXYGEN_FEATURE(ON)
 ##DX_DOT_FEATURE(ON)
@@ -171,16 +183,14 @@ lapack_libs="$LAPACK_LIBS"
 ##DX_PS_FEATURE(OFF)
 #DX_INIT_DOXYGEN(sqt, doc/sqt.dxy)
 
-CFLAGS="$CFLAGS $OPENMP_CFLAGS $SIMD_FLAGS $glib_cflags"
-LDFLAGS="$LDFLAGS $glib_libs"
+CFLAGS="$CFLAGS $OPENMP_CFLAGS $SIMD_FLAGS $glib_cflags $blaswrap_cflags"
+LDFLAGS="$LDFLAGS $blaswrap_libs $glib_libs"
 
-AC_SUBST(blas_libs)
-AC_SUBST(lapack_libs)
 AC_SUBST(CFLAGS)
 AC_SUBST(LDFLAGS)
 #AC_SUBST(DX_RULES)
 
-LIBS="$glib_libs $LAPACK_LIBS $BLAS_LIBS $LIBS $FLIBS"
+LIBS="$glib_libs $LAPACK_LIBS $LIBS $FLIBS"
 
 AC_CONFIG_FILES([
 Makefile

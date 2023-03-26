@@ -598,7 +598,7 @@ static gint helmholtz_quad_matrix_indexed(SQT_REAL s, SQT_REAL t,
   SQT_REAL k = *((SQT_REAL *)data[SQT_DATA_WAVENUMBER]) ;
   gint *idx =           data[SQT_DATA_INDICES] ;
   SQT_REAL G[2], dG[2], E[2], d0 = 0.0, d1 = 1.0, R, dR ;
-  SQT_REAL r[3*500], wt ;
+  SQT_REAL r[3*2000], wt ;
   gint i1 = 1, i2 = 2, i3 = 3, i, j, ns ;
 
 #ifndef SQT_SINGLE_PRECISION
@@ -609,7 +609,7 @@ static gint helmholtz_quad_matrix_indexed(SQT_REAL s, SQT_REAL t,
 #endif /*SQT_SINGLE_PRECISION*/
   
   ns = nc/nx ;
-  g_assert(nx < 3*500) ;
+  g_assert(nx < 2000) ;
   for ( j = 0 ; j < nx ; j ++ ) {
     i = idx[j] ;
     sqt_vector_diff(r, &(x[i*xstr]), y) ;
