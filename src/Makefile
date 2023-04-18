@@ -270,7 +270,7 @@ AWK = gawk
 BLASWRAP = yes
 CC = gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -O3 -DSQT_USE_AVX -Wall -Werror-implicit-function-declaration -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -fopenmp  -mavx -mfma -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/home/michael/Codes/include
+CFLAGS = -O3 -g -Wall -Werror-implicit-function-declaration -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -fopenmp  -mavx -mfma -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/home/michael/Codes/include
 CPP = gcc -E
 CPPFLAGS = 
 CYGPATH_W = echo
@@ -399,7 +399,7 @@ top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
 AM_CPPFLAGS = -I$(top_srcdir) -I$(includedir) -DG_LOG_DOMAIN=\"SQT\" \
-	-DSQT_COMPILER_FLAGS="\"-O3 -DSQT_USE_AVX -Wall -Werror-implicit-function-declaration -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -fopenmp  -mavx -mfma -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/home/michael/Codes/include\""
+	-DSQT_COMPILER_FLAGS="\"-O3 -g -Wall -Werror-implicit-function-declaration -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -fopenmp  -mavx -mfma -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/home/michael/Codes/include\""
 
 bin_SCRIPTS = sqt-config
 BUILT_SOURCES = \
@@ -1141,10 +1141,12 @@ documentation.c: documentation.c.in
 	date >> documentation.c ; \
 	echo -e " * -------------------------------\\n */\\n\\n" \
 	>> documentation.c ; \
-	sed -e s/SQT_REAL/gdouble/g -e s/SQT_FUNCTION_NAME\(//g \
-	  -e s/\)\(/\(/ documentation.c.in >> documentation.c ; \
-	sed -e s/SQT_REAL/gfloat/g -e s/SQT_FUNCTION_NAME\(//g \
-	  -e s/\)\(/_f\(/ documentation.c.in >> documentation.c
+	sed -e s/SQT_REAL/gdouble/g -e s/_FLOAT//g \
+	documentation.c.in \
+	>> documentation.c ; \
+	sed -e s/SQT_REAL/gfloat/g -e s/_FLOAT/_f/g \
+	documentation.c.in \
+	>> documentation.c ;
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

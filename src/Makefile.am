@@ -49,10 +49,12 @@ documentation.c: documentation.c.in
 	date >> documentation.c ; \
 	echo -e " * -------------------------------\\n */\\n\\n" \
 	>> documentation.c ; \
-	sed -e s/SQT_REAL/gdouble/g -e s/SQT_FUNCTION_NAME\(//g \
-	  -e s/\)\(/\(/ documentation.c.in >> documentation.c ; \
-	sed -e s/SQT_REAL/gfloat/g -e s/SQT_FUNCTION_NAME\(//g \
-	  -e s/\)\(/_f\(/ documentation.c.in >> documentation.c
+	sed -e s/SQT_REAL/gdouble/g -e s/_FLOAT//g \
+	documentation.c.in \
+	>> documentation.c ; \
+	sed -e s/SQT_REAL/gfloat/g -e s/_FLOAT/_f/g \
+	documentation.c.in \
+	>> documentation.c ;
 
 libsqt_la_LIBADD = libsub.la
 noinst_LTLIBRARIES = libsub.la
