@@ -624,20 +624,28 @@ static gint helmholtz_quad_matrix_indexed(SQT_REAL s, SQT_REAL t,
 
     G[0] *= E[0] ;
 #ifndef SQT_SINGLE_PRECISION
-  /*it should be possible to do this with one matrix multiplication*/
   wt = w*G[0] ;
-  blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1,
-		 &(quad[j*ns +  0]), i2) ;
+  blaswrap_daxpy(nq, wt, work, i1, &(quad[j*ns+0]), i2) ;
   wt = w*G[1] ;
-  blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1,
-		 &(quad[j*ns +  1]), i2) ;
-  /*and this*/
+  blaswrap_daxpy(nq, wt, work, i1, &(quad[j*ns+1]), i2) ;
   wt = w*dG[0] ;
-  blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1,
-		 &(quad[j*ns + ns/2 +  0]), i2) ;
+  blaswrap_daxpy(nq, wt, work, i1, &(quad[j*ns+ns/2+0]), i2) ;
   wt = w*dG[1] ;
-  blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1,
-		 &(quad[j*ns + ns/2 +  1]), i2) ;
+  blaswrap_daxpy(nq, wt, work, i1, &(quad[j*ns+ns/2+1]), i2) ;
+  /*it should be possible to do this with one matrix multiplication*/
+  /* wt = w*G[0] ; */
+  /* blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1, */
+  /* 		 &(quad[j*ns +  0]), i2) ; */
+  /* wt = w*G[1] ; */
+  /* blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1, */
+  /* 		 &(quad[j*ns +  1]), i2) ; */
+  /* /\*and this*\/ */
+  /* wt = w*dG[0] ; */
+  /* blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1, */
+  /* 		 &(quad[j*ns + ns/2 +  0]), i2) ; */
+  /* wt = w*dG[1] ; */
+  /* blaswrap_dgemv(TRUE, nq, nq, wt, Kq, nq, Knm, i1, d1, */
+  /* 		 &(quad[j*ns + ns/2 +  1]), i2) ; */
 
 #else /*SQT_SINGLE_PRECISION*/
   g_assert_not_reached() ; /*untested code*/
