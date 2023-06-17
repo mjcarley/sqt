@@ -656,6 +656,16 @@ gint sqt_helmholtz_weights_tri_adaptive_f(gfloat k,
 					  gfloat tol, gint dmax,
 					  gfloat *x,
 					  gfloat *ws) ;
+gint sqt_helmholtz_weights_tri_basic(gdouble k,
+				     gdouble *xe, gint xstr, gint ne,
+				     gdouble *q, gint nq,
+				     gdouble *Kq, gint nqk, gint nK,
+				     gdouble *x, gdouble *w) ;
+gint sqt_helmholtz_weights_tri_basic_f(gfloat k,
+				       gfloat *xe, gint xstr, gint ne,
+				       gfloat *q, gint nq,
+				       gfloat *Kq, gint nqk, gint nK,
+				       gfloat *x, gfloat *w) ;
 
 gint sqt_helmholtz_weights_kw_adaptive(gdouble k,
 				       gdouble *ce,

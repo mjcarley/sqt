@@ -1812,7 +1812,7 @@ static gint normal_quad_helmholtz_test(gdouble k, gdouble *xe,
     func = (sqt_quadrature_func_t)helmholtz_quad_func ;
   gpointer data[4] ;
 
-  nk = 175 ;
+  nk = 85 ;
   nc = 4*ne ;
     
   sqt_element_point_3d(xe, xstr, ne, s0, t0, x0, n, &J) ;
@@ -1854,7 +1854,9 @@ static gint normal_quad_helmholtz_test(gdouble k, gdouble *xe,
   data[0] = x0 ; data[1] = &k ;
   sqt_singular_quad_tri(xe, xstr, ne, s0, t0, N, func, g, nc, data) ;
   sqt_singular_quad_kw_vector(ce, nk, Nk, s0, t0, N, func, gk, nc, data, work) ;
+  fprintf(stderr, "Hello\n") ;
   sqt_helmholtz_weights_kw_singular(k, ce, nk, Nk, K, N, s0, t0, w, work) ;
+  fprintf(stderr, "Hello\n") ;
   for ( i = 0 ; i < nk ; i ++ ) {
     /* sqt_element_shape_3d(ne, qk[3*i+0], qk[3*i+1], &(src[i*ne]), */
     /* 			 NULL, NULL, NULL, NULL, NULL) ; */
