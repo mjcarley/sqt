@@ -14182,7 +14182,6 @@ fi
 
 
 
-
   OPENMP_CFLAGS=
   # Check whether --enable-openmp was given.
 if test "${enable_openmp+set}" = set; then :

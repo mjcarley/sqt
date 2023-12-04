@@ -163,7 +163,6 @@ if test x$hasfma = xyes; then
 fi
 
 AC_CHECK_LIB(m, cos)
-AC_CONFIG_MACRO_DIR([m4])
 
 AC_OPENMP
 AC_PROG_F77
