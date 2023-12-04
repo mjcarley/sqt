@@ -79,9 +79,6 @@ gint SQT_FUNCTION_NAME(sqt_element_interp)(SQT_REAL *ci, gint nq,
 
   memcpy(dx, &(buf[3]), 6*sizeof(SQT_REAL)) ;
   
-  /* dx[0] = xs[0] ; dx[1] = xs[1] ; dx[2] = xs[2] ; */
-  /* dx[3] = xt[0] ; dx[4] = xt[1] ; dx[5] = xt[2] ; */
-  
   return 0 ;
 }
 

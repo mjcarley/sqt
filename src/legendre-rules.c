@@ -1,7 +1,9 @@
 /* automatically-generated file, do not edit */
-/* Fri Apr 16 15:02:53 BST 2021 */
+/* Wed Aug 30 16:07:10 BST 2023 */
 
 #include <glib.h>
+
+gint legendre_quadrature_select(gint N, gdouble **q, gint *nq) ;
 
 gdouble legendre_rule4[] = {
     .11270166537925830000, .03130601816090507231,

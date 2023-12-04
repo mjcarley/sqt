@@ -92,7 +92,6 @@ gint SQT_FUNCTION_NAME(sqt_element_nearest_point)(SQT_REAL *xe, gint xstr,
   } while ( ds*ds + dt*dt > tol*tol && ni < nimax ) ;
   
   SQT_FUNCTION_NAME(sqt_element_shape_3d)(ne, *sn, *tn, L0, Ls, Lt,
-					  /* NULL, NULL, NULL) ; */
 					  Lss, Lst, Ltt) ;
   calc_point(xe, xstr, ne, L0,  p1) ;
   calc_point(xe, xstr, ne, Ls, ps) ;

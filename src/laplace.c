@@ -170,8 +170,7 @@ static gint laplace_quad_matrix(SQT_REAL s, SQT_REAL t,
   gint nx = *((gint *)data[SQT_DATA_NUMBER]) ;
   SQT_REAL *Kq  = data[SQT_DATA_MATRIX] ;
   SQT_REAL *work  = data[SQT_DATA_WORK] ;
-  SQT_REAL G, dG, d0 = 0.0 ;
-  /* SQT_REAL work[453], r[3] ; */
+  SQT_REAL G, d0 = 0.0 ;
   SQT_REAL r[500] ;
   SQT_REAL *g, *dg ;
   gint i1 = 1, i3 = 3, i, ns ;
@@ -195,9 +194,13 @@ static gint laplace_quad_matrix(SQT_REAL s, SQT_REAL t,
     dg[i] = r[3*i+0] ;
   }
 
+#ifndef SQT_SINGLE_PRECISION  
   blaswrap_dscal(nx, n[0], dg, i1) ;
   blaswrap_daxpy(nx, n[1], &(r[1]), i3, dg, i1) ;
   blaswrap_daxpy(nx, n[2], &(r[2]), i3, dg, i1) ;
+#else /*SQT_SINGLE_PRECISION*/
+  g_assert_not_reached() ;
+#endif /*SQT_SINGLE_PRECISION*/
   for ( i = 0 ; i < nx ; i ++ ) {
     dg[i] *= g[i]*g[i]*g[i] ;
   }
@@ -339,64 +342,64 @@ gint SQT_FUNCTION_NAME(sqt_laplace_weights_kw_adaptive)(SQT_REAL *ce,
   return 0 ;
 }
 
-static gint laplace_quad_vec_matrix(SQT_REAL *s, SQT_REAL *t,
-				    SQT_REAL *w,
-				    SQT_REAL *y, SQT_REAL *n, gint nst,
-				    SQT_REAL *Knm, gint nk,
-				    SQT_REAL *quad, gint nc,
-				    gint init,
-				    gpointer data[])
+/* static gint laplace_quad_vec_matrix(SQT_REAL *s, SQT_REAL *t, */
+/* 				    SQT_REAL *w, */
+/* 				    SQT_REAL *y, SQT_REAL *n, gint nst, */
+/* 				    SQT_REAL *Knm, gint nk, */
+/* 				    SQT_REAL *quad, gint nc, */
+/* 				    gint init, */
+/* 				    gpointer data[]) */
 
-{
-  gint nq = *((gint *)(data[SQT_DATA_NKNM])) ;
-  SQT_REAL *x  = data[SQT_DATA_TARGET] ;
-  gint xstr = *((gint *)data[SQT_DATA_STRIDE]) ;
-  gint nx = *((gint *)data[SQT_DATA_NUMBER]) ;
-  SQT_REAL *Kq  = data[SQT_DATA_MATRIX] ;
-  SQT_REAL G[8], dG[8], d0 = 0.0, d1 = 1.0 ;
-  SQT_REAL work[4*453], r[3] ;
-  gint i1 = 1, i, j, ns ;
+/* { */
+/*   gint nq = *((gint *)(data[SQT_DATA_NKNM])) ; */
+/*   SQT_REAL *x  = data[SQT_DATA_TARGET] ; */
+/*   gint xstr = *((gint *)data[SQT_DATA_STRIDE]) ; */
+/*   gint nx = *((gint *)data[SQT_DATA_NUMBER]) ; */
+/*   SQT_REAL *Kq  = data[SQT_DATA_MATRIX] ; */
+/*   SQT_REAL G[8], dG[8], d0 = 0.0, d1 = 1.0 ; */
+/*   SQT_REAL work[4*453], r[3] ; */
+/*   gint i1 = 1, i, j, ns ; */
 
-#ifndef SQT_SINGLE_PRECISION
-  /* fprintf(stderr, "nk = %d; nq = %d\n", nk, nq) ; */
-  for ( j = 0 ; j < nst ; j ++ ) {
-    G[j] = w[j]*0.25*M_1_PI ;
-    blaswrap_dgemv(TRUE, nq, nq, G[j], Kq, nq, &(Knm[j*3*nk]), i1, d0,
-    		   &(work[j*nq]), i1) ;
-  }
-#else /*SQT_SINGLE_PRECISION*/
-  G[0] = 0.0 ;
-  g_assert_not_reached() ;
-  blaswrap_sgemv(TRUE, nq, nq, G[0], Kq, nq, Knm, i1, d0, work, i1) ;
-#endif /*SQT_SINGLE_PRECISION*/
-  
-  ns = nc/nx ;
-  for ( i = 0 ; i < nx ; i ++ ) {
-    for ( j = 0 ; j < nst ; j ++ ) {
-      sqt_vector_diff(r, &(x[i*xstr]), &(y[3*j])) ;
-      dG[j] = sqt_vector_scalar(r, &(n[3*j])) ;
-      G[j] = 1.0/sqt_vector_length(r) ;
-      dG[j] *= G[j]*G[j]*G[j] ;
-    
-/* #ifndef SQT_SINGLE_PRECISION   */
-/*       blaswrap_daxpy(nq,  G[j], &(work[j*nq]), i1, &(quad[i*ns+   0]), i1) ; */
-/*       blaswrap_daxpy(nq, dG[j], &(work[j*nq]), i1, &(quad[i*ns+ns/2]), i1) ; */
+/* #ifndef SQT_SINGLE_PRECISION */
+/*   /\* fprintf(stderr, "nk = %d; nq = %d\n", nk, nq) ; *\/ */
+/*   for ( j = 0 ; j < nst ; j ++ ) { */
+/*     G[j] = w[j]*0.25*M_1_PI ; */
+/*     blaswrap_dgemv(TRUE, nq, nq, G[j], Kq, nq, &(Knm[j*3*nk]), i1, d0, */
+/*     		   &(work[j*nq]), i1) ; */
+/*   } */
 /* #else /\*SQT_SINGLE_PRECISION*\/ */
-/*       g_assert_not_reached() ; */
-/*       blaswrap_saxpy(nq,  G[j], work, i1, &(quad[i*ns+   0]), i1) ; */
-/*       blaswrap_saxpy(nq, dG[j], work, i1, &(quad[i*ns+ns/2]), i1) ; */
+/*   G[0] = 0.0 ; */
+/*   g_assert_not_reached() ; */
+/*   blaswrap_sgemv(TRUE, nq, nq, G[0], Kq, nq, Knm, i1, d0, work, i1) ; */
 /* #endif /\*SQT_SINGLE_PRECISION*\/ */
-    }
-#ifndef SQT_SINGLE_PRECISION
-    blaswrap_dgemv(TRUE, nst, nq, d1, work, nq, G, i1, d1,
-		   &(quad[i*ns+0]), i1) ;
-    blaswrap_dgemv(TRUE, nst, nq, d1, work, nq, dG, i1, d1,
-    		   &(quad[i*ns+ns/2]), i1) ;
-#endif /*SQT_SINGLE_PRECISION*/
-  }
+  
+/*   ns = nc/nx ; */
+/*   for ( i = 0 ; i < nx ; i ++ ) { */
+/*     for ( j = 0 ; j < nst ; j ++ ) { */
+/*       sqt_vector_diff(r, &(x[i*xstr]), &(y[3*j])) ; */
+/*       dG[j] = sqt_vector_scalar(r, &(n[3*j])) ; */
+/*       G[j] = 1.0/sqt_vector_length(r) ; */
+/*       dG[j] *= G[j]*G[j]*G[j] ; */
+    
+/* /\* #ifndef SQT_SINGLE_PRECISION   *\/ */
+/* /\*       blaswrap_daxpy(nq,  G[j], &(work[j*nq]), i1, &(quad[i*ns+   0]), i1) ; *\/ */
+/* /\*       blaswrap_daxpy(nq, dG[j], &(work[j*nq]), i1, &(quad[i*ns+ns/2]), i1) ; *\/ */
+/* /\* #else /\\*SQT_SINGLE_PRECISION*\\/ *\/ */
+/* /\*       g_assert_not_reached() ; *\/ */
+/* /\*       blaswrap_saxpy(nq,  G[j], work, i1, &(quad[i*ns+   0]), i1) ; *\/ */
+/* /\*       blaswrap_saxpy(nq, dG[j], work, i1, &(quad[i*ns+ns/2]), i1) ; *\/ */
+/* /\* #endif /\\*SQT_SINGLE_PRECISION*\\/ *\/ */
+/*     } */
+/* #ifndef SQT_SINGLE_PRECISION */
+/*     blaswrap_dgemv(TRUE, nst, nq, d1, work, nq, G, i1, d1, */
+/* 		   &(quad[i*ns+0]), i1) ; */
+/*     blaswrap_dgemv(TRUE, nst, nq, d1, work, nq, dG, i1, d1, */
+/*     		   &(quad[i*ns+ns/2]), i1) ; */
+/* #endif /\*SQT_SINGLE_PRECISION*\/ */
+/*   } */
 
-  return 0 ;
-}
+/*   return 0 ; */
+/* } */
 
 gint SQT_FUNCTION_NAME(sqt_laplace_matrix_kw_adaptive)(SQT_REAL *ce,
 						       gint ne, gint Nk,
@@ -657,7 +660,7 @@ static gint laplace_quad_matrix_indexed(SQT_REAL s, SQT_REAL t,
   gint nx   = *((gint *)data[SQT_DATA_NUMBER]) ;
   gint *idx =           data[SQT_DATA_INDICES] ;
   SQT_REAL G, d1 = 1.0, d0 = 0.0, r[3], *g ;
-  gint i1 = 1, i2 = 2, i3 = 3, i, j, j2, ns ;
+  gint i1 = 1, i, j, ns ;
   gint ncc, na ;
   
   /*Koornwinder polynomials at evaluation point are in input K*/
