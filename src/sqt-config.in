@@ -4,7 +4,8 @@
 sqt_cflags="@CFLAGS@"
 sqt_cppflags="@CPPFLAGS@"
 openmp_cflags="@OPENMP_CFLAGS@"
-glib_libs="@glib_libs@"
+glib_libs="@GLIB_LIBS@"
+glib_cflags="@GLIB_CFLAGS@"
 
 prefix=@prefix@
 exec_prefix=@exec_prefix@

@@ -4,7 +4,8 @@
 sqt_cflags="-g -O2 -Wall -Werror-implicit-function-declaration -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -fopenmp  -mavx -mfma -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/home/michael/Codes/include"
 sqt_cppflags=""
 openmp_cflags="-fopenmp"
-glib_libs="@glib_libs@"
+glib_libs="-lglib-2.0"
+glib_cflags="-I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include"
 
 prefix=/home/michael/Codes
 exec_prefix=${prefix}
@@ -104,11 +105,11 @@ if test "$echo_cflags" = "yes"; then
     echo $sqt_cppflags $sqt_cflags $glib_cflags
 fi
 if test "$echo_libs" = "yes"; then
-    glib_libs="-L${exec_prefix}/lib $lib_wmpi  -lglib-2.0 -lblas -L/home/michael/Codes/lib -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0 -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0/../../.. -lgfortran -lquadmath -lm -lglib-2.0  $glib_libs -lm"
+    glib_libs="-L${exec_prefix}/lib $lib_wmpi   $glib_libs -lm"
     glib_libs=`uniquify "$glib_libs"`
 
-    #sqt_libs="-L${exec_prefix}/lib -lsqt  -lglib-2.0 -lblas -L/home/michael/Codes/lib -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0 -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0/../../.. -lgfortran -lquadmath -lm -lglib-2.0 -lm $sqt_libs"
-    sqt_libs="-L${exec_prefix}/lib -lsqt -lglib-2.0  -lm   -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0 -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0/../../.. -lgfortran -lm -lquadmath"
+    #sqt_libs="-L${exec_prefix}/lib -lsqt  -lm $sqt_libs"
+    sqt_libs="-L${exec_prefix}/lib -lsqt -lglib-2.0 -lglib-2.0 -lblas -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0 -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0/../../.. -lgfortran -lquadmath -lm  -lm   -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0 -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0/../../.. -lgfortran -lm -lquadmath"
     sqt_libs=`uniquify "$sqt_libs"`
     echo ${sqt_libs}
 fi

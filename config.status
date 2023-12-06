@@ -876,13 +876,8 @@ S["FFLAGS"]="-g -O2"
 S["F77"]="g77"
 S["OPENMP_CFLAGS"]="-fopenmp"
 S["BLASWRAP"]="yes"
-S["GLIB_CONFIG"]=""
-S["GLIB_COMPILE_RESOURCES"]="/usr/bin/glib-compile-resources"
-S["GLIB_MKENUMS"]="/usr/bin/glib-mkenums"
-S["GOBJECT_QUERY"]="/usr/bin/gobject-query"
-S["GLIB_GENMARSHAL"]="/usr/bin/glib-genmarshal"
 S["GLIB_LIBS"]="-lglib-2.0"
-S["GLIB_CFLAGS"]="-pthread -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include"
+S["GLIB_CFLAGS"]="-I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include"
 S["PKG_CONFIG_LIBDIR"]=""
 S["PKG_CONFIG_PATH"]="/home/michael/Codes/lib/pkgconfig:/home/michael/Codes/lib/pkgconfig:/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/"\
 "share/pkgconfig:/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig"
@@ -922,8 +917,7 @@ S["OBJEXT"]="o"
 S["EXEEXT"]=""
 S["ac_ct_CC"]="gcc"
 S["CPPFLAGS"]=""
-S["LDFLAGS"]=" -lglib-2.0 -lblas -L/home/michael/Codes/lib -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0 -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0/../../../"\
-"../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0/../../.. -lgfortran -lquadmath -lm -lglib-2.0"
+S["LDFLAGS"]=""
 S["CFLAGS"]="-g -O2 -Wall -Werror-implicit-function-declaration -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -fopenmp  -mavx -mfma -I/usr/incl"\
 "ude/glib-2.0 -I/usr/lib64/glib-2.0/include -I/home/michael/Codes/include"
 S["CC"]="gcc"
@@ -974,8 +968,10 @@ S["SQT_MAJOR_VERSION"]="0"
 S["target_alias"]=""
 S["host_alias"]=""
 S["build_alias"]=""
-S["LIBS"]="-lglib-2.0  -lm   -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0 -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0/../../../../lib64 -L/lib/../lib64 -L"\
-"/usr/lib/../lib64 -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0/../../.. -lgfortran -lm -lquadmath"
+S["LIBS"]="-lglib-2.0 -lglib-2.0 -lblas -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0 -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0/../../../../lib64 -L/lib/"\
+"../lib64 -L/usr/lib/../lib64 -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0/../../.. -lgfortran -lquadmath -lm  -lm   -L/usr/lib64/gcc/x86_64-slackw"\
+"are-linux/11.2.0 -L/usr/lib64/gcc/x86_64-slackware-linux/11.2.0/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib64/gcc/x86_64-slackw"\
+"are-linux/11.2.0/../../.. -lgfortran -lm -lquadmath"
 S["ECHO_T"]=""
 S["ECHO_N"]="-n"
 S["ECHO_C"]=""
