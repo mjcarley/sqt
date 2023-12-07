@@ -4,6 +4,15 @@ boundary integral methods. It supplies functions intended to be used
 inside BEM codes, so some of the interfaces are quite basic but the
 examples in ./tests/ show how to use the codes in practice.
 
+# Prerequisites
+
+You will need to have installed the blaswrap wrappers for BLAS
+
+- https://github.com/mjcarley/blaswrap
+
+
+# Installation
+
 Installation instructions are given in the file INSTALL. If you have
 downloaded the github distribution, you will need to set up the
 automake system by running
