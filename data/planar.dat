@@ -1,8 +1,0 @@
-3
--0.5 0.0 0.0
- 0.5 0.0 0.0
- 0.0 1 0.0
-0.01 0.3 0.1
-
-## flat triangle using first-order shape functions, for testing
-## against exact formulae for planar triangles
