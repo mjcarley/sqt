@@ -17438,7 +17438,6 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 CFLAGS="$CFLAGS $OPENMP_CFLAGS $SIMD_FLAGS $GLIB_CFLAGS $blaswrap_cflags"
 LIBS="$GLIB_LIBS $blaswrap_libs $LAPACK_LIBS $LIBS $FLIBS"
-##LDFLAGS="$LDFLAGS $blaswrap_libs $GLIB_LIBS"
 
 
 
