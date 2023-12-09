@@ -14,6 +14,10 @@
  * along with SQT.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif /*HAVE_CONFIG_H*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -21,11 +25,7 @@
 
 #include <glib.h>
 
-#include <blaswrap.h>
-
 #include <sqt.h>
-
-#include "config.h"
 
 #include "sqt-private.h"
 

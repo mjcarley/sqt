@@ -1,5 +1,5 @@
 koornwinder-avx.lo: koornwinder-avx.c /usr/include/stdc-predef.h \
- /usr/include/stdio.h /usr/include/bits/libc-header-start.h \
+ ../config.h /usr/include/stdio.h /usr/include/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/sys/cdefs.h \
  /usr/include/bits/wordsize.h /usr/include/bits/long-double.h \
  /usr/include/gnu/stubs.h /usr/include/gnu/stubs-64.h \
@@ -130,8 +130,7 @@ koornwinder-avx.lo: koornwinder-avx.c /usr/include/stdc-predef.h \
  /usr/include/bits/types/struct_sched_param.h /usr/include/bits/cpu-set.h \
  /usr/include/bits/setjmp.h \
  /usr/include/bits/types/struct___jmp_buf_tag.h \
- /usr/include/glib-2.0/glib/glib-autocleanups.h \
- /home/michael/Codes/include/blaswrap.h sqt.h ../config.h sqt-private.h \
+ /usr/include/glib-2.0/glib/glib-autocleanups.h sqt.h sqt-private.h \
  /usr/lib64/gcc/x86_64-slackware-linux/11.2.0/include/immintrin.h \
  /usr/lib64/gcc/x86_64-slackware-linux/11.2.0/include/x86gprintrin.h \
  /usr/lib64/gcc/x86_64-slackware-linux/11.2.0/include/ia32intrin.h \
@@ -216,6 +215,7 @@ koornwinder-avx.lo: koornwinder-avx.c /usr/include/stdc-predef.h \
  /usr/lib64/gcc/x86_64-slackware-linux/11.2.0/include/prfchwintrin.h \
  /usr/lib64/gcc/x86_64-slackware-linux/11.2.0/include/keylockerintrin.h
 /usr/include/stdc-predef.h:
+../config.h:
 /usr/include/stdio.h:
 /usr/include/bits/libc-header-start.h:
 /usr/include/features.h:
@@ -413,9 +413,7 @@ koornwinder-avx.lo: koornwinder-avx.c /usr/include/stdc-predef.h \
 /usr/include/bits/setjmp.h:
 /usr/include/bits/types/struct___jmp_buf_tag.h:
 /usr/include/glib-2.0/glib/glib-autocleanups.h:
-/home/michael/Codes/include/blaswrap.h:
 sqt.h:
-../config.h:
 sqt-private.h:
 /usr/lib64/gcc/x86_64-slackware-linux/11.2.0/include/immintrin.h:
 /usr/lib64/gcc/x86_64-slackware-linux/11.2.0/include/x86gprintrin.h:

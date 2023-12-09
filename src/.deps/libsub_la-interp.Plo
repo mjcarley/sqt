@@ -1,4 +1,4 @@
-libsub_la-interp.lo: interp.c /usr/include/stdc-predef.h \
+libsub_la-interp.lo: interp.c /usr/include/stdc-predef.h ../config.h \
  /usr/include/stdio.h /usr/include/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/sys/cdefs.h \
  /usr/include/bits/wordsize.h /usr/include/bits/long-double.h \
@@ -133,6 +133,7 @@ libsub_la-interp.lo: interp.c /usr/include/stdc-predef.h \
  /usr/include/glib-2.0/glib/glib-autocleanups.h \
  /home/michael/Codes/include/blaswrap.h sqt.h sqt-private.h
 /usr/include/stdc-predef.h:
+../config.h:
 /usr/include/stdio.h:
 /usr/include/bits/libc-header-start.h:
 /usr/include/features.h:
