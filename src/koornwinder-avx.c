@@ -149,13 +149,13 @@ static gint koornwinder_deriv_recursion4(gint N, gint m,
   op2 = _mm256_mul_pd(rdPm, op1) ;
   op2 = _mm256_mul_pd(op2, rvinv) ;
   op1 = _mm256_mul_pd(op1, rPm) ;
-  _mm256_store_pd(Kb0, op1) ;
-  _mm256_store_pd(Kb1, op2) ;
+  _mm256_storeu_pd(Kb0, op1) ;
+  _mm256_storeu_pd(Kb1, op2) ;
   /* op2 = _mm256_mul_pd(op2,ru) ; op2 = _mm256_mul_pd(op2,rvinv) ; */
   op2 = _mm256_mul_pd(op2,ruvinv) ;
   op1 = _mm256_mul_pd(op1, rvinv) ; op1 = _mm256_mul_pd(op1, rm) ;
   op1 = _mm256_sub_pd(op2, op1) ;
-  _mm256_store_pd(Kb2, op1) ;
+  _mm256_storeu_pd(Kb2, op1) ;
   if ( idx < nst ) {
     for ( i = 0 ; i < 4 ; i ++ ) {
       K [kstr*(i*offk+idx)] = Kb0[i] ;
@@ -181,15 +181,15 @@ static gint koornwinder_deriv_recursion4(gint N, gint m,
   op2 = _mm256_mul_pd(op2, rJnm) ;
   op1 = _mm256_mul_pd(op1, rPm) ;
   op3 = _mm256_mul_pd(op1, rJnm) ;     /*final K*/
-  _mm256_store_pd(Kb0, op3) ;
-  _mm256_store_pd(Kb1, op2) ;
+  _mm256_storeu_pd(Kb0, op3) ;
+  _mm256_storeu_pd(Kb1, op2) ;
   /* op2 = _mm256_mul_pd(op2,ru) ; op2 = _mm256_mul_pd(op2,rvinv) ; */
   op2 = _mm256_mul_pd(op2,ruvinv) ;
   op3 = _mm256_mul_pd(rJnm, rm) ; op3 = _mm256_mul_pd(op3, rvinv) ;
   op3 = _mm256_add_pd(op3, rdJnm) ;
   op1 = _mm256_mul_pd(op1, op3) ;
   op1 = _mm256_sub_pd(op2, op1) ;
-  _mm256_store_pd(Kb2, op1) ;
+  _mm256_storeu_pd(Kb2, op1) ;
   if ( idx < nst ) {
     for ( i = 0 ; i < 4 ; i ++ ) {
       K [kstr*(i*offk+idx)] = Kb0[i] ;
@@ -231,15 +231,15 @@ static gint koornwinder_deriv_recursion4(gint N, gint m,
     op2 = _mm256_mul_pd(op2, rJnm) ;
     op1 = _mm256_mul_pd(op1, rPm) ;
     op3 = _mm256_mul_pd(op1, rJnm) ;     /*final K*/
-    _mm256_store_pd(Kb0, op3) ;
-    _mm256_store_pd(Kb1, op2) ;
+    _mm256_storeu_pd(Kb0, op3) ;
+    _mm256_storeu_pd(Kb1, op2) ;
     /* op2 = _mm256_mul_pd(op2,ru) ; op2 = _mm256_mul_pd(op2,rvinv) ; */
     op2 = _mm256_mul_pd(op2,ruvinv) ;
     op3 = _mm256_mul_pd(rJnm, rm) ; op3 = _mm256_mul_pd(op3, rvinv) ;
     op3 = _mm256_add_pd(op3, rdJnm) ;
     op1 = _mm256_mul_pd(op1, op3) ;
     op1 = _mm256_sub_pd(op2, op1) ;
-    _mm256_store_pd(Kb2, op1) ;
+    _mm256_storeu_pd(Kb2, op1) ;
     for ( i = 0 ; i < 4 ; i ++ ) {
       K [kstr*(i*offk+idx)] = Kb0[i] ;
       Ku[ustr*(i*offu+idx)] = Kb1[i] ;
@@ -400,7 +400,7 @@ static gint koornwinder_recursion4(gint N, gint m,
 
   op1 = _mm256_mul_pd(rJnm1,rPm) ;
   op1 = _mm256_mul_pd(op1,rcnm) ;
-  _mm256_store_pd(Kb, op1) ;
+  _mm256_storeu_pd(Kb, op1) ;
   if ( idx < nst ) {
     Knm[(0*nst+idx)*str] = Kb[0] ;
     Knm[(1*nst+idx)*str] = Kb[1] ;
@@ -420,7 +420,7 @@ static gint koornwinder_recursion4(gint N, gint m,
   idx = n*(n+1)/2 + m ;
   op1 = _mm256_mul_pd(rJnm,rPm) ;
   op1 = _mm256_mul_pd(op1,rcnm) ;
-  _mm256_store_pd(Kb, op1) ;
+  _mm256_storeu_pd(Kb, op1) ;
 
   if ( idx < nst ) {
     Knm[(0*nst+idx)*str] = Kb[0] ;
@@ -449,7 +449,7 @@ static gint koornwinder_recursion4(gint N, gint m,
     rJnm1 = rJnm ; rJnm = op1 ;
     op1 = _mm256_mul_pd(rJnm,rPm) ;
     op1 = _mm256_mul_pd(op1,rcnm) ;
-    _mm256_store_pd(Kb, op1) ;
+    _mm256_storeu_pd(Kb, op1) ;
 
     idx = n*(n+1)/2 + m ;
     Knm[(0*nst+idx)*str] = Kb[0] ;

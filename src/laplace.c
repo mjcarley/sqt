@@ -719,8 +719,8 @@ static gint laplace_quad_matrix_indexed(SQT_REAL s, SQT_REAL t,
 /*     rrn = _mm256_mul_pd(rrn, rr) ;       /\*r.n/R^2*\/ */
 /*     rr  = _mm256_sqrt_pd(rr) ;           /\*1/R*\/ */
 /*     rrn = _mm256_mul_pd(rrn, rr) ;       /\*r.n/R^3*\/ */
-/*     _mm256_store_pd(&(buf[0]), rr) ; */
-/*     _mm256_store_pd(&(buf[4]), rrn) ; */
+/*     _mm256_storeu_pd(&(buf[0]), rr) ; */
+/*     _mm256_storeu_pd(&(buf[4]), rrn) ; */
 /*     g[j2+0] = buf[0] ; g[j2+1] = buf[4] ; */
 /*     g[j2+2] = buf[2] ; g[j2+3] = buf[6] ; */
 /*     g[j2+4] = buf[1] ; g[j2+5] = buf[5] ; */
