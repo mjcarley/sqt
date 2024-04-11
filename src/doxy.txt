@@ -15,14 +15,6 @@
  */
 
 /**
- * @defgroup quadrature Quadrature routines
- *
- * @brief Functions for performing integration on elements for various
- *  potentials (Laplace, Helmholtz, etc)
- *
- */
-
-/**
  * @defgroup laplace Laplace potentials
  *
  * @brief Specialized and convenience functions for evaluation of
