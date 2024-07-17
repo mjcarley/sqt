@@ -28,7 +28,7 @@
 
 #include "sqt-private.h"
 
-gchar *tests[] = {"closest_point",              /* 0*/
+char *tests[] = {"closest_point",              /* 0*/
 		  "koornwinder",                /* 1*/
 		  "koornwinder_orthogonality",  /* 2*/
 		  "blas",			/* 3*/
@@ -57,7 +57,7 @@ gchar *tests[] = {"closest_point",              /* 0*/
 
 GTimer *timer ;
 
-static gint parse_test(gchar *arg)
+static gint parse_test(char *arg)
 
 {
   gint i = 0 ;
@@ -2278,13 +2278,13 @@ static gint matrix_indexed_helmholtz_test(gdouble kw,
   return 0 ;
 }
 
-gint main(gint argc, gchar **argv)
+gint main(gint argc, char **argv)
 
 {
   gdouble xe[256], tol, rc, s0, t0, x0[3], umax, xt[256], k ;
   gint ne, nte, nq, depth, N, nx, xstr, xtstr, test, i ;
   FILE *input ;
-  gchar ch, *progname ;
+  char ch, *progname ;
 
   timer = g_timer_new() ;
 

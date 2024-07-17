@@ -29,10 +29,10 @@
 
 #include "sqt-private.h"
 
-gint dgesdd_(gchar *JOBZ, gint *M, gint *N, gdouble *A, gint *lda,
+gint dgesdd_(char *JOBZ, gint *M, gint *N, gdouble *A, gint *lda,
 	     gdouble *S, gdouble *U, gint *ldu, gdouble *VT, gint *ldvt,
 	     gdouble *work, gint *lwork, gint *iwork, gint *info) ;
-gint sgesdd_(gchar *JOBZ, gint *M, gint *N, gfloat *A, gint *lda,
+gint sgesdd_(char *JOBZ, gint *M, gint *N, gfloat *A, gint *lda,
 	     gfloat *S, gfloat *U, gint *ldu, gfloat *VT, gint *ldvt,
 	     gfloat *work, gint *lwork, gint *iwork, gint *info) ;
 
