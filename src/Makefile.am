@@ -3,13 +3,8 @@
 AM_CPPFLAGS = -I$(top_srcdir) -I$(includedir) -DG_LOG_DOMAIN=\"SQT\" \
 	-DSQT_COMPILER_FLAGS="\"@CFLAGS@\""
 
-bin_SCRIPTS=sqt-config
-
 BUILT_SOURCES= \
-	sqt-config \
 	documentation.c
-
-sqt-config: sqt-config.in
 
 lib_LTLIBRARIES = libsqt.la
 

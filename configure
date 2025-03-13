@@ -17445,7 +17445,7 @@ LIBS="$GLIB_LIBS $blaswrap_libs $LAPACK_LIBS $LIBS $FLIBS"
 
 #AC_SUBST(DX_RULES)
 
-ac_config_files="$ac_config_files Makefile src/Makefile src/sqt-config tests/Makefile"
+ac_config_files="$ac_config_files Makefile sqt.pc src/Makefile src/sqt-config tests/Makefile"
 
 
 cat >confcache <<\_ACEOF
@@ -18537,6 +18537,7 @@ do
     "depfiles") CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
     "libtool") CONFIG_COMMANDS="$CONFIG_COMMANDS libtool" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
+    "sqt.pc") CONFIG_FILES="$CONFIG_FILES sqt.pc" ;;
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
     "src/sqt-config") CONFIG_FILES="$CONFIG_FILES src/sqt-config" ;;
     "tests/Makefile") CONFIG_FILES="$CONFIG_FILES tests/Makefile" ;;
