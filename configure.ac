@@ -135,7 +135,6 @@ AC_CONFIG_FILES([
 Makefile
 sqt.pc
 src/Makefile
-src/sqt-config
 tests/Makefile
 ])
 

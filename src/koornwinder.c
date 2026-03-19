@@ -101,7 +101,8 @@ gint SQT_FUNCTION_NAME(sqt_koornwinder_deriv_nm)(gint N, SQT_REAL u, SQT_REAL v,
 /*
   Definition of Koornwinder polynomials from Greengard et al, Fast
   multipole methods for the evaluation of layer potentials with
-  locally-corrected quadratures arXiv:2006.02545v1.
+  locally-corrected quadratures,
+  https://doi.org/10.1016/j.jcpx.2021.100092
 
   Jacobi and Legendre recursions from DL2MF
 

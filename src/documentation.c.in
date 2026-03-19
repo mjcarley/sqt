@@ -244,7 +244,8 @@ gint sqt_helmholtz_weights_tri_basic_FLOAT(SQT_REAL k,
  * @ingroup laplace
  *
  * @brief Calculating weights for evaluation of Laplace potential from
- * triangular element using adaptive quadrature
+ * triangular element using adaptive quadrature,
+ * https://doi.org/10.1016/j.jcpx.2021.100092
  *
  * 
  * @param xe element nodes as three packed real numbers
@@ -279,8 +280,9 @@ gint sqt_laplace_weights_tri_adaptive_FLOAT(SQT_REAL *xe,
 /**
  * @ingroup helmholtz
  *
- * @brief Calculating weights for evaluation of Helmholtz potentials from
- * triangular element using adaptive quadrature
+ * @brief Calculating weights for evaluation of Helmholtz potentials
+ * from triangular element using adaptive quadrature,
+ * https://doi.org/10.1016/j.jcpx.2021.100092
  *
  * @param k wavenumber
  * @param xe element nodes as three packed real numbers
@@ -317,7 +319,8 @@ gint sqt_helmholtz_weights_tri_adaptive_FLOAT(SQT_REAL k,
  * @ingroup laplace
  *
  * @brief Calculating weights for evaluation of self-induced Laplace
- * potential on triangular element using singular quadrature
+ * potential on triangular element using singular quadrature,
+ * https://doi.org/10.1016/j.jcpx.2021.100092
  *
  * 
  * @param xe element nodes as three packed real numbers
@@ -350,7 +353,8 @@ gint sqt_laplace_weights_tri_singular_FLOAT(SQT_REAL *xe,
  * @ingroup helmholtz
  *
  * @brief Calculating weights for evaluation of self-induced Helmholtz
- * potentials on triangular element using singular quadrature
+ * potentials on triangular element using singular quadrature,
+ * https://doi.org/10.1016/j.jcpx.2021.100092
  * 
  * @param k wavenumber
  * @param xe element nodes as three packed real numbers
