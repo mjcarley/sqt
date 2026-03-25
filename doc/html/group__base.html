@@ -45,7 +45,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Basic functions for geometric handling and element manipulation.  
+<p>Basic functions for geometric handling, element manipulation, and generic integrals.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -65,6 +65,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ga863b6c5e2585343280ae6680292e4a40"><td class="memItemLeft" align="right" valign="top">gint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__base.html#ga863b6c5e2585343280ae6680292e4a40">sqt_triangle_curvature</a> (gdouble *xe, gint xstr, gint ne, gdouble s, gdouble t, gdouble *kg, gdouble *km)</td></tr>
 <tr class="memdesc:ga863b6c5e2585343280ae6680292e4a40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Curvatures on a triangular element.  <a href="group__base.html#ga863b6c5e2585343280ae6680292e4a40">More...</a><br /></td></tr>
 <tr class="separator:ga863b6c5e2585343280ae6680292e4a40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac1a183be2a70df0d1d1c2e3a78970085"><td class="memItemLeft" align="right" valign="top">gint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__base.html#gac1a183be2a70df0d1d1c2e3a78970085">sqt_adaptive_quad_tri</a> (gdouble *xe, gint xstr, gint ne, gdouble *q, gint nq, sqt_quadrature_func_t func, gdouble *quad, gint nc, gdouble tol, gint dmax, gpointer data)</td></tr>
+<tr class="memdesc:gac1a183be2a70df0d1d1c2e3a78970085"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adaptive integration over standard first- or second-order triangular element.  <a href="group__base.html#gac1a183be2a70df0d1d1c2e3a78970085">More...</a><br /></td></tr>
+<tr class="separator:gac1a183be2a70df0d1d1c2e3a78970085"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaaf96bed9bb728e176613007da1816b21"><td class="memItemLeft" align="right" valign="top">gint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__base.html#gaaf96bed9bb728e176613007da1816b21">sqt_singular_quad_tri</a> (gdouble *xe, gint xstr, gint ne, gdouble s0, gdouble t0, gint N, sqt_quadrature_func_t func, gdouble *quad, gint nc, gpointer data)</td></tr>
+<tr class="memdesc:gaaf96bed9bb728e176613007da1816b21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Singular integration over standard first- or second-order triangular element.  <a href="group__base.html#gaaf96bed9bb728e176613007da1816b21">More...</a><br /></td></tr>
+<tr class="separator:gaaf96bed9bb728e176613007da1816b21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6b268f195ea143ab345716013f614164"><td class="memItemLeft" align="right" valign="top">gint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__base.html#ga6b268f195ea143ab345716013f614164">sqt_element_shape_3d_f</a> (gint ne, gfloat s, gfloat t, gfloat *L, gfloat *dLds, gfloat *dLdt, gfloat *dLdss, gfloat *dLdst, gfloat *dLdtt)</td></tr>
 <tr class="memdesc:ga6b268f195ea143ab345716013f614164"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shape function evaluations for three-dimensional elements.  <a href="group__base.html#ga6b268f195ea143ab345716013f614164">More...</a><br /></td></tr>
 <tr class="separator:ga6b268f195ea143ab345716013f614164"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -80,10 +86,218 @@ Functions</h2></td></tr>
 <tr class="memitem:ga330e03b6c0199612a4322175408239b7"><td class="memItemLeft" align="right" valign="top">gint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__base.html#ga330e03b6c0199612a4322175408239b7">sqt_triangle_curvature_f</a> (gfloat *xe, gint xstr, gint ne, gfloat s, gfloat t, gfloat *kg, gfloat *km)</td></tr>
 <tr class="memdesc:ga330e03b6c0199612a4322175408239b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Curvatures on a triangular element.  <a href="group__base.html#ga330e03b6c0199612a4322175408239b7">More...</a><br /></td></tr>
 <tr class="separator:ga330e03b6c0199612a4322175408239b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga879d42242cc718d80377c60e289b085f"><td class="memItemLeft" align="right" valign="top">gint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__base.html#ga879d42242cc718d80377c60e289b085f">sqt_adaptive_quad_tri_f</a> (gfloat *xe, gint xstr, gint ne, gfloat *q, gint nq, sqt_quadrature_func_f_t func, gfloat *quad, gint nc, gfloat tol, gint dmax, gpointer data)</td></tr>
+<tr class="memdesc:ga879d42242cc718d80377c60e289b085f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adaptive integration over standard first- or second-order triangular element.  <a href="group__base.html#ga879d42242cc718d80377c60e289b085f">More...</a><br /></td></tr>
+<tr class="separator:ga879d42242cc718d80377c60e289b085f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga92360c7acdba0f3a9a240aa697b1cc4d"><td class="memItemLeft" align="right" valign="top">gint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__base.html#ga92360c7acdba0f3a9a240aa697b1cc4d">sqt_singular_quad_tri_f</a> (gfloat *xe, gint xstr, gint ne, gfloat s0, gfloat t0, gint N, sqt_quadrature_func_f_t func, gfloat *quad, gint nc, gpointer data)</td></tr>
+<tr class="memdesc:ga92360c7acdba0f3a9a240aa697b1cc4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Singular integration over standard first- or second-order triangular element.  <a href="group__base.html#ga92360c7acdba0f3a9a240aa697b1cc4d">More...</a><br /></td></tr>
+<tr class="separator:ga92360c7acdba0f3a9a240aa697b1cc4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p >Basic functions for geometric handling and element manipulation. </p>
+<p >Basic functions for geometric handling, element manipulation, and generic integrals. </p>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="gac1a183be2a70df0d1d1c2e3a78970085" name="gac1a183be2a70df0d1d1c2e3a78970085"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac1a183be2a70df0d1d1c2e3a78970085">&#9670;&nbsp;</a></span>sqt_adaptive_quad_tri()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">gint sqt_adaptive_quad_tri </td>
+          <td>(</td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>xe</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>xstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>ne</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>q</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">sqt_quadrature_func_t&#160;</td>
+          <td class="paramname"><em>func</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>quad</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble&#160;</td>
+          <td class="paramname"><em>tol</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>dmax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gpointer&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adaptive integration over standard first- or second-order triangular element. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xe</td><td>coordinates of element nodes; </td></tr>
+    <tr><td class="paramname">xstr</td><td>stride between nodes in <em>xe</em>; </td></tr>
+    <tr><td class="paramname">ne</td><td>number of nodes on element (three or six); </td></tr>
+    <tr><td class="paramname">q</td><td>quadrature rule from ::sqt_select_quadrature </td></tr>
+    <tr><td class="paramname">nq</td><td>number of nodes in <em>q</em>; </td></tr>
+    <tr><td class="paramname">func</td><td>function to integrate; </td></tr>
+    <tr><td class="paramname">quad</td><td>result of quadrature; </td></tr>
+    <tr><td class="paramname">nc</td><td>number of components in <em>quad</em>; </td></tr>
+    <tr><td class="paramname">tol</td><td>convergence tolerance for adaptive integration; </td></tr>
+    <tr><td class="paramname">dmax</td><td>maximum recursion depth in adaptive integration; </td></tr>
+    <tr><td class="paramname">data</td><td>data to pass to <em>func</em>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success. </dd></dl>
+
+</div>
+</div>
+<a id="ga879d42242cc718d80377c60e289b085f" name="ga879d42242cc718d80377c60e289b085f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga879d42242cc718d80377c60e289b085f">&#9670;&nbsp;</a></span>sqt_adaptive_quad_tri_f()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">gint sqt_adaptive_quad_tri_f </td>
+          <td>(</td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>xe</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>xstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>ne</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>q</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">sqt_quadrature_func_f_t&#160;</td>
+          <td class="paramname"><em>func</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>quad</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat&#160;</td>
+          <td class="paramname"><em>tol</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>dmax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gpointer&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adaptive integration over standard first- or second-order triangular element. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xe</td><td>coordinates of element nodes; </td></tr>
+    <tr><td class="paramname">xstr</td><td>stride between nodes in <em>xe</em>; </td></tr>
+    <tr><td class="paramname">ne</td><td>number of nodes on element (three or six); </td></tr>
+    <tr><td class="paramname">q</td><td>quadrature rule from ::sqt_select_quadrature_f </td></tr>
+    <tr><td class="paramname">nq</td><td>number of nodes in <em>q</em>; </td></tr>
+    <tr><td class="paramname">func</td><td>function to integrate; </td></tr>
+    <tr><td class="paramname">quad</td><td>result of quadrature; </td></tr>
+    <tr><td class="paramname">nc</td><td>number of components in <em>quad</em>; </td></tr>
+    <tr><td class="paramname">tol</td><td>convergence tolerance for adaptive integration; </td></tr>
+    <tr><td class="paramname">dmax</td><td>maximum recursion depth in adaptive integration; </td></tr>
+    <tr><td class="paramname">data</td><td>data to pass to <em>func</em>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success. </dd></dl>
+
+</div>
+</div>
 <a id="ga9352e19554870f445d7ba22c1c64b69c" name="ga9352e19554870f445d7ba22c1c64b69c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga9352e19554870f445d7ba22c1c64b69c">&#9670;&nbsp;</a></span>sqt_element_area()</h2>
 
@@ -712,6 +926,194 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="gaaf96bed9bb728e176613007da1816b21" name="gaaf96bed9bb728e176613007da1816b21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaaf96bed9bb728e176613007da1816b21">&#9670;&nbsp;</a></span>sqt_singular_quad_tri()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">gint sqt_singular_quad_tri </td>
+          <td>(</td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>xe</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>xstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>ne</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble&#160;</td>
+          <td class="paramname"><em>s0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble&#160;</td>
+          <td class="paramname"><em>t0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>N</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">sqt_quadrature_func_t&#160;</td>
+          <td class="paramname"><em>func</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gdouble *&#160;</td>
+          <td class="paramname"><em>quad</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gpointer&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Singular integration over standard first- or second-order triangular element. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xe</td><td>coordinates of element nodes; </td></tr>
+    <tr><td class="paramname">xstr</td><td>stride between nodes in <em>xe</em>; </td></tr>
+    <tr><td class="paramname">ne</td><td>number of nodes on element (three or six); </td></tr>
+    <tr><td class="paramname">s0</td><td>location of singularity in local coordinates; </td></tr>
+    <tr><td class="paramname">t0</td><td>location of singularity in local coordinates; </td></tr>
+    <tr><td class="paramname">N</td><td>order of singular quadrature rule to apply; </td></tr>
+    <tr><td class="paramname">func</td><td>function to integrate; </td></tr>
+    <tr><td class="paramname">quad</td><td>result of quadrature; </td></tr>
+    <tr><td class="paramname">nc</td><td>number of components in <em>quad</em>; </td></tr>
+    <tr><td class="paramname">data</td><td>data to pass to <em>func</em>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success. </dd></dl>
+
+</div>
+</div>
+<a id="ga92360c7acdba0f3a9a240aa697b1cc4d" name="ga92360c7acdba0f3a9a240aa697b1cc4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga92360c7acdba0f3a9a240aa697b1cc4d">&#9670;&nbsp;</a></span>sqt_singular_quad_tri_f()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">gint sqt_singular_quad_tri_f </td>
+          <td>(</td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>xe</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>xstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>ne</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat&#160;</td>
+          <td class="paramname"><em>s0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat&#160;</td>
+          <td class="paramname"><em>t0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>N</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">sqt_quadrature_func_f_t&#160;</td>
+          <td class="paramname"><em>func</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gfloat *&#160;</td>
+          <td class="paramname"><em>quad</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gint&#160;</td>
+          <td class="paramname"><em>nc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">gpointer&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Singular integration over standard first- or second-order triangular element. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xe</td><td>coordinates of element nodes; </td></tr>
+    <tr><td class="paramname">xstr</td><td>stride between nodes in <em>xe</em>; </td></tr>
+    <tr><td class="paramname">ne</td><td>number of nodes on element (three or six); </td></tr>
+    <tr><td class="paramname">s0</td><td>location of singularity in local coordinates; </td></tr>
+    <tr><td class="paramname">t0</td><td>location of singularity in local coordinates; </td></tr>
+    <tr><td class="paramname">N</td><td>order of singular quadrature rule to apply; </td></tr>
+    <tr><td class="paramname">func</td><td>function to integrate; </td></tr>
+    <tr><td class="paramname">quad</td><td>result of quadrature; </td></tr>
+    <tr><td class="paramname">nc</td><td>number of components in <em>quad</em>; </td></tr>
+    <tr><td class="paramname">data</td><td>data to pass to <em>func</em>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success. </dd></dl>
+
+</div>
+</div>
 <a id="ga863b6c5e2585343280ae6680292e4a40" name="ga863b6c5e2585343280ae6680292e4a40"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga863b6c5e2585343280ae6680292e4a40">&#9670;&nbsp;</a></span>sqt_triangle_curvature()</h2>
 
@@ -861,7 +1263,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Mar 19 2026 10:04:03 for SQT by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.3
+Generated on Wed Mar 25 2026 09:18:41 for SQT by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.3
 </small></address>
 </body>
 </html>

@@ -33,7 +33,8 @@
 /**
  * @defgroup base Basic functions
  *
- * @brief Basic functions for geometric handling and element manipulation
+ * @brief Basic functions for geometric handling, element
+ * manipulation, and generic integrals
  *
  */
 

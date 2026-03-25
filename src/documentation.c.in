@@ -823,3 +823,58 @@ sqt_laplace_source_indexed_kw_adaptive_FLOAT(SQT_REAL *xse,
 							  gint nte,
 							  SQT_REAL *Ast,
 							  SQT_REAL *work) ;
+
+/** 
+ * @ingroup base
+ *
+ * @brief Adaptive integration over standard first- or second-order triangular
+ * element
+ * 
+ * @param xe coordinates of element nodes;
+ * @param xstr stride between nodes in \a xe;
+ * @param ne number of nodes on element (three or six);
+ * @param q quadrature rule from ::sqt_select_quadrature_FLOAT
+ * @param nq number of nodes in \a q;
+ * @param func function to integrate;
+ * @param quad result of quadrature;
+ * @param nc number of components in \a quad;
+ * @param tol convergence tolerance for adaptive integration;
+ * @param dmax maximum recursion depth in adaptive integration;
+ * @param data data to pass to \a func.
+ * 
+ * @return 0 on success.
+ */
+
+gint
+sqt_adaptive_quad_tri_FLOAT(SQT_REAL *xe, gint xstr, gint ne,
+			    SQT_REAL *q, gint nq,
+			    sqt_quadrature_func_FLOAT_t func,
+			    SQT_REAL *quad, gint nc,
+			    SQT_REAL tol, gint dmax,
+			    gpointer data) ;
+
+/** 
+ * @ingroup base
+ *
+ * @brief Singular integration over standard first- or second-order
+ * triangular element
+ * 
+ * @param xe coordinates of element nodes;
+ * @param xstr stride between nodes in \a xe;
+ * @param ne number of nodes on element (three or six);
+ * @param s0 location of singularity in local coordinates;
+ * @param t0 location of singularity in local coordinates;
+ * @param N order of singular quadrature rule to apply;
+ * @param func function to integrate;
+ * @param quad result of quadrature;
+ * @param nc number of components in \a quad;
+ * @param data data to pass to \a func.
+ * 
+ * @return 0 on success.
+ */
+gint sqt_singular_quad_tri_FLOAT(SQT_REAL *xe, gint xstr, gint ne,
+				 SQT_REAL s0, SQT_REAL t0,
+				 gint N,
+				 sqt_quadrature_func_FLOAT_t func,
+				 SQT_REAL *quad, gint nc,
+				 gpointer data) ;
