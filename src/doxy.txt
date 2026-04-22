@@ -45,3 +45,10 @@
  *
  */
 
+/**
+ * @defgroup interp Element interpolation
+ *
+ * @brief Interpolation functions, including Koornwinder interpolation
+ *
+ */
+

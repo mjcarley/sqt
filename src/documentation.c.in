@@ -878,3 +878,111 @@ gint sqt_singular_quad_tri_FLOAT(SQT_REAL *xe, gint xstr, gint ne,
 				 sqt_quadrature_func_FLOAT_t func,
 				 SQT_REAL *quad, gint nc,
 				 gpointer data) ;
+
+/** 
+ * @ingroup base
+ *
+ * @brief Singular integration over Koorwinder triangular element
+ * 
+ * @param ce interpolation coefficients for element (see 
+ * ::sqt_element_interp_FLOAT);
+ * @param ne number of nodes on element;
+ * @param Nk order of Koornwinder polynomials;
+ * @param s0 location of singularity in local coordinates;
+ * @param t0 location of singularity in local coordinates;
+ * @param N order of singular quadrature rule;
+ * @param func function to integrate;
+ * @param quad result of quadrature;
+ * @param nc number of components in \a quad;
+ * @param data data to pass to \a func.
+ * @param work 
+ * 
+ * @return 0 on success.
+ */
+
+gint sqt_singular_quad_kw_FLOAT(SQT_REAL *ce, gint ne, gint Nk,
+				SQT_REAL s0, SQT_REAL t0,
+				gint N,
+				sqt_quadrature_func_FLOAT_t func,
+				SQT_REAL *quad, gint nc,
+				gpointer data,
+				SQT_REAL *work) ;
+
+/** 
+ * @ingroup interp
+ * 
+ * @brief Point interpolation on high-order element using Koornwinder
+ * polynomials
+ * 
+ * The coefficient matrix for the element is found by multiplying the
+ * element node locations by the Koornwinder polynomial matrix from
+ * ::sqt_koornwinder_interp_matrix_FLOAT,
+ * \f$\mathbf{c}=\mathbf{K}\mathbf{x}\f$ or using a BLAS operation
+ * (here using the blaswrap wrapper)
+ * 
+ *          al = 1.0 ; bt = 0.0 ;
+ *          blaswrap_dgemm(FALSE, FALSE, nq, i3, nq, al, K, nq, xi, xstr, bt, ci, i3) ;
+
+ * 
+ * @param ci interpolation coefficients for element;
+ * @param nq number of element nodes;
+ * @param Nk order of Koornwinder interpolation;
+ * @param s local coordinate for interpolation;
+ * @param t local coordinate for interpolation;
+ * @param x on exit contains interpolated point location;
+ * @param n on exit contains element normal at \a x;
+ * @param J on exit set to Jacobian at \a x;
+ * @param dx if not NULL, on exit contains local derivatives 
+ * \f$\partial\mathbf{x}/\partial s\f$, \f$\partial\mathbf{x}/\partial t\f$;
+ * @param work workspace of at least 3*nq elements;
+ * 
+ * @return 0 on success.
+ */
+
+gint sqt_element_interp_FLOAT(SQT_REAL *ci, gint nq,
+			      gint Nk,
+			      SQT_REAL s, SQT_REAL t,
+			      SQT_REAL *x, SQT_REAL *n,
+			      SQT_REAL *J, SQT_REAL *dx,
+			      SQT_REAL *work) ;
+
+/** 
+ * @ingroup interp
+ *
+ * @brief Generate matrix for evaluation of Koorwinder interpolation
+ * coefficients on triangle
+ * 
+ * @param s local coordinates of quadrature nodes on triangle;
+ * @param sstr stride of entries in \a s;
+ * @param t local coordinates of quadrature nodes on triangle;
+ * @param tstr stride of entries in \a t;
+ * @param w quadrature weights;
+ * @param wstr stride of entries in \a w;
+ * @param nst number of quadrature nodes;
+ * @param A on exit contains matrix for coefficient evaluation, of size
+ * nst.
+ * 
+ * @return order of Koornwinder polynomial required for evaluation of
+ * interpolant.
+ */
+
+gint sqt_koornwinder_interp_matrix_FLOAT(SQT_REAL *s, gint sstr,
+					 SQT_REAL *t, gint tstr,
+					 SQT_REAL *w, gint wstr,
+					 gint nst,
+					 SQT_REAL *A) ;
+
+/** 
+ * @ingroup base
+ *
+ * @brief Select a quadrature rule for integrals on a triangle
+ * 
+ * @param nq number of quadrature nodes (7, 25, 54, 85, 126, 175, or 453)
+ * @param q on exit contains pointer to nodes and weights of requested 
+ * quadrature;
+ * @param order on exit, set to maximum order of integrand.
+ * 
+ * @return 0 on success.
+ */
+
+gint sqt_quadrature_select_FLOAT(gint nq, SQT_REAL **q, gint *order) ;

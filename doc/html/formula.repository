@@ -6,3 +6,6 @@
 \_form#5=49x15:$\partial^{2} L_{i}/\partial t^{2}$
 \_form#6=25x14:$(s,t)$
 \_form#7=45x14:$\mathbf{x}(s_{0},t_{0})$
+\_form#8=43x10:$\mathbf{c}=\mathbf{K}\mathbf{x}$
+\_form#9=34x14:$\partial\mathbf{x}/\partial s$
+\_form#10=33x14:$\partial\mathbf{x}/\partial t$
